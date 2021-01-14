@@ -18,7 +18,7 @@
                 }
             }
             if (this.dtp.length==0) {
-                const resp = await fetch('http://127.0.0.1:3000/get_2020')
+                const resp = await fetch('http://195.133.147.101:3000/get_dtps_year?year=2020')
                 this.dtp = await resp.json()
             }
             console.log(this.dtp)
