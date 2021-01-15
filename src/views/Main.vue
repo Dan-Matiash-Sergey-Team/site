@@ -1,10 +1,12 @@
 <template>
     <div>
 
-        <div v-if="showMap">
-            <yandex-map :coords="[55.84547, 37.45442]" style="width: 600px; height: 600px;" :use-object-manager="true" :object-manager-clusterize="false"
+        <div v-if="showMap  ">
+            <yandex-map :coords="[55.84547, 37.45442]" :use-object-manager="true"
+                        @map-was-initialized="initHandler" style="width: 1550px; height: 825px;"
             >
-                <ymap-marker :coords="[Number(marker.data.infoDtp.COORD_W),Number(marker.data.infoDtp.COORD_L)]" :key="i" :marker-id="i" marker-type="placemark"
+                <ymap-marker :coords="[Number(marker.data.infoDtp.COORD_W),Number(marker.data.infoDtp.COORD_L)]"
+                             :key="i" :marker-id="i" marker-type="placemark"
                              v-for="(marker, i) in dtps"
                 >
 
@@ -27,20 +29,20 @@
         },
         computed: {
             // placemarks: function () {
-                // let a = []
-                // this.dtps.forEach((el) => {
-                //     a.push({
-                //         coords: [Number(el.data.infoDtp.COORD_W), Number(el.data.infoDtp.COORD_L)],
-                //         clusterName: 1,
-                //     })
-                // })
-                // console.log(a)
-                // return a
+            // let a = []
+            // this.dtps.forEach((el) => {
+            //     a.push({
+            //         coords: [Number(el.data.infoDtp.COORD_W), Number(el.data.infoDtp.COORD_L)],
+            //         clusterName: 1,
+            //     })
+            // })
+            // console.log(a)
+            // return a
             // }
         },
         methods: {
-            initHandler: function () {
-
+            initHandler: function (map) {
+                console.log(map.geoObject())
             }
         },
         mounted() {
