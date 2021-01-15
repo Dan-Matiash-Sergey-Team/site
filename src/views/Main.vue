@@ -42,7 +42,7 @@
         },
         methods: {
             initHandler: function (map) {
-                console.log(map.geoObject())
+                console.log(map)
             }
         },
         mounted() {
