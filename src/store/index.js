@@ -10,6 +10,9 @@ export default new Vuex.Store({
     mutations:{
         newDtp: function (state,payload) {
             state.dtps.push(payload)
+        },
+        setDtp: function (state, payload) {
+            state.dtps = payload
         }
     },
     getters:{

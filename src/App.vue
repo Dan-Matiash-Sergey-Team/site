@@ -18,14 +18,14 @@
                 }
             }
             if (this.dtp.length==0) {
-                const resp = await fetch('http://195.133.147.101:3000/get_dtps_year?year=2020')
+                const resp = await fetch('http://195.133.147.101:3000/get_dtps_month?year=2020&month=1')
                 this.dtp = await resp.json()
-            }
-            console.log(this.dtp)
-            for (let dtp of this.dtp)
-                this.$store.commit('newDtp', dtp)
 
-            await this.$router.push('/map', ()=>{})
+                this.$store.commit('setDtp', this.dtp)
+            }
+            // console.log(this.dtp)
+
+            await this.$router.push('/map', ()=>{console.log('ready')})
         }
     }
 </script>
