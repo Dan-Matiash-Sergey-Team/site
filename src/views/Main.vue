@@ -46,19 +46,20 @@
         methods: {
             initHandler: function (map) {
                 this.map = map
+
                 // eslint-disable-next-line no-undef
-                const cluster = new ymaps.Clusterer({
-                    gridSize: 32,
-                    clusterDisableClickZoom: true,
-                    hasBalloon: true,
-                    clusterLayout: '<div style="color: tomato; font-family: Foros; font-weight: 600;">{{ properties.geoObjects.length }}</div>',
-                })
+                // const cluster = new ymaps.Clusterer({
+                //     gridSize: 32,
+                //     clusterDisableClickZoom: true,
+                //     hasBalloon: true,
+                //     clusterLayout: '<div style="color: tomato; font-family: Foros; font-weight: 600;">{{ properties.geoObjects.length }}</div>',
+                // })
                 let geoObjects = []
                 for(let p of this.dtps){
                     // eslint-disable-next-line no-undef
                     geoObjects.push(new ymaps.Placemark([Number(p.data.infoDtp.COORD_W),Number(p.data.infoDtp.COORD_L)], ))
                 }
-                cluster.add(geoObjects);
+                // cluster.add(geoObjects);
                 // eslint-disable-next-line no-undef
                 const objectManager = new ymaps.ObjectManager({
                     // Включаем кластеризацию.
@@ -67,7 +68,7 @@
                     // Опции кластеров задаются с префиксом 'cluster'.
                     clusterHasBalloon: false,
                     // Опции геообъектов задаются с префиксом 'geoObject'.
-                    geoObjectOpenBalloonOnClick: false
+                    geoObjectOpenBalloonOnClick: false,
                 });
                 let features = []
                 for(let i=0;i<this.dtps.length;i++){
@@ -81,12 +82,49 @@
                     }
                 }
                 objectManager.add(features)
+                objectManager.clusters.events.add('add', function (e) {
+
+                    var cluster = objectManager.clusters.getById(e.get('objectId')),
+
+                        objects = cluster.properties.geoObjects;
+
+                    if (objects.length < 10) {
+
+                        objectManager.clusters.setClusterOptions(cluster.id,{
+
+                            preset: 'islands#darkGreenClusterIcons'
+
+                        });
+
+                    }
+                    else if (objects.length < 20) {
+
+                        objectManager.clusters.setClusterOptions(cluster.id,{
+
+                            preset: 'islands#yellowClusterIcons'
+
+                        });
+
+                    }
+                    else if (objects.length < 30) {
+
+                        objectManager.clusters.setClusterOptions(cluster.id,{
+
+                            preset: 'islands#orangeClusterIcons'
+
+                        });
+                    }
+                    else {
+
+                        objectManager.clusters.setClusterOptions(cluster.id,{
+
+                            preset: 'islands#redClusterIcons'
+
+                        });
+                    }
+                });
                 this.map.geoObjects.add(objectManager);
-                // for(let p of this.dtps){
-                //     // eslint-disable-next-line no-undef
-                //     this.map.geoObjects.add(new ymaps.Placemark([Number(p.data.infoDtp.COORD_W),Number(p.data.infoDtp.COORD_L)], ))
-                // }
-                console.log(objectManager.clusters)
+
             }
         },
         async mounted() {
