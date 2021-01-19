@@ -1,9 +1,11 @@
 <template>
+<!--eslint-disable -->
+
     <div>
 
         <div v-if="showMap">
             <yandex-map  :coords="[55.84547, 37.45442]"
-                        @map-was-initialized="initHandler" style="width: 1550px; height: 825px;"
+                        @map-was-initialized="initHandler" style="width: 1400px; height: 625px;"
                          map-type="map"
             >
 
@@ -16,11 +18,24 @@
 
 <!--                </ymap-marker>-->
             </yandex-map>
+            <div>
+                <label for="type">Тип</label>
+                <select v-model="type" id="type">
+                    <option v-for="opt in ['Наезд на гужевой транспорт', 'Иной вид ДТП']">{{opt}}</option>
+                </select>
+                <label for="crime">Тип нарушения</label>
+                <select v-model="crime" id="crime">
+                    <option v-for="opt in ['Выезд на полосу встречного движения', 'Выезд на трамвайные пути']">{{opt}}</option>
+                </select>
+                <label for="street">Улица</label>
+                <input v-model="street" id="street" type="text">
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    /* eslint-disable */
     // @ is an alias to /src
     import { loadYmap } from 'vue-yandex-maps';
     export default {
@@ -31,14 +46,9 @@
                 showMap: false,
                 dtps: [],
                 map: null,
-                cluster: {
-                    1: {
-                        gridSize: 32,
-                        clusterDisableClickZoom: true,
-                        hasBalloon: true,
-                        clusterLayout: '<div style="color: tomato; font-family: Foros; font-weight: 600;">{{ properties.geoObjects.length }}</div>',
-                    }
-                }
+                type: '',
+                crime: '',
+                street: ''
             }
         },
         computed: {

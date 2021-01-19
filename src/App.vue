@@ -8,16 +8,16 @@
     export default {
         name: 'App',
         methods: {},
-        data(){
+        data() {
             return {dtp: []}
         },
         async mounted() {
-            if(localStorage.dtp){
-                if(localStorage.dtp.length>0){
+            if (localStorage.dtp) {
+                if (localStorage.dtp.length > 0) {
                     this.dtp = localStorage.dtp
                 }
             }
-            if (this.dtp.length==0) {
+            if (this.dtp.length === 0) {
                 const resp = await fetch('http://195.133.147.101:3000/get_dtps_month?year=2020&month=1')
                 this.dtp = await resp.json()
 
@@ -25,7 +25,9 @@
             }
             // console.log(this.dtp)
 
-            await this.$router.push('/map', ()=>{console.log('ready')})
+            await this.$router.push('/map', () => {
+                console.log('ready')
+            })
         }
     }
 </script>
