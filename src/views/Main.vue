@@ -1,5 +1,5 @@
 <template>
-<!--eslint-disable -->
+  <!--eslint-disable -->
 
     <div>
 
@@ -135,7 +135,49 @@
                 });
                 this.map.geoObjects.add(objectManager);
 
-            }
+            },
+            search: function (fltr) {
+                let res = [];
+                let len = Object.keys(fltr).length;
+
+                let rec = function (obj) {
+                    let ret = 0;
+                    for (let key in obj) {
+                        switch (typeof obj[key]) {
+                            case "number":
+                                if (Object.keys(fltr).includes(key)) {
+                                    if (obj[key] == fltr[key]) {
+                                        ret++;
+                                    }
+                                }
+                                break;
+
+                            case "string":
+                                if (Object.keys(fltr).includes(key)) {
+                                    if (obj[key].toLowerCase().includes(fltr[key].toLowerCase())) {
+                                        ret++;
+                                    }
+                                }
+                                break;
+
+                            case "object":
+                                if (!obj[key].isArray) {
+                                    ret += rec(obj[key]);
+                                }
+                                break;
+                        }
+                    }
+                    return ret;
+                };
+
+                for (let i in this.dtps) {
+                    if (rec(this.dtps[i]) == len) {
+                        res.push(data[i]["_id"]);
+                    }
+                }
+
+                return res;
+            },
         },
         async mounted() {
             if(localStorage.dtps){
