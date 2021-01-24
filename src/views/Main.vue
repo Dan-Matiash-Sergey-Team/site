@@ -49,8 +49,9 @@
         <div>
           <label for="street">Улица</label>
           <input v-model="street" id="street" type="text">
-          <button @click="printd()">print</button>
         </div>
+        <button @click="printd()">print</button>
+        <button @click="parse()">parse</button>
       </div>
     </div>
   </div>
@@ -95,6 +96,49 @@ export default {
   methods: {
     printd: function () {
       console.log(this.vis_dtps)
+    },
+    parse: async function () {
+      let resp, dtp
+      let res = {}
+      let rec = function (obj) {
+        for (let key in obj) {
+          switch (typeof obj[key]) {
+            case "object":
+              if (!Array.isArray(obj[key])) {
+                rec(obj[key]);
+              } else {
+                if (Object.keys(res).includes(key)) {
+                  for(let i in obj[key]) {
+                    if (res[key].includes(obj[key][i])) continue;
+                    else res[key].push(obj[key][i])
+                  }
+                } else {
+                  res[key] = []
+                  for(let i in obj[key]) {
+                    res[key].push(obj[key][i])
+                  }
+                }
+              }
+              break;
+            default:
+              if (Object.keys(res).includes(key)) {
+                if (res[key].includes(obj[key])) break;
+                else res[key].push(obj[key])
+              } else {
+                res[key] = []
+                res[key].push(obj[key])
+              }
+              break
+          }
+        }
+      };
+
+      for (let i = 0; i < 13; i++) {
+        resp = await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2019&month=${i}`)
+        dtp = await resp.json()
+        rec(dtp)
+      }
+      console.log(res)
     },
     initHandler: function (map) {
       this.map = map
