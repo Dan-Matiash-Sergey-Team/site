@@ -19,16 +19,38 @@
         <!--                </ymap-marker>-->
       </yandex-map>
       <div>
-        <label for="type">Тип</label>
-        <select v-model="DTP_V" id="type">
-          <option v-for="opt in ['Наезд на гужевой транспорт', 'Иной вид ДТП']">{{ opt }}</option>
-        </select>
-        <label for="crime">Тип нарушения</label>
-        <select v-model="NPDD" id="crime">
-          <option v-for="opt in ['Выезд на полосу встречного движения', 'Выезд на трамвайные пути']">{{ opt }}</option>
-        </select>
-        <label for="street">Улица</label>
-        <input v-model="street" id="street" type="text">
+        <div>
+          <label for="type">Тип</label>
+          <select v-model="DTP_V" id="type">
+            <option v-for="opt in ['Все', 'Наезд на гужевой транспорт', 'Иной вид ДТП']">{{ opt }}</option>
+          </select>
+        </div>
+        <div>
+          <label for="crime">Тип нарушения ПДД</label>
+          <select v-model="NPDD" id="crime">
+            <option v-for="opt in ['Все', 'Выезд на полосу встречного движения', 'Выезд на трамвайные пути']">{{
+                opt
+              }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Время суток</label>
+          <select v-model="osv" id="osv">
+            <option v-for="opt in ['Все', 'Светлое время суток', 'Темное время суток']">{{ opt }}</option>
+          </select>
+        </div>
+        <div>
+          <label>Место поблизости</label>
+          <select v-model="OBJ_DTP" id="OBJ_DTP">
+            <option v-for="opt in ['Все', 'Автостоянка']">{{ opt }}</option>
+          </select>
+        </div>
+        <div>
+          <label for="street">Улица</label>
+          <input v-model="street" id="street" type="text">
+          <button @click="printd()">print</button>
+        </div>
       </div>
     </div>
   </div>
@@ -49,7 +71,10 @@ export default {
       map: null,
       DTP_V: '', //тип дтп
       NPDD: '', // нарушение правил пдд
-      street: '' //улица
+      osv: '', //время суток
+      OBJ_DTP: '', //место поблизости
+      street: '', //улица,
+      date: [new Date('2020-01-01').getDate(), new Date('2020-01-02').getDate()] //дата
     }
   },
   computed: {
@@ -58,13 +83,19 @@ export default {
     },
     fltr: function () {
       let res = {};
-      if (this.DTP_V != '') res['DTP_V'] = this.DTP_V;
-      if (this.NPDD != '') res['NPDD'] = this.NPDD;
+      if (this.DTP_V != '' && this.DTP_V != 'Все') res['DTP_V'] = this.DTP_V;
+      if (this.NPDD != '' && this.NPDD != 'Все') res['NPDD'] = this.NPDD;
+      if (this.osv != '' && this.osv != 'Все') res['osv'] = this.osv;
+      if (this.OBJ_DTP != '' && this.OBJ_DTP != 'Все') res['OBJ_DTP'] = this.OBJ_DTP;
       if (this.street != '') res['street'] = this.street;
+      if (this.date != null) res['date'] = this.date;
       return res;
     }
   },
   methods: {
+    printd: function () {
+      console.log(this.vis_dtps)
+    },
     initHandler: function (map) {
       this.map = map
 
@@ -145,13 +176,18 @@ export default {
 
     },
     search: function (fltr) {
-      if (Object.keys(this.fltr).length == 0) return this.dtps;
+      if (Object.keys(fltr).length == 0) return this.dtps;
       let res = [];
       let len = Object.keys(fltr).length;
 
       let rec = function (obj) {
         let ret = 0;
         for (let key in obj) {
+          if (key == 'date') {
+            let tmp = obj[key].split('.')
+            if (fltr[key].includes(new Date(tmp[2] + '-' + tmp[1] + '-' + tmp[0]).getDate())) ret++
+            continue
+          }
           switch (typeof obj[key]) {
             case "number":
               if (Object.keys(fltr).includes(key)) {
@@ -170,8 +206,28 @@ export default {
               break;
 
             case "object":
-              if (!obj[key].isArray) {
+              if (!Array.isArray(obj[key])) {
                 ret += rec(obj[key]);
+              } else {
+                for (let i in obj[key]) {
+                  switch (typeof obj[key][i]) {
+                    case "number":
+                      if (Object.keys(fltr).includes(key)) {
+                        if (obj[key][i] == fltr[key]) {
+                          ret++;
+                        }
+                      }
+                      break;
+
+                    case "string":
+                      if (Object.keys(fltr).includes(key)) {
+                        if (obj[key][i].toLowerCase().includes(fltr[key].toLowerCase())) {
+                          ret++;
+                        }
+                      }
+                      break;
+                  }
+                }
               }
               break;
           }
