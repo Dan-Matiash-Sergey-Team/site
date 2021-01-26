@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store"
+import vSelect from 'vue-select'
 import YmapPlugin from "vue-yandex-maps"
 
 Vue.config.productionTip = false;
@@ -12,6 +13,7 @@ const settings = {
   version: '2.1'
 }
 Vue.use(YmapPlugin, settings)
+Vue.component('v-select', vSelect)
 
 new Vue({
   router,
