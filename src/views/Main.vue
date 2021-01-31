@@ -120,7 +120,7 @@
                 let geoObjects = []
                 for (let p of this.dtps) {
                     // eslint-disable-next-line no-undef
-                    geoObjects.push(new ymaps.Placemark([Number(p.data.infoDtp.COORD_W), Number(p.data.infoDtp.COORD_L)],))
+                    geoObjects.push(new ymaps.Placemark([Number(p.COORD_W), Number(p.COORD_L)],))
                 }
                 // cluster.add(geoObjects);
                 // eslint-disable-next-line no-undef
@@ -140,7 +140,7 @@
                         id: i,
                         geometry: {
                             type: 'Point',
-                            coordinates: [Number(this.dtps[i].data.infoDtp.COORD_W), Number(this.dtps[i].data.infoDtp.COORD_L)]
+                            coordinates: [Number(this.dtps[i].COORD_W), Number(this.dtps[i].COORD_L)]
                         }
                     }
                 }
@@ -198,7 +198,7 @@
                         id: i,
                         geometry: {
                             type: 'Point',
-                            coordinates: [Number(points[i].data.infoDtp.COORD_W), Number(points[i].data.infoDtp.COORD_L)]
+                            coordinates: [Number(points[i].COORD_W), Number(points[i].COORD_L)]
                         }
                     }
                 }
@@ -209,7 +209,7 @@
                 if (Object.keys(fltr).length == 0) return this.dtps;
                 return this.dtps.filter((el) => {
                     let npdd = false
-                    for (let b of el.data.infoDtp.ts_info) {
+                    for (let b of el.ts_info) {
                         for (let a of b.ts_uch) {
                             if (a.NPDD.includes(fltr['NPDD'])) {
                                 npdd = true
@@ -220,11 +220,11 @@
                     if (!fltr['NPDD']) {
                         npdd = true
                     }
-                    return fltr['date'][0] <= (new Date(el.data.date.split('.')[2] + '-' + el.data.date.split('.')[1] + '-' + el.data.date.split('.')[0]).getDate()) <= fltr['date'][1] &&
-                        (fltr['DTP_V'] ? el.data.DTP_V === fltr['DTP_V'] : true) &&
-                        (fltr['osv'] ? el.data.infoDtp.osv === fltr['osv'] : true) &&
-                        (fltr['street']?el.data.infoDtp.street.toLowerCase().includes(fltr['street']?.toLowerCase()):true) &&
-                        (fltr['OBJ_DTP']?el.data.infoDtp.OBJ_DTP.includes(fltr['OBJ_DTP']): true) &&
+                    return fltr['date'][0] <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0]).getDate()) <= fltr['date'][1] &&
+                        (fltr['DTP_V'] ? el.DTP_V === fltr['DTP_V'] : true) &&
+                        (fltr['osv'] ? el.osv === fltr['osv'] : true) &&
+                        (fltr['street']?el.street.toLowerCase().includes(fltr['street']?.toLowerCase()):true) &&
+                        (fltr['OBJ_DTP']?el.OBJ_DTP.includes(fltr['OBJ_DTP']): true) &&
                         npdd
                 })
                 // let res = [];
