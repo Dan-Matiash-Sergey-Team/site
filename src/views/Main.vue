@@ -209,13 +209,8 @@
                 if (Object.keys(fltr).length == 0) return this.dtps;
                 return this.dtps.filter((el) => {
                     let npdd = false
-                    for (let b of el.ts_info) {
-                        for (let a of b.ts_uch) {
-                            if (a.NPDD.includes(fltr['NPDD'])) {
-                                npdd = true
-                                break
-                            }
-                        }
+                    if (el.NPDD.includes(fltr['NPDD'])) {
+                        npdd = true
                     }
                     if (!fltr['NPDD']) {
                         npdd = true
@@ -296,6 +291,7 @@
             if (this.dtps.length === 0) {
                 await this.$router.push('/')
             }
+            console.log(this.dtps[0])
             this.showMap = true
 
 
