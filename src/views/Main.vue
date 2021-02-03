@@ -22,29 +22,29 @@
                     </yandex-map>
 
                 </div>
-                <div class="column has-background-grey-lighter">
-                    <div class="field">
-                        <div>
-                            <label class="label" for="type">Тип</label>
+                <div class="column has-background-white-ter">
+                    <div class="container" style="width: 300px">
+                        <div class="select is-multiple">
+                            <label class="label" for="type">Тип ДТП</label>
                             <select id="type" v-model="DTP_V">
                                 <option v-for="opt in options['DTP_V']">{{ opt }}</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="select is-multiple">
                             <label class="label" for="crime">Тип нарушения ПДД</label>
-                            <select id="crime" multiple v-model="NPDD">
+                            <select multiple id="crime" v-model="NPDD">
                                 <option v-for="opt in options['NPDD']">
                                     {{ opt }}
                                 </option>
                             </select>
                         </div>
-                        <div>
+                        <div class="select is-multiple">
                             <label class="label">Время суток</label>
                             <select id="osv" v-model="osv">
                                 <option v-for="opt in options['osv']">{{ opt }}</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="select">
                             <label class="label">Место поблизости</label>
                             <select id="OBJ_DTP" multiple v-model="OBJ_DTP">
                                 <option v-for="opt in options['OBJ_DTP']">{{ opt }}</option>
