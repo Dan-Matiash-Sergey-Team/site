@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store"
 import vSelect from 'vue-select'
 import YmapPlugin from "vue-yandex-maps"
+import "./assets/sass/main.scss";
 
 Vue.config.productionTip = false;
 const settings = {
@@ -12,6 +13,7 @@ const settings = {
   coordorder: 'latlong',
   version: '2.1'
 }
+
 Vue.use(YmapPlugin, settings)
 Vue.component('v-select', vSelect)
 
