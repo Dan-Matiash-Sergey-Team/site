@@ -20,7 +20,6 @@
                         style="width: 100%; height: 700px;"
             >
             </yandex-map>
-
           </div>
           <div class="column has-background-grey-lighter">
             <div class="field">
