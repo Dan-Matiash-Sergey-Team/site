@@ -17,7 +17,7 @@
                 </div>
                 <div>
                     <label for="crime">Тип нарушения ПДД</label>
-                    <select id="crime" v-model="NPDD">
+                    <select id="crime" multiple v-model="NPDD">
                         <option v-for="opt in options['NPDD']">
                             {{opt}}
                         </option>
@@ -31,7 +31,7 @@
                 </div>
                 <div>
                     <label>Место поблизости</label>
-                    <select id="OBJ_DTP" v-model="OBJ_DTP">
+                    <select id="OBJ_DTP" multiple v-model="OBJ_DTP">
                         <option v-for="opt in options['OBJ_DTP']">{{ opt }}</option>
                     </select>
                 </div>
@@ -66,9 +66,9 @@
                 map: null,
                 objectManager: null,
                 DTP_V: '', //тип дтп
-                NPDD: '', // нарушение правил пдд
+                NPDD: [], // нарушение правил пдд
                 osv: '', //время суток
-                OBJ_DTP: '', //место поблизости
+                OBJ_DTP: [], //место поблизости
                 street: '', //улица,
                 streetQuery: '',
                 date: [new Date('2019-01-01').getDate(), new Date().getDate()], //дата
@@ -209,17 +209,31 @@
                 if (Object.keys(fltr).length == 0) return this.dtps;
                 return this.dtps.filter((el) => {
                     let npdd = false
-                    if (el.NPDD.includes(fltr['NPDD'])) {
-                        npdd = true
-                    }
+                    let obj = false
                     if (!fltr['NPDD']) {
                         npdd = true
+                    } else {
+                        fltr['NPDD'].forEach((ell) => {
+                            if (el.NPDD.includes(ell)) {
+                                npdd = true
+                            }
+                        })
                     }
+                    if (!fltr['OBJ_DTP']) {
+                        obj = true
+                    } else {
+                        fltr['OBJ_DTP'].forEach((ell) => {
+                            if (el.OBJ_DTP.includes(ell)) {
+                                obj = true
+                            }
+                        })
+                    }
+
                     return fltr['date'][0] <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0]).getDate()) <= fltr['date'][1] &&
                         (fltr['DTP_V'] ? el.DTP_V === fltr['DTP_V'] : true) &&
                         (fltr['osv'] ? el.osv === fltr['osv'] : true) &&
-                        (fltr['street']?el.street.toLowerCase().includes(fltr['street']?.toLowerCase()):true) &&
-                        (fltr['OBJ_DTP']?el.OBJ_DTP.includes(fltr['OBJ_DTP']): true) &&
+                        (fltr['street'] ? el.street.toLowerCase().includes(fltr['street']?.toLowerCase()) : true) &&
+                        obj &&
                         npdd
                 })
                 // let res = [];
