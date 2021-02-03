@@ -4,16 +4,17 @@ import router from "./router";
 import store from "./store"
 import vSelect from 'vue-select'
 import YmapPlugin from "vue-yandex-maps"
-import "./assets/sass/main.scss";
+import './assets/sass/main.scss'
+
 
 Vue.config.productionTip = false;
 const settings = {
   apiKey: '8984067c-7841-4a8a-aa3e-8d6920ceea02',
   lang: 'ru_RU',
   coordorder: 'latlong',
-  version: '2.1'
+  version: '2.1',
+  mode: 'debug'
 }
-
 Vue.use(YmapPlugin, settings)
 Vue.component('v-select', vSelect)
 
