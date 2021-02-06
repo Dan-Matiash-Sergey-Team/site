@@ -22,8 +22,8 @@
                     </yandex-map>
 
                 </div>
-                <div class="column has-background-white-ter">
-                    <div class="container" style="width: 300px">
+                <div class="column has-background-white-ter is-one-fifth">
+                    <div class="container">
                         <div class="select is-multiple">
                             <label class="label" for="type">Тип ДТП</label>
                             <select id="type" v-model="DTP_V">
@@ -32,7 +32,7 @@
                         </div>
                         <div class="select is-multiple">
                             <label class="label" for="crime">Тип нарушения ПДД</label>
-                            <select multiple id="crime" v-model="NPDD">
+                            <select id="crime" multiple v-model="NPDD">
                                 <option v-for="opt in options['NPDD']">
                                     {{ opt }}
                                 </option>
@@ -50,14 +50,21 @@
                                 <option v-for="opt in options['OBJ_DTP']">{{ opt }}</option>
                             </select>
                         </div>
-                        <div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="container">
                             <label class="label">Улица</label>
-                            <select
+                            <v-select
                                     :filterable="false"
                                     :options="filtered"
                                     @input="selectOption"
                                     @search="query=> streetQuery = query"
-                            ></select>
+                            ></v-select>
                         </div>
                         <!--              <button @click="printd()">print</button>-->
                     </div>

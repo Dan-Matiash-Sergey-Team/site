@@ -16,7 +16,7 @@ const settings = {
   mode: 'debug'
 }
 Vue.use(YmapPlugin, settings)
-Vue.component('v-select', vSelect)
+Vue.component("v-select", vSelect);
 
 new Vue({
   router,
