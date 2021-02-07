@@ -15,7 +15,7 @@
             </nav>
             <div class="columns is-gapless">
                 <div class="column is-four-fifths has-background-white" v-if="showMap">
-                    <yandex-map :coords="[55.7522, 37.6156]"
+                    <yandex-map :coords="map ? map.coords : [55.7522, 37.6156]"
                                 @map-was-initialized="initHandler" map-type="map"
                                 style="width: 100%; height: 700px;"
                     >
