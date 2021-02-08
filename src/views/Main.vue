@@ -114,7 +114,7 @@
                 if (this.NPDD != '' && this.NPDD != 'Все') res['NPDD'] = this.NPDD;
                 if (this.osv != '' && this.osv != 'Все') res['osv'] = this.osv;
                 if (this.OBJ_DTP != '' && this.OBJ_DTP != 'Все') res['OBJ_DTP'] = this.OBJ_DTP;
-                if (this.street != '') res['street'] = this.street;
+                if (this.street != '' && this.street != 'Все') res['street'] = this.street;
                 if (this.date != null) res['date'] = this.date;
                 return res;
             },
