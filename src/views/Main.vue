@@ -234,6 +234,11 @@
             },
 
             search: function (fltr) {
+function isSubArray(main, sub) {
+    return sub.every((eachEle) => {
+        return main.includes(eachEle);
+    });
+}
                 if (Object.keys(fltr).length == 0) return this.dtps;
                 return this.dtps.filter((el) => {
                     let npdd = false
@@ -241,20 +246,12 @@
                     if (!fltr['NPDD']) {
                         npdd = true
                     } else {
-                        fltr['NPDD'].forEach((ell) => {
-                            if (el.NPDD.includes(ell)) {
-                                npdd = true
-                            }
-                        })
+                        npdd = isSubArray(el['NPDD'], fltr['NPDD'])
                     }
                     if (!fltr['OBJ_DTP']) {
                         obj = true
                     } else {
-                        fltr['OBJ_DTP'].forEach((ell) => {
-                            if (el.OBJ_DTP.includes(ell)) {
-                                obj = true
-                            }
-                        })
+						obj = isSubArray(el['OBJ_DTP'], fltr['OBJ_DTP'])
                     }
 
                     return fltr['date'][0] <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0]).getDate()) <= fltr['date'][1] &&
