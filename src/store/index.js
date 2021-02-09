@@ -13,6 +13,9 @@ export default new Vuex.Store({
         },
         setDtp: function (state, payload) {
             state.dtps = payload
+        },
+        concatDtps: function (state, payload) {
+            state.dtps.push.apply(state.dtps, payload)
         }
     },
     getters:{

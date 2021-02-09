@@ -15,9 +15,10 @@
             </nav>
             <div class="columns is-gapless">
                 <div class="column is-four-fifths has-background-white" v-if="showMap">
-                    <yandex-map :coords="map ? map.coords : [55.7522, 37.6156]"
-                                @map-was-initialized="initHandler" map-type="map"
-                                style="width: 100%; height: 700px;"
+                    <yandex-map :coords="map ? map.getCenter() : [55.7522, 37.6156]"
+                                @map-was-initialized="initHandler"
+                                map-type="map" style="width: 100%; height: 700px;"
+                                zoom="16"
                     >
                     </yandex-map>
 
@@ -50,6 +51,7 @@
                                 <option v-for="opt in options['OBJ_DTP']">{{ opt }}</option>
                             </select>
                         </div>
+                        <!--                        TODO br goes brrrrrr-->
                         <br>
                         <br>
                         <br>
@@ -161,18 +163,6 @@
 // Опции геообъектов задаются с префиксом 'geoObject'.
                     geoObjectOpenBalloonOnClick: false,
                 });
-                let features = []
-                for (let i = 0; i < this.dtps.length; i++) {
-                    features[i] = {
-                        type: 'Feature',
-                        id: i,
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [Number(this.dtps[i].COORD_W), Number(this.dtps[i].COORD_L)]
-                        }
-                    }
-                }
-                objectManager.add(features)
                 objectManager.clusters.events.add('add', function (e) {
 
                     var cluster = objectManager.clusters.getById(e.get('objectId')),
@@ -234,11 +224,12 @@
             },
 
             search: function (fltr) {
-function isSubArray(main, sub) {
-    return sub.every((eachEle) => {
-        return main.includes(eachEle);
-    });
-}
+                function isSubArray(main, sub) {
+                    return sub.every((eachEle) => {
+                        return main.includes(eachEle);
+                    });
+                }
+
                 if (Object.keys(fltr).length == 0) return this.dtps;
                 return this.dtps.filter((el) => {
                     let npdd = false
@@ -251,7 +242,7 @@ function isSubArray(main, sub) {
                     if (!fltr['OBJ_DTP']) {
                         obj = true
                     } else {
-						obj = isSubArray(el['OBJ_DTP'], fltr['OBJ_DTP'])
+                        obj = isSubArray(el['OBJ_DTP'], fltr['OBJ_DTP'])
                     }
 
                     return fltr['date'][0] <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0]).getDate()) <= fltr['date'][1] &&

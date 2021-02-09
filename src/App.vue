@@ -1,5 +1,7 @@
 <template>
     <div>
+        <img src="../src/assets/gifs/loading.gif" v-if="loading"/>
+        <p v-if="loading">{{$store.getters.dtps.length/53978}}%</p>
         <router-view/>
     </div>
 </template>
@@ -9,7 +11,10 @@
         name: 'App',
         methods: {},
         data() {
-            return {dtp: []}
+            return {
+                dtp: [],
+                loading: false,
+            }
         },
         async mounted() {
             if (localStorage.dtp) {
@@ -18,13 +23,16 @@
                 }
             }
             if (this.dtp.length === 0) {
-                const resp = await fetch('http://195.133.147.101:3000/get_dtps_month?year=2020&month=1')
-                this.dtp = await resp.json()
+                this.loading = true
+                for(let i =1;i<6;i++) {
+                    const resp = await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2020&month=${i}`)
+                    this.dtp = await resp.json()
 
-                this.$store.commit('setDtp', this.dtp)
+                    this.$store.commit('concatDtps', this.dtp)
+                }
             }
             // console.log(this.dtp)
-
+            this.loading = false
             await this.$router.push('/map', () => {
                 console.log('ready')
             })
