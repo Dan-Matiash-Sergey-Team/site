@@ -5,6 +5,9 @@ import store from "./store"
 import vSelect from 'vue-select'
 import YmapPlugin from "vue-yandex-maps"
 import './assets/sass/main.scss'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import elementLocale from 'element-ui/lib/locale/lang/ru-RU'
 
 
 Vue.config.productionTip = false;
@@ -17,6 +20,8 @@ const settings = {
 }
 Vue.use(YmapPlugin, settings)
 Vue.component("v-select", vSelect);
+Vue.use(ElementUI, { locale: elementLocale })
+
 
 new Vue({
   router,

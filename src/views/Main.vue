@@ -68,6 +68,11 @@
                                     @search="query=> streetQuery = query"
                             ></v-select>
                         </div>
+                        <div class="container">
+                            <DatePicker v-model="date"
+                                        ></DatePicker>
+                            <p>{{date}}</p>
+                        </div>
                         <!--              <button @click="printd()">print</button>-->
                     </div>
                 </div>
@@ -85,10 +90,11 @@
     import {loadYmap} from 'vue-yandex-maps';
     import "vue-select/dist/vue-select.css";
     import Data from "../assets/ahegao"
+    import DatePicker from "../components/DatePicker";
 
     export default {
         name: 'Main',
-        components: {},
+        components: {DatePicker},
         data() {
             return {
                 showMap: false,
@@ -101,7 +107,7 @@
                 OBJ_DTP: [], //место поблизости
                 street: '', //улица,
                 streetQuery: '',
-                date: [new Date('2019-01-01').getDate(), new Date().getDate()], //дата
+                date: [new Date('2019-01-01'), new Date()], //дата
                 options: Data
             }
         },
@@ -245,7 +251,7 @@
                         obj = isSubArray(el['OBJ_DTP'], fltr['OBJ_DTP'])
                     }
 
-                    return fltr['date'][0] <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0]).getDate()) <= fltr['date'][1] &&
+                    return new Date(fltr['date'][0]) <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) && (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0]))<= new Date(fltr['date'][1]) &&
                         (fltr['DTP_V'] ? el.DTP_V === fltr['DTP_V'] : true) &&
                         (fltr['osv'] ? el.osv === fltr['osv'] : true) &&
                         (fltr['street'] ? el.street.toLowerCase().includes(fltr['street']?.toLowerCase()) : true) &&
