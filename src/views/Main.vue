@@ -107,7 +107,7 @@
                 OBJ_DTP: [], //место поблизости
                 street: '', //улица,
                 streetQuery: '',
-                date: [new Date('2019-01-01'), new Date()], //дата
+                date: [new Date('2019-01-01'),new Date('2019-02-01'), ], //дата
                 options: Data
             }
         },
@@ -175,7 +175,7 @@
 
                         objects = cluster.properties.geoObjects;
 
-                    if (objects.length < 10) {
+                    if (objects.length < 20) {
 
                         objectManager.clusters.setClusterOptions(cluster.id, {
 
@@ -183,7 +183,7 @@
 
                         });
 
-                    } else if (objects.length < 20) {
+                    } else if (objects.length < 50) {
 
                         objectManager.clusters.setClusterOptions(cluster.id, {
 
@@ -191,7 +191,7 @@
 
                         });
 
-                    } else if (objects.length < 30) {
+                    } else if (objects.length < 100) {
 
                         objectManager.clusters.setClusterOptions(cluster.id, {
 
@@ -217,6 +217,9 @@
             addPlacemarks: async function (points) {
                 let features = []
                 for (let i = 0; i < points.length; i++) {
+                    if (!points[i].COORD_W.includes('55')&&!points[i].COORD_W.includes('56')){
+                        console.log(points[i])
+                    }
                     features[i] = {
                         type: 'Feature',
                         id: i,
@@ -324,9 +327,9 @@
             } else {
                 this.dtps = this.$store.getters.dtps
             }
-            if (this.dtps.length === 0) {
-                await this.$router.push('/')
-            }
+            // if (this.dtps.length === 0) {
+            //     await this.$router.push('/')
+            // }
             console.log(this.dtps[0])
             this.showMap = true
 
