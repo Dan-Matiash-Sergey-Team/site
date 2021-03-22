@@ -19,6 +19,10 @@
                                 @map-was-initialized="initHandler"
                                 map-type="map" style="width: 100%; height: 700px;"
                                 zoom="16"
+                                :ballonopen="function(a) {
+                                    console.log(a)
+
+                                }"
                     >
                     </yandex-map>
 
@@ -156,7 +160,12 @@
                 let geoObjects = []
                 for (let p of this.dtps) {
 // eslint-disable-next-line no-undef
-                    geoObjects.push(new ymaps.Placemark([Number(p.COORD_W), Number(p.COORD_L)],))
+                    var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
+                        '<div style="margin: 10px;">' +
+                            'ЖОПА'+
+                        '</div>')
+                    geoObjects.push(new ymaps.Placemark([Number(p.COORD_W), Number(p.COORD_L)],            {balloonContentLayout: BalloonContentLayout},
+                ))
                 }
 // cluster.add(geoObjects);
 // eslint-disable-next-line no-undef
@@ -164,10 +173,14 @@
 // Включаем кластеризацию.
                     clusterize: true,
                     gridSize: 64,
-// Опции кластеров задаются с префиксом 'cluster'.
+                    clusterDisableClickZoom: true,
                     clusterHasBalloon: false,
-// Опции геообъектов задаются с префиксом 'geoObject'.
-                    geoObjectOpenBalloonOnClick: false,
+                    geoObjectsHasBalloon: true,
+                    geoObjectsDisableClickZoom: true,
+                    placemarksDisableClickZoom: true,
+                    geoObjectOpenBalloonOnClick: true,
+                    placemarkOpenBalloonOnClick: true
+
                 });
                 objectManager.clusters.events.add('add', function (e) {
 
@@ -226,7 +239,11 @@
                         geometry: {
                             type: 'Point',
                             coordinates: [Number(points[i].COORD_W), Number(points[i].COORD_L)]
+                        },
+                        properties: {
+                            balloonContent: points[i].id
                         }
+
                     }
                 }
                 this.objectManager.add(features)

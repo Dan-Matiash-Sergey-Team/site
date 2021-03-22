@@ -2,7 +2,7 @@
     <div>
         <img src="../src/assets/gifs/loading.gif" v-if="loading"/>
         <p>я эпп</p>
-        <p v-if="loading">{{$store.getters.dtps.length/53978}}%</p>
+        <p v-if="loading">{{$store.getters.dtps.length/53978*100}}%</p>
         <router-view/>
     </div>
 </template>
