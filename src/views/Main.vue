@@ -19,10 +19,7 @@
                                 @map-was-initialized="initHandler"
                                 map-type="map" style="width: 100%; height: 700px;"
                                 zoom="16"
-                                :ballonopen="function(a) {
-                                    console.log(a)
-
-                                }"
+                                @ballonopen="openedBalloon"
                     >
                     </yandex-map>
 
@@ -138,10 +135,9 @@
             },
         },
         methods: {
-            printd: function () {
-                console.log(this.street)
-                console.log(this.dtps)
-                console.log(this.vis_dtps)
+            openedBalloon: function(event){
+              console.log("aaaaaaa")
+              console.log(event)
             },
             selectOption: function (val) {
                 this.street = val
@@ -150,16 +146,16 @@
             initHandler: function (map) {
                 this.map = map
 
-// eslint-disable-next-line no-undef
-// const cluster = new ymaps.Clusterer({
-// gridSize: 32,
-// clusterDisableClickZoom: true,
-// hasBalloon: true,
-// clusterLayout: '<div style="color: tomato; font-family: Foros; font-weight: 600;">{{ properties.geoObjects.length }}</div>',
-// })
+                // eslint-disable-next-line no-undef
+                // const cluster = new ymaps.Clusterer({
+                // gridSize: 32,
+                // clusterDisableClickZoom: true,
+                // hasBalloon: true,
+                // clusterLayout: '<div style="color: tomato; font-family: Foros; font-weight: 600;">{{ properties.geoObjects.length }}</div>',
+                // })
                 let geoObjects = []
                 for (let p of this.dtps) {
-// eslint-disable-next-line no-undef
+                    // eslint-disable-next-line no-undef
                     var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
                         '<div style="margin: 10px;">' +
                             'ЖОПА'+
@@ -167,10 +163,10 @@
                     geoObjects.push(new ymaps.Placemark([Number(p.COORD_W), Number(p.COORD_L)],            {balloonContentLayout: BalloonContentLayout},
                 ))
                 }
-// cluster.add(geoObjects);
-// eslint-disable-next-line no-undef
+                // cluster.add(geoObjects);
+                // eslint-disable-next-line no-undef
                 const objectManager = new ymaps.ObjectManager({
-// Включаем кластеризацию.
+                    // Включаем кластеризацию.
                     clusterize: true,
                     gridSize: 64,
                     clusterDisableClickZoom: true,
@@ -241,7 +237,7 @@
                             coordinates: [Number(points[i].COORD_W), Number(points[i].COORD_L)]
                         },
                         properties: {
-                            balloonContent: points[i].id
+                            balloonContent: `<a href="#/dtp_info/${points[i].id}" target="_blank">${points[i].id}</a>`
                         }
 
                     }
@@ -278,55 +274,6 @@
                         obj &&
                         npdd
                 })
-// let res = [];
-// let len = Object.keys(fltr).length;
-//
-// let rec = function (obj) {
-// let ret = 0;
-// for (let key in obj) {
-// if (key == 'date') {
-// let tmp = obj[key].split('.')
-// if (fltr[key][0] <= (new Date(tmp[2] + '-' + tmp[1] + '-' + tmp[0]).getDate()) <= fltr[key][1]) ret++
-// continue
-// }
-// switch (typeof obj[key]) {
-// case "number":
-// if (Object.keys(fltr).includes(key)) {
-// if (obj[key] == fltr[key]) {
-// ret++;
-// }
-// }
-// break;
-//
-// case "string":
-// if (Object.keys(fltr).includes(key)) {
-// if (obj[key] !== null && fltr[key] !== null) {
-// if (obj[key].toLowerCase().includes(fltr[key].toLowerCase())) {
-// ret++;
-// }
-// }
-// }
-// break;
-//
-// case "object":
-// if (!Array.isArray(obj[key])) {
-// ret += rec(obj[key]);
-// } else {
-//
-// }
-// break;
-// }
-// }
-// return ret;
-// };
-
-// for (let i in this.dtps) {
-// if (rec(this.dtps[i]) == len) {
-// res.push(this.dtps[i]);
-// }
-// }
-//
-// return res;
             },
         },
         watch: {

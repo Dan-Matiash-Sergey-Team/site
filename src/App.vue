@@ -1,13 +1,14 @@
 <template>
     <div>
         <img src="../src/assets/gifs/loading.gif" v-if="loading"/>
-        <p>я эпп</p>
+        <p @click="console.log('a')">я эпп</p>
         <p v-if="loading">{{$store.getters.dtps.length/53978*100}}%</p>
         <router-view/>
     </div>
 </template>
 
 <script>
+
     export default {
         name: 'App',
         methods: {},
@@ -40,9 +41,9 @@
             }
             // console.log(this.dtp)
             this.loading = false
-            await this.$router.push('/map', () => {
-                console.log('ready')
-            })
+            // await this.$router.push('/map', () => {
+            //     console.log('ready')
+            // })
         }
     }
 </script>
