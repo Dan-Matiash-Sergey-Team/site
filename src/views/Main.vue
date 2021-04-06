@@ -109,12 +109,16 @@
                 street: '', //улица,
                 streetQuery: '',
                 date: [new Date('2019-01-01'), new Date('2019-02-01'),], //дата
-                options: Data
+                options: Data,
+                helpvar: false
             }
         },
         computed: {
             vis_dtps: function () {
                 if (this.street == null) this.street = ""
+                if(this.helpvar){
+                    console.log(1)
+                }
                 return this.search(this.fltr)
             },
             fltr: function () {
@@ -153,19 +157,19 @@
                 // hasBalloon: true,
                 // clusterLayout: '<div style="color: tomato; font-family: Foros; font-weight: 600;">{{ properties.geoObjects.length }}</div>',
                 // })
-                let geoObjects = []
-                for (let p of this.dtps) {
-                    // eslint-disable-next-line no-undef
-
-                    geoObjects.push(new ymaps.GeoObject(
-                        {geometry: {type: "Point", coordinates: [Number(p.COORD_W), Number(p.COORD_L)]},
-
-                        properties: {
-                            clusterCaption: "ЖОПА"
-                        }
-                },
-                ))
-                }
+                // let geoObjects = []
+                // for (let p of this.dtps) {
+                //     // eslint-disable-next-line no-undef
+                //
+                //     geoObjects.push(new ymaps.GeoObject(
+                //         {geometry: {type: "Point", coordinates: [Number(p.COORD_W), Number(p.COORD_L)]},
+                //
+                //         properties: {
+                //             clusterCaption: "ЖОПА"
+                //         }
+                // },
+                // ))
+                // }
                 // cluster.add(geoObjects);
                 // eslint-disable-next-line no-undef
                 const objectManager = new ymaps.ObjectManager({
@@ -177,7 +181,7 @@
                     geoObjectsHasBalloon: true,
                     geoObjectsDisableClickZoom: true,
                     placemarksDisableClickZoom: true,
-                    geoObjectOpenBalloonOnClick: false,
+                    geoObjectOpenBalloonOnClick: true,
                     placemarkOpenBalloonOnClick: true
 
                 });
@@ -221,6 +225,7 @@
                 });
                 this.objectManager = objectManager
                 this.map.geoObjects.add(objectManager);
+                this.helpvar = true
 
             },
             removeAllPlacemarks: async function () {
@@ -229,9 +234,6 @@
             addPlacemarks: async function (points) {
                 let features = []
                 for (let i = 0; i < points.length; i++) {
-                    if (!points[i].COORD_W.includes('55') && !points[i].COORD_W.includes('56')) {
-                        console.log(points[i])
-                    }
                     features[i] = {
                         type: 'Feature',
                         id: i,
