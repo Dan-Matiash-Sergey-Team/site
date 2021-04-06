@@ -1,9 +1,13 @@
 <template>
     <div>
-        <img src="../src/assets/gifs/loading.gif" v-if="loading"/>
-        <p @click="console.log('a')">я эпп</p>
-        <p v-if="loading">{{$store.getters.dtps.length/53978*100}}%</p>
-        <router-view/>
+        <div v-if="loading">
+            <img src="../src/assets/gifs/loading.gif"/>
+            <p @click="console.log('a')">я эпп</p>
+            <p v-if="loading">{{$store.getters.dtps.length/53978*100}}%</p>
+        </div>
+        <div v-else>
+            <router-view/>
+        </div>
     </div>
 </template>
 
@@ -19,31 +23,38 @@
             }
         },
         async mounted() {
-            if (localStorage.dtp) {
-                if (localStorage.dtp.length > 0) {
-                    this.dtp = localStorage.dtp
+            console.log(this.$router.currentRoute)
+            if (this.$router.currentRoute.name!="dtpInfo") {
+                if (localStorage.dtp) {
+                    if (localStorage.dtp.length > 0) {
+                        this.dtp = localStorage.dtp
+                    }
                 }
-            }
-            if (this.dtp.length === 0) {
-                this.loading = true
-                for(let i =1;i<12;i++) {
-                    const resp = await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2019&month=${i}`)
+                if (this.dtp.length === 0) {
+                    this.loading = true
+                    // for (let i = 1; i < 12; i++) {
+                    //     const resp = await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2019&month=${i}`)
+                    //     this.dtp = await resp.json()
+                    //
+                    //     this.$store.commit('concatDtps', this.dtp)
+                    // }
+                    // for (let i = 1; i < 12; i++) {
+                    //     const resp = await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2018&month=${i}`)
+                    //     this.dtp = await resp.json()
+                    //
+                    //     this.$store.commit('concatDtps', this.dtp)
+                    // }
+                    const resp = await fetch("http://195.133.147.101:3000/get_dtps_all")
                     this.dtp = await resp.json()
-
-                    this.$store.commit('concatDtps', this.dtp)
+                    this.$store.commit("setDtp", this.dtp)
                 }
-                for(let i =1;i<12;i++) {
-                    const resp = await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2018&month=${i}`)
-                    this.dtp = await resp.json()
-
-                    this.$store.commit('concatDtps', this.dtp)
-                }
+                this.$store.commit("loaded")
+                this.loading = false
+                await this.$router.push('/map', () => {
+                    console.log('ready')
+                })
             }
-            // console.log(this.dtp)
-            this.loading = false
-            // await this.$router.push('/map', () => {
-            //     console.log('ready')
-            // })
+
         }
     }
 </script>

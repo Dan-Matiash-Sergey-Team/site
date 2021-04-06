@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        dtps: []
+        dtps: [],
+        loaded: false,
     },
     mutations:{
         newDtp: function (state,payload) {
@@ -16,9 +17,13 @@ export default new Vuex.Store({
         },
         concatDtps: function (state, payload) {
             state.dtps.push.apply(state.dtps, payload)
+        },
+        loaded: function (state) {
+            state.loaded = true
         }
     },
     getters:{
-        dtps: state => state.dtps
+        dtps: state => state.dtps,
+        loaded: state => state.loaded
     }
 });
