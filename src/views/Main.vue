@@ -16,10 +16,10 @@
             <div class="columns is-gapless">
                 <div class="column is-four-fifths has-background-white" v-if="showMap">
                     <yandex-map :coords="map ? map.getCenter() : [55.7522, 37.6156]"
-                                @map-was-initialized="initHandler"
-                                map-type="map" style="width: 100%; height: 700px;"
-                                zoom="16"
                                 @ballonopen="openedBalloon"
+                                @map-was-initialized="initHandler" map-type="map"
+                                style="width: 100%; height: 700px;"
+                                zoom="16"
                     >
                     </yandex-map>
 
@@ -71,7 +71,7 @@
                         </div>
                         <div class="container">
                             <DatePicker v-model="date"
-                                        ></DatePicker>
+                            ></DatePicker>
                             <p>{{date}}</p>
                         </div>
                         <!--              <button @click="printd()">print</button>-->
@@ -108,7 +108,7 @@
                 OBJ_DTP: [], //место поблизости
                 street: '', //улица,
                 streetQuery: '',
-                date: [new Date('2019-01-01'),new Date('2019-02-01'), ], //дата
+                date: [new Date('2019-01-01'), new Date('2019-02-01'),], //дата
                 options: Data
             }
         },
@@ -135,9 +135,9 @@
             },
         },
         methods: {
-            openedBalloon: function(event){
-              console.log("aaaaaaa")
-              console.log(event)
+            openedBalloon: function (event) {
+                console.log("aaaaaaa")
+                console.log(event)
             },
             selectOption: function (val) {
                 this.street = val
@@ -156,11 +156,14 @@
                 let geoObjects = []
                 for (let p of this.dtps) {
                     // eslint-disable-next-line no-undef
-                    var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
-                        '<div style="margin: 10px;">' +
-                            'ЖОПА'+
-                        '</div>')
-                    geoObjects.push(new ymaps.Placemark([Number(p.COORD_W), Number(p.COORD_L)],            {balloonContentLayout: BalloonContentLayout},
+
+                    geoObjects.push(new ymaps.GeoObject(
+                        {geometry: {type: "Point", coordinates: [Number(p.COORD_W), Number(p.COORD_L)]},
+
+                        properties: {
+                            clusterCaption: "ЖОПА"
+                        }
+                },
                 ))
                 }
                 // cluster.add(geoObjects);
@@ -170,11 +173,11 @@
                     clusterize: true,
                     gridSize: 64,
                     clusterDisableClickZoom: true,
-                    clusterHasBalloon: false,
+                    clusterHasBalloon: true,
                     geoObjectsHasBalloon: true,
                     geoObjectsDisableClickZoom: true,
                     placemarksDisableClickZoom: true,
-                    geoObjectOpenBalloonOnClick: true,
+                    geoObjectOpenBalloonOnClick: false,
                     placemarkOpenBalloonOnClick: true
 
                 });
@@ -226,7 +229,7 @@
             addPlacemarks: async function (points) {
                 let features = []
                 for (let i = 0; i < points.length; i++) {
-                    if (!points[i].COORD_W.includes('55')&&!points[i].COORD_W.includes('56')){
+                    if (!points[i].COORD_W.includes('55') && !points[i].COORD_W.includes('56')) {
                         console.log(points[i])
                     }
                     features[i] = {
@@ -237,6 +240,7 @@
                             coordinates: [Number(points[i].COORD_W), Number(points[i].COORD_L)]
                         },
                         properties: {
+                            clusterCaption: points[i].id,
                             balloonContent: `<a href="#/dtp_info/${points[i].id}" target="_blank">${points[i].id}</a>`
                         }
 
@@ -267,7 +271,7 @@
                         obj = isSubArray(el['OBJ_DTP'], fltr['OBJ_DTP'])
                     }
 
-                    return new Date(fltr['date'][0]) <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) && (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0]))<= new Date(fltr['date'][1]) &&
+                    return new Date(fltr['date'][0]) <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) && (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) <= new Date(fltr['date'][1]) &&
                         (fltr['DTP_V'] ? el.DTP_V === fltr['DTP_V'] : true) &&
                         (fltr['osv'] ? el.osv === fltr['osv'] : true) &&
                         (fltr['street'] ? el.street.toLowerCase().includes(fltr['street']?.toLowerCase()) : true) &&
