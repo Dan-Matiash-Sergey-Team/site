@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <div v-if="loading">
+        <img src="../../src/assets/gifs/loading.gif"/>
+    </div>
+    <div v-else>
       <div>KartId : {{this.dtpData.data['KartId']}}</div>
       <div>rowNum : {{this.dtpData.data['rowNum']}}</div>
       <div>date : {{this.dtpData.data['date']}}</div>
@@ -90,13 +93,15 @@
         props: ['id'],
         data() {
             return {
-                dtpData: {}
+                dtpData: {},
+                loading: true
             }
         },
         async mounted() {
             const resp = await (await fetch(`http://195.133.147.101:3000/get_dtp?id=${this.id}`)).json()
             console.log(resp)
             this.dtpData = resp[0]
+            this.loading = false
         },
         methods : {
         }

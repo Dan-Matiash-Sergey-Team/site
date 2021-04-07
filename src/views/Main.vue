@@ -242,8 +242,9 @@
                             coordinates: [Number(points[i].COORD_W), Number(points[i].COORD_L)]
                         },
                         properties: {
-                            clusterCaption: points[i].id,
-                            balloonContent: `<a href="#/dtp_info/${points[i].id}" target="_blank">${points[i].id}</a>`
+                            clusterCaption: "ДТП №"+points[i].id,
+                            balloonContent: `<p>${points[i].date}</p>  <p>${points[i].street}</p>`+
+                                `<button ><a href="#/dtp_info/${points[i].id}" class target="_blank">Подробнее</a></button>`
                         }
 
                     }
