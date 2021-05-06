@@ -1,6 +1,7 @@
 <template>
     <!--eslint-disable -->
     <div>
+        <button @click="test">Тест</button>
         <section class="hero is-white">
             <nav class="level has-background-white mb-0" style="height: 50px">
                 <p class="level-item has-icons-left">
@@ -70,9 +71,18 @@
                             ></v-select>
                         </div>
                         <div class="container">
+                            <div class="select">
+                                <select id="district" v-model="district">
+                                    <option v-for="opt in options['district']">
+                                        {{opt}}
+                                    </option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="container">
                             <DatePicker v-model="date"
                             ></DatePicker>
-                            <p>{{date}}</p>
                         </div>
                         <!--              <button @click="printd()">print</button>-->
                     </div>
@@ -107,18 +117,18 @@
                 osv: '', //время суток
                 OBJ_DTP: [], //место поблизости
                 street: '', //улица,
+                district: '',
                 streetQuery: '',
                 date: [new Date('2019-01-01'), new Date('2019-02-01'),], //дата
                 options: Data,
-                helpvar: false
+                helpvar: false,
+                showingPolygon: null,
             }
         },
         computed: {
             vis_dtps: function () {
                 if (this.street == null) this.street = ""
-                if(this.helpvar){
-                    console.log(1)
-                }
+
                 return this.search(this.fltr)
             },
             fltr: function () {
@@ -128,6 +138,7 @@
                 if (this.osv != '' && this.osv != 'Все') res['osv'] = this.osv;
                 if (this.OBJ_DTP != '' && this.OBJ_DTP != 'Все') res['OBJ_DTP'] = this.OBJ_DTP;
                 if (this.street != '' && this.street != 'Все') res['street'] = this.street;
+                if (this.district != '' && this.district != 'Все') res['district'] = this.district;
                 if (this.date != null) res['date'] = this.date;
                 return res;
             },
@@ -143,35 +154,20 @@
                 console.log("aaaaaaa")
                 console.log(event)
             },
+            test: function () {
+                console.log(this.options.district_coords)
+                for(let a of this.options.district_coords) {
+                    console.log(a)
+                    let myPolygon = new ymaps.Polygon(a)
+                    this.map.geoObjects.add(myPolygon)
+                }
+            },
             selectOption: function (val) {
                 this.street = val
                 this.streetQuery = val
             },
-            initHandler: function (map) {
+            initHandler: async function (map) {
                 this.map = map
-
-                // eslint-disable-next-line no-undef
-                // const cluster = new ymaps.Clusterer({
-                // gridSize: 32,
-                // clusterDisableClickZoom: true,
-                // hasBalloon: true,
-                // clusterLayout: '<div style="color: tomato; font-family: Foros; font-weight: 600;">{{ properties.geoObjects.length }}</div>',
-                // })
-                // let geoObjects = []
-                // for (let p of this.dtps) {
-                //     // eslint-disable-next-line no-undef
-                //
-                //     geoObjects.push(new ymaps.GeoObject(
-                //         {geometry: {type: "Point", coordinates: [Number(p.COORD_W), Number(p.COORD_L)]},
-                //
-                //         properties: {
-                //             clusterCaption: "ЖОПА"
-                //         }
-                // },
-                // ))
-                // }
-                // cluster.add(geoObjects);
-                // eslint-disable-next-line no-undef
                 const objectManager = new ymaps.ObjectManager({
                     // Включаем кластеризацию.
                     clusterize: true,
@@ -227,11 +223,13 @@
                 this.map.geoObjects.add(objectManager);
                 this.helpvar = true
 
+
             },
             removeAllPlacemarks: async function () {
                 await this.objectManager.removeAll()
             },
             addPlacemarks: async function (points) {
+
                 let features = []
                 for (let i = 0; i < points.length; i++) {
                     features[i] = {
@@ -242,8 +240,8 @@
                             coordinates: [Number(points[i].COORD_W), Number(points[i].COORD_L)]
                         },
                         properties: {
-                            clusterCaption: "ДТП №"+points[i].id,
-                            balloonContent: `<p>${points[i].date}</p>  <p>${points[i].street}</p>`+
+                            clusterCaption: "ДТП №" + points[i].id,
+                            balloonContent: `<p>${points[i].date}</p>  <p>${points[i].address}</p>` +
                                 `<button ><a href="#/dtp_info/${points[i].id}" class target="_blank">Подробнее</a></button>`
                         }
 
@@ -278,6 +276,7 @@
                         (fltr['DTP_V'] ? el.DTP_V === fltr['DTP_V'] : true) &&
                         (fltr['osv'] ? el.osv === fltr['osv'] : true) &&
                         (fltr['street'] ? el.street.toLowerCase().includes(fltr['street']?.toLowerCase()) : true) &&
+                        (fltr['district'] ? el.district.toLowerCase().includes(fltr['district']?.toLowerCase()) : true) &&
                         obj &&
                         npdd
                 })
@@ -289,6 +288,14 @@
                     this.removeAllPlacemarks()
                     this.addPlacemarks(val)
                 }
+            },
+            district(val){
+                let myPolygon = new ymaps.Polygon(this.options.district_coords[val])
+                if(this.showingPolygon) {
+                    this.map.geoObjects.remove(this.showingPolygon)
+                }
+                this.showingPolygon = myPolygon
+                this.map.geoObjects.add(myPolygon)
             }
         }
         ,
@@ -312,6 +319,9 @@
                 version: '2.1'
             }
             await loadYmap(settings)
+
+
         }
     }
 </script>
+\
