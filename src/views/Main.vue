@@ -71,6 +71,7 @@
                             ></v-select>
                         </div>
                         <div class="container">
+                            <label class="label">Район</label>
                             <div class="select">
                                 <select id="district" v-model="district">
                                     <option v-for="opt in options['district']">
@@ -241,7 +242,8 @@
                         },
                         properties: {
                             clusterCaption: "ДТП №" + points[i].id,
-                            balloonContent: `<p>${points[i].date}</p>  <p>${points[i].address}</p>` +
+                            balloonContent: `<h3>${points[i].DTP_V}</h3>`+
+                                `<p>Дата: ${points[i].date}</p>  <p>Адрес: ${points[i].address}</p> <p>Основная причина: ${points[i].NPDD[0]}</p><p>Освещение: ${points[i].osv}</p>` +
                                 `<button ><a href="#/dtp_info/${points[i].id}" class target="_blank">Подробнее</a></button>`
                         }
 
@@ -251,6 +253,9 @@
             },
 
             search: function (fltr) {
+                if(this.helpvar){
+                    console.log("a")
+                }
                 function isSubArray(main, sub) {
                     return sub.every((eachEle) => {
                         return main.includes(eachEle);
@@ -324,4 +329,4 @@
         }
     }
 </script>
-\
+
