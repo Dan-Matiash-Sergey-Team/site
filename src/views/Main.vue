@@ -156,7 +156,7 @@
             },
             test: function () {
                 console.log(this.options.district_coords)
-                for(let a of this.options.district_coords) {
+                for (let a of this.options.district_coords) {
                     console.log(a)
                     let myPolygon = new ymaps.Polygon(a)
                     this.map.geoObjects.add(myPolygon)
@@ -289,9 +289,9 @@
                     this.addPlacemarks(val)
                 }
             },
-            district(val){
+            district(val) {
                 let myPolygon = new ymaps.Polygon(this.options.district_coords[val])
-                if(this.showingPolygon) {
+                if (this.showingPolygon) {
                     this.map.geoObjects.remove(this.showingPolygon)
                 }
                 this.showingPolygon = myPolygon
