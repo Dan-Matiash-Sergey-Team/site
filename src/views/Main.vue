@@ -27,40 +27,31 @@
                 </div>
                 <div class="column has-background-white-ter is-one-fifth">
                     <div class="container">
-                        <div class="select is-multiple">
+                        <div>
                             <label class="label" for="type">Тип ДТП</label>
-                            <select id="type" v-model="DTP_V">
-                                <option v-for="opt in options['DTP_V']">{{ opt }}</option>
-                            </select>
+                            <el-select id="type" v-model="DTP_V" clearable>
+                                <el-option v-for="opt in options['DTP_V']" :key="opt" :label="opt" :value="opt"></el-option>
+                            </el-select>
                         </div>
-                        <div class="select is-multiple">
+                        <div>
                             <label class="label" for="crime">Тип нарушения ПДД</label>
-                            <select id="crime" multiple v-model="NPDD">
-                                <option v-for="opt in options['NPDD']">
-                                    {{ opt }}
-                                </option>
-                            </select>
+                            <el-select id="crime" multiple filterable v-model="NPDD" :popper-append-to-body="false" collapse-tags>
+                                <el-option v-for="opt in options['NPDD']" :key="opt" :label="opt" :value="opt">
+                                </el-option>
+                            </el-select>
                         </div>
-                        <div class="select is-multiple">
+                        <div>
                             <label class="label">Время суток</label>
-                            <select id="osv" v-model="osv">
-                                <option v-for="opt in options['osv']">{{ opt }}</option>
-                            </select>
+                            <el-select id="osv" v-model="osv" clearable>
+                                <el-option v-for="opt in options['osv']" :key="opt" :label="opt" :value="opt"></el-option>
+                            </el-select>
                         </div>
-                        <div class="select">
+                        <div>
                             <label class="label">Место поблизости</label>
-                            <select id="OBJ_DTP" multiple v-model="OBJ_DTP">
-                                <option v-for="opt in options['OBJ_DTP']">{{ opt }}</option>
-                            </select>
+                            <el-select id="OBJ_DTP" multiple v-model="OBJ_DTP" collapse-tags>
+                                <el-option v-for="opt in options['OBJ_DTP']" :key="opt" :label="opt" :value="opt"></el-option>
+                            </el-select>
                         </div>
-                        <!--                        TODO br goes brrrrrr-->
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
                         <div class="container">
                             <label class="label">Улица</label>
                             <v-select
@@ -72,12 +63,11 @@
                         </div>
                         <div class="container">
                             <label class="label">Район</label>
-                            <div class="select">
-                                <select id="district" v-model="district">
-                                    <option v-for="opt in options['district']">
-                                        {{opt}}
-                                    </option>
-                                </select>
+                            <div>
+                                <el-select id="district" v-model="district" clearable>
+                                    <el-option v-for="opt in options['district']" :key="opt" :label="opt" :value="opt">
+                                    </el-option>
+                                </el-select>
                             </div>
 
                         </div>
@@ -156,7 +146,7 @@
                 console.log(event)
             },
             test: function () {
-                console.log(this.options.district_coords)
+                console.log(this.OBJ_DTP)
                 for (let a of this.options.district_coords) {
                     console.log(a)
                     let myPolygon = new ymaps.Polygon(a)
