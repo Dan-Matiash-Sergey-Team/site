@@ -62,8 +62,8 @@ export default {
           subtitle: `Всего аварий ${this.countCases}`,
           legend: {position: 'bottom'}
         },
-        // width: 1600,
-        // height: 300
+        width: 1500,
+        height: 300
       }
     },
     chartBuild: function () {
