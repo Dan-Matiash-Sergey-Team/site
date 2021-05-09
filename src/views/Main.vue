@@ -54,12 +54,12 @@
                         </div>
                         <div class="container">
                             <label class="label">Улица</label>
-                            <v-select
+                            <el-select
                                     :filterable="false"
                                     :options="filtered"
                                     @input="selectOption"
                                     @search="query=> streetQuery = query"
-                            ></v-select>
+                            ></el-select>
                         </div>
                         <div class="container">
                             <label class="label">Район</label>
