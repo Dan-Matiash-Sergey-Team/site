@@ -1,7 +1,6 @@
 <template>
     <!--eslint-disable -->
     <div>
-        <button @click="test">Тест</button>
         <section class="hero is-white">
             <nav class="level has-background-white mb-0" style="height: 50px">
                 <p class="level-item has-icons-left">
@@ -178,7 +177,7 @@
 
                         objects = cluster.properties.geoObjects;
 
-                    if (objects.length < 20) {
+                    if (objects.length < 5) {
 
                         objectManager.clusters.setClusterOptions(cluster.id, {
 
@@ -186,7 +185,7 @@
 
                         });
 
-                    } else if (objects.length < 50) {
+                    } else if (objects.length < 10) {
 
                         objectManager.clusters.setClusterOptions(cluster.id, {
 
@@ -194,7 +193,7 @@
 
                         });
 
-                    } else if (objects.length < 100) {
+                    } else if (objects.length < 25) {
 
                         objectManager.clusters.setClusterOptions(cluster.id, {
 
@@ -223,12 +222,21 @@
 
                 let features = []
                 for (let i = 0; i < points.length; i++) {
+                    let flag = false
+                    for(let a of ["Иная образовательная организация", "Иное образовательное учреждение","Школа либо иная детская (в т.ч. дошкольная) организация", "Школа либо иное детское (в т.ч. дошкольное) учреждение"]){
+                        if(points[i].OBJ_DTP.includes(a)){
+                            flag = true
+                        }
+                    }
                     features[i] = {
                         type: 'Feature',
                         id: i,
                         geometry: {
                             type: 'Point',
                             coordinates: [Number(points[i].COORD_W), Number(points[i].COORD_L)]
+                        },
+                        options: {
+                            iconColor : flag?"orange":"blue"
                         },
                         properties: {
                             clusterCaption: "ДТП №" + points[i].id,
