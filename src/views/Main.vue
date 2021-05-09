@@ -11,7 +11,7 @@
                     <strong style="color:black">Карта ДТП по Москве</strong>
                 </p>
                 <p class="level-item has-icons-right">
-                    <i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>
+                    <router-link to="/infgr"><i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i></router-link>
                 </p>
             </nav>
             <div class="columns is-gapless">

@@ -2,6 +2,7 @@ import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
 import Vue from 'vue'
 import dtpInfo from "../views/dtpInfo";
+import infgr from '../views/infgr'
 
 Vue.use(VueRouter)
 
@@ -16,7 +17,13 @@ const routes = [
         name: 'dtpInfo',
         component: dtpInfo,
         props: true
+    },
+    {
+        path: '/infgr',
+        name: 'infgr',
+        component: infgr
     }
+
 ]
 
 const router = new VueRouter({
