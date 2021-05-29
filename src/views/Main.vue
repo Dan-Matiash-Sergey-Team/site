@@ -92,6 +92,8 @@
     import "vue-select/dist/vue-select.css";
     import Data from "../assets/ahegao"
     import DatePicker from "../components/DatePicker";
+    import infgr from "@/views/infgr";
+    import App from "@/App";
 
     export default {
         name: 'Main',
@@ -109,7 +111,7 @@
                 street: '', //улица,
                 district: '',
                 streetQuery: '',
-                date: [new Date('2019-01-01'), new Date('2019-02-01'),], //дата
+                date: [new Date('2021-04-01'), new Date('2021-04-30'),], //дата
                 options: Data,
                 helpvar: false,
                 showingPolygon: null,
@@ -249,7 +251,6 @@
                 }
                 this.objectManager.add(features)
             },
-
             search: function (fltr) {
                 if(this.helpvar){
                     console.log("a")
@@ -284,6 +285,9 @@
                         npdd
                 })
             },
+            loadingAsync: async function(year, context) {
+              return [await (await fetch(`http://195.133.147.101:3000/get_dtps_year?year=${year}`)).json(), context]
+            }
         },
         watch: {
             vis_dtps(val) {
@@ -314,7 +318,6 @@
             console.log(this.dtps[0])
             this.showMap = true
 
-
             const settings = {
                 apiKey: '8984067c-7841-4a8a-aa3e-8d6920ceea02',
                 lang: 'ru_RU',
@@ -322,8 +325,6 @@
                 version: '2.1'
             }
             await loadYmap(settings)
-
-
         }
     }
 </script>
