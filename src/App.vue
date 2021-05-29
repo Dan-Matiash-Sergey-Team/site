@@ -56,20 +56,16 @@ export default {
         }
         for (let i = 2015; i < 2021; i++) {
           loadingYearAsync(i, this).then(function (res) {
-            console.log(i)
             let context = res[1]
             res = res[0]
             context.$store.commit("concatDtps", res)
-            console.log(context.$store.getters.dtps.length)
           })
         }
         for (let i = 1; i < 4; i++) {
           loadingMonthAsync(i, this).then(function (res) {
-            console.log(i)
             let context = res[1]
             res = res[0]
             context.$store.commit("concatDtps", res)
-            console.log(context.$store.getters.dtps.length)
           })
         }
       }
