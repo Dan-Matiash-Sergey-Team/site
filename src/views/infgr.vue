@@ -53,7 +53,11 @@
             },
             opts: function () {
                 return {
-                  title: `Общее количество смертей ${this.countCases}`
+                  title: `Общее количество аварий: ${this.countCases}`,
+                  legend: {position: 'none'},
+                  hAxis: {
+                    textPosition: 'none'
+                  }
                 }
             },
             chartBuild: function () {
