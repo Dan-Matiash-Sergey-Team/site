@@ -53,12 +53,9 @@
                         </div>
                         <div class="container">
                             <label class="label">Улица</label>
-                            <v-select
-                                    :filterable="false"
-                                    :options="filtered"
-                                    @input="selectOption"
-                                    @search="query=> streetQuery = query"
-                            ></v-select>
+                            <el-select v-model="street" filterable clearable>
+                                <el-option v-for="opt in options['street']" :key="opt" :label="opt" :value="opt"></el-option>
+                            </el-select>
                         </div>
                         <div class="container">
                             <label class="label">Район</label>
@@ -77,6 +74,7 @@
                         </div>
                         <!--              <button @click="printd()">print</button>-->
                     </div>
+                    <button @click="districtMode = !districtMode">а</button>
                 </div>
             </div>
             <nav class="level-item has-background-danger">
@@ -116,6 +114,9 @@
                 options: Data,
                 helpvar: false,
                 showingPolygon: null,
+                multiplePolygons: [],
+                pieCharts: [],
+                districtMode: false,
             }
         },
         computed: {
@@ -135,12 +136,6 @@
                 if (this.date != null) res['date'] = this.date;
                 return res;
             },
-            filtered() {
-                if (this.streetQuery === null) {
-                    return []
-                }
-                return this.options['street'].filter(option => option.toLowerCase().includes(this.streetQuery.toLowerCase())).slice(0, 10);
-            },
         },
         methods: {
             openedBalloon: function (event) {
@@ -154,6 +149,97 @@
                     let myPolygon = new ymaps.Polygon(a)
                     this.map.geoObjects.add(myPolygon)
                 }
+            },
+            findInfoDistrict: function(){
+                let dat = {}
+                let a = 0
+                for (let i =0; i<this.vis_dtps.length;i++){
+                    if(dat[this.vis_dtps[i]['district']]){
+                        dat[this.vis_dtps[i]['district']]['count']++
+                        dat[this.vis_dtps[i]['district']]['deaths']+=this.vis_dtps[i].death
+                    }
+                    else {
+                        dat[this.vis_dtps[i]['district']] = {}
+                        dat[this.vis_dtps[i]['district']]['count'] = 1
+                        dat[this.vis_dtps[i]['district']]['deaths'] =this.vis_dtps[i].death
+                        a+=1
+                    }
+                }
+                console.log(a)
+                console.log(this.vis_dtps.length)
+                return [dat, this.vis_dtps.length/a]
+            },
+            showDistrictMode: async function(){
+                this.hideDistrictMode()
+                this.district = ""
+                if (this.showingPolygon) {
+                    this.map.geoObjects.remove(this.showingPolygon)
+                }
+                let [nums, mean] = this.findInfoDistrict()
+                console.log(mean)
+                this.removeAllPlacemarks()
+                for(let d of this.options['district']) {
+                    if(!(d in nums)){
+                        continue
+                    }
+                    let a = nums[d]['count']
+                    let c = ""
+                    if(a<0.5*mean){
+                        console.log(a)
+                        c = '#6BDB42'
+                    }
+                    else if(0.5*mean<a&& a<0.8*mean){
+                        console.log(a)
+                        c = "#F5EA1E"
+                    }
+                    else if(0.8*mean<a &&a<1.2*mean){
+                        console.log(a)
+                        c = "#F2C13D"
+                    }
+                    else if(1.2*mean< a&&a<1.5*mean){
+                        console.log(a)
+                        c = "#F5A22B"
+                    }
+                    else{
+                        console.log(a)
+                        c = "#EB5443"
+                    }
+                    let myPolygon = new ymaps.Polygon(this.options.district_coords[d], {hintContent: `район ${d}: ${nums[d]['count']} дтп, смертей - ${nums[d]['deaths']}`},
+                        {
+                        fillColor: c,
+                        hasBalloon: true,
+                        hasHint: true,
+                    })
+
+                    this.multiplePolygons.push(myPolygon)
+                    this.map.geoObjects.add(myPolygon)
+                    let center = [(myPolygon.geometry.getBounds()[0][0]+myPolygon.geometry.getBounds()[1][0])/2, (myPolygon.geometry.getBounds()[0][1]+myPolygon.geometry.getBounds()[1][1])/2]
+                    var geoObject = new ymaps.Placemark(center, {
+                        // Data for generating a diagram.
+                        data: [
+                            { weight: nums[d]['deaths'], color: '#F50F04' },
+                            { weight: nums[d]['count'], color: '#4D9F0E' },
+                        ]
+                    }, {
+                        iconLayout: 'default#pieChart',
+                        // You can also use the "icon" prefix to redefine layout options.
+                        iconPieChartCoreRadius: 15
+                    });
+                    this.pieCharts.push(geoObject)
+                    this.map.geoObjects.add(geoObject)
+
+                }
+
+            },
+            hideDistrictMode: function(){
+              for(let p of this.multiplePolygons){
+                  this.map.geoObjects.remove(p)
+              }
+              for(let p of this.pieCharts){
+                  this.map.geoObjects.remove(p)
+              }
+              this.multiplePolygons = []
+              this.pieCharts = []
             },
             selectOption: function (val) {
                 this.street = val
@@ -226,9 +312,13 @@
                 let features = []
                 for (let i = 0; i < points.length; i++) {
                     let flag = false
+                    let death = false
                     for(let a of ["Иная образовательная организация", "Иное образовательное учреждение","Школа либо иная детская (в т.ч. дошкольная) организация", "Школа либо иное детское (в т.ч. дошкольное) учреждение"]){
                         if(points[i].OBJ_DTP.includes(a)){
                             flag = true
+                        }
+                        if(points[i].death >0){
+                            death = true
                         }
                     }
                     features[i] = {
@@ -239,7 +329,7 @@
                             coordinates: [Number(points[i].COORD_W), Number(points[i].COORD_L)]
                         },
                         options: {
-                            iconColor : flag?"orange":"blue"
+                            iconColor : death? "red" :(flag?"orange":"blue")
                         },
                         properties: {
                             clusterCaption: "ДТП №" + points[i].id,
@@ -293,17 +383,33 @@
         watch: {
             vis_dtps(val) {
                 if (this.objectManager) {
-                    this.removeAllPlacemarks()
-                    this.addPlacemarks(val)
+                    if(!this.districtMode) {
+                        this.removeAllPlacemarks()
+                        this.addPlacemarks(val)
+                    }
+                    else{
+                        this.showDistrictMode()
+                    }
                 }
             },
             district(val) {
-                let myPolygon = new ymaps.Polygon(this.options.district_coords[val])
-                if (this.showingPolygon) {
-                    this.map.geoObjects.remove(this.showingPolygon)
+                if(!this.districtMode) {
+                    let myPolygon = new ymaps.Polygon(this.options.district_coords[val])
+                    if (this.showingPolygon) {
+                        this.map.geoObjects.remove(this.showingPolygon)
+                    }
+                    this.showingPolygon = myPolygon
+                    this.map.geoObjects.add(myPolygon)
                 }
-                this.showingPolygon = myPolygon
-                this.map.geoObjects.add(myPolygon)
+            },
+            districtMode(val){
+                if(val){
+                    this.showDistrictMode()
+                }
+                else{
+                    this.hideDistrictMode()
+                    this.helpvar = !this.helpvar
+                }
             }
         }
         ,
