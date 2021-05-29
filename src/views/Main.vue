@@ -68,6 +68,7 @@
 
                         </div>
                         <div class="container">
+                          <label class="label">Дата</label>
                             <DatePicker v-model="date"
                             ></DatePicker>
                         </div>

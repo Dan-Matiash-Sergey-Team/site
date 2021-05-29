@@ -24,11 +24,9 @@
         </div>
 
         <GChart
-                :createChart="(el, google) => new google.charts.Line(el)"
-                :data="this.chartBuild"
-                :options="this.opts"
-                :settings="{'packages':['Line'],language: 'ru'}"
-                :type="() => Line"
+            type="LineChart"
+            :data="chartBuild"
+            :options="opts"
         />
 
     </div>
@@ -55,20 +53,15 @@
             },
             opts: function () {
                 return {
-                    chart: {
-                        title: `Количество аварий по месяцам в районе ${this.district}`,
-                        subtitle: `Всего аварий ${this.countCases}`,
-                        legend: {position: 'bottom'}
-                    },
-                    width: 1500,
-                    height: 300
+                  title: `Общее количество смертей ${this.countCases}`
                 }
             },
             chartBuild: function () {
                 let resdat = []
                 resdat.push(['Год:Месяц', 'Аварии'])
-                for (let y = 2015; y < 2021; y++) {
+                for (let y = 2015; y < 2022; y++) {
                     for (let m = 1; m < 13; m++) {
+                        if(y == 2021 && m > 4) break
                         resdat.push([y + ":" + m, this.cases[this.district][y - 2015][m - 1]])
                     }
                 }
