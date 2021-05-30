@@ -28,7 +28,7 @@
                     <div class="container">
                         <div>
                             <label class="label" for="type">Тип ДТП</label>
-                            <el-select id="type" v-model="DTP_V" clearable>
+                            <el-select id="type" v-model="DTP_V" clearable filterable>
                                 <el-option v-for="opt in options['DTP_V']" :key="opt" :label="opt" :value="opt"></el-option>
                             </el-select>
                         </div>
@@ -60,7 +60,7 @@
                         <div class="container">
                             <label class="label">Район</label>
                             <div>
-                                <el-select id="district" v-model="district" clearable>
+                                <el-select id="district" v-model="district" clearable filterable>
                                     <el-option v-for="opt in options['district']" :key="opt" :label="opt" :value="opt">
                                     </el-option>
                                 </el-select>

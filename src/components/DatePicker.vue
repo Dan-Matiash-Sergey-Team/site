@@ -20,30 +20,55 @@
             return {
                 pickerOptions: {
                     shortcuts: [{
-                        text: 'Last week',
+                        text: '2021',
                         onClick(picker) {
                             const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            const start = new Date(2021,0,1);
                             picker.$emit('pick', [start, end]);
                         }
                     }, {
-                        text: 'Last month',
+                        text: '2020',
                         onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            const end = new Date(2020,12,31);
+                            const start = new Date(2020,0,1);
                             picker.$emit('pick', [start, end]);
                         }
                     }, {
-                        text: 'Last 3 months',
+                        text: '2019',
                         onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            const end = new Date(2019,12,31);
+                            const start = new Date(2019,0,1);
                             picker.$emit('pick', [start, end]);
                         }
-                    }]
+                    },{
+                        text: '2018',
+                        onClick(picker) {
+                            const end = new Date(2018,12,31);
+                            const start = new Date(2018,0,1);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },{
+                        text: '2017',
+                        onClick(picker) {
+                            const end = new Date(2017,12,31);
+                            const start = new Date(2017,0,1);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },{
+                        text: '2016',
+                        onClick(picker) {
+                            const end = new Date(2016,12,31);
+                            const start = new Date(2016,0,1);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },{
+                        text: '2015',
+                        onClick(picker) {
+                            const end = new Date(2015,12,31);
+                            const start = new Date(2015,0,1);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },]
                 },
                 value2: ''
             };
