@@ -93,6 +93,7 @@
           <li class="subtitle is-5">Изменение режима движения: {{ this.dtpData.data['infoDtp']['change_org_motion'] }}
           </li>
         </div>
+        алпо вал ав
       </div>
       <div class="box  is-shadowless">
         <div class="title is-4">Участники ДТП</div>
@@ -175,7 +176,7 @@
                           <i class="fa fa-heartbeat"></i>
                         </div>
                         <div class="level-item">
-                          <p>{{ d['S_T']}}}</p> <!--тут тоже умпалумпа -->
+                          <p>{{ d['S_T'] }}}</p> <!--тут тоже умпалумпа -->
                         </div>
                       </div>
                     </div>
@@ -185,88 +186,95 @@
             </div>
           </div>
         </div>
+          <div class="title is-4">Панорама с места ДТП</div>
+          <div id="player1" class="player" style="height: 70vh"></div>
       </div>
 
-<!--      <strong>ts_info</strong>-->
-<!--      <div>-->
-<!--        <div v-for="b in this.dtpData.data['infoDtp']['ts_info']" :key="b">-->
-<!--          <div>порядковый номер тр средства : {{ b['n_ts'] }}</div>-->
-<!--          <div>состояние тс (остался на месте дтп да\нет): {{ b['ts_s'] }}</div>-->
-<!--          <div>тип транспортного средства (класс) : {{ b['t_ts'] }}</div>-->
-<!--          <div>марка транпортного средства : {{ b['marka_ts'] }}</div>-->
-<!--          <div>модель тс : {{ b['m_ts'] }}</div>-->
-<!--          <div>цвет тс : {{ b['color'] }}</div>-->
-<!--          <div>передний или задний привод : {{ b['r_rul'] }}</div>-->
-<!--          <div>год выпуска : {{ b['g_v'] }}</div>-->
-<!--          <div>m_pov (без понятия, что это) : {{ b['m_pov'] }}</div>-->
-<!--          <div>технические неисправности : {{ b['t_n'] }}</div>-->
-<!--          <div>тип собственности транпротного средства : {{ b['f_sob'] }}</div>-->
-<!--          <div>у кого в собственности (физ или юр лицо) : {{ b['o_pf'] }}</div>-->
-<!--          <strong>ts_uch</strong>-->
-<!--          <div>-->
-<!--            <div v-for="c in b['ts_uch']" :key="c" style="margin-left:45px;">-->
-<!--              <div>тип участника : {{ c['K_UCH'] }}</div>-->
-<!--              <strong>нарушение ПДД</strong>-->
-<!--              <div>-->
-<!--                <div v-for="d in c['NPDD']" :key="d" style="margin-left:60px;">{{ d }}</div>-->
-<!--              </div>-->
-<!--              <div>состояние потерпевшего : {{ c['S_T'] }}</div>-->
-<!--              <div>пол : {{ c['POL'] }}</div>-->
-<!--              <div>возраст : {{ c['V_ST'] }}</div>-->
-<!--              <div>наличие алкогольного опьянения : {{ c['ALCO'] }}</div>-->
-<!--              <strong>Сопротивление полиции</strong>-->
-<!--              <div>-->
-<!--                <div v-for="d in c['SOP_NPDD']" :key="d" style="margin-left:60px;">{{ d }}</div>-->
-<!--              </div>-->
-<!--              <div>ремень безопасности : {{ c['SAFETY_BELT'] }}</div>-->
-<!--              <div>скрылся с места происшествия (да\нет) : {{ c['S_SM'] }}</div>-->
-<!--              <div>порядковый номер участника : {{ c['N_UCH'] }}</div>-->
-<!--              <div>S_SEAT_GROUP (хз, что это) : {{ c['S_SEAT_GROUP'] }}</div>-->
-<!--              <div>INJURED_CARD_ID (без понятия): {{ c['INJURED_CARD_ID'] }}</div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div>населенный пункт : {{ this.dtpData.data['infoDtp']['n_p'] }}</div>-->
-<!--      <div>улица : {{ this.dtpData.data['infoDtp']['street'] }}</div>-->
-<!--      <div>дом : {{ this.dtpData.data['infoDtp']['house'] }}</div>-->
-<!--      <div>подъезд : {{ this.dtpData.data['infoDtp']['dor'] }}</div>-->
-<!--      <div>километр дороги: {{ this.dtpData.data['infoDtp']['km'] }}</div>-->
-<!--      <div>метр дороги : {{ this.dtpData.data['infoDtp']['m'] }}</div>-->
-<!--      <div>тип улицы : {{ this.dtpData.data['infoDtp']['k_ul'] }}</div>-->
-<!--      <div>dor_k (хз, что это): {{ this.dtpData.data['infoDtp']['dor_k'] }}</div>-->
-<!--      <div>дорожное значение (например, местного значения) : {{ this.dtpData.data['infoDtp']['dor_z'] }}</div>-->
-<!--      <strong>factor (?)</strong>-->
-<!--      <div>-->
-<!--        <div v-for="b in this.dtpData.data['infoDtp']['factor']" :key="b" style="margin-left:30px;">{{ b }}</div>-->
-<!--      </div>-->
-<!--      <strong>состояние погоды</strong>-->
-<!--      <div>-->
-<!--        <div v-for="b in this.dtpData.data['infoDtp']['s_pog']" :key="b" style="margin-left:30px;">{{ b }}</div>-->
-<!--      </div>-->
-<!--      <div>состояние дорожного покрытия : {{ this.dtpData.data['infoDtp']['s_pch'] }}</div>-->
-<!--      <div>освещение (время суток\освещение) : {{ this.dtpData.data['infoDtp']['osv'] }}</div>-->
-<!--      <div>наличие изменений режима движения на данном участке : {{-->
-<!--          this.dtpData.data['infoDtp']['change_org_motion']-->
-<!--        }}-->
-<!--      </div>-->
-<!--      <div>s_dtp (хз) : {{ this.dtpData.data['infoDtp']['s_dtp'] }}</div>-->
-<!--      <div>COORD_W : {{ this.dtpData.data['infoDtp']['COORD_W'] }}</div>-->
-<!--      <div>COORD_L : {{ this.dtpData.data['infoDtp']['COORD_L'] }}</div>-->
-<!--      <strong>объекты в непоср близости ДТП (остановки\пешеходные переходы и т дё0</strong>-->
-<!--      <div>-->
-<!--        <div v-for="b in this.dtpData.data['infoDtp']['OBJ_DTP']" :key="b" style="margin-left:30px;">{{ b }}</div>-->
-<!--      </div>-->
-<!--      <strong>uchInfo</strong>-->
-<!--      <div>-->
-<!--        <div v-for="b in this.dtpData.data['infoDtp']['uchInfo']" :key="b" style="margin-left:30px;">{{ b }}</div>-->
-<!--      </div>-->
+      <!--      <strong>ts_info</strong>-->
+      <!--      <div>-->
+      <!--        <div v-for="b in this.dtpData.data['infoDtp']['ts_info']" :key="b">-->
+      <!--          <div>порядковый номер тр средства : {{ b['n_ts'] }}</div>-->
+      <!--          <div>состояние тс (остался на месте дтп да\нет): {{ b['ts_s'] }}</div>-->
+      <!--          <div>тип транспортного средства (класс) : {{ b['t_ts'] }}</div>-->
+      <!--          <div>марка транпортного средства : {{ b['marka_ts'] }}</div>-->
+      <!--          <div>модель тс : {{ b['m_ts'] }}</div>-->
+      <!--          <div>цвет тс : {{ b['color'] }}</div>-->
+      <!--          <div>передний или задний привод : {{ b['r_rul'] }}</div>-->
+      <!--          <div>год выпуска : {{ b['g_v'] }}</div>-->
+      <!--          <div>m_pov (без понятия, что это) : {{ b['m_pov'] }}</div>-->
+      <!--          <div>технические неисправности : {{ b['t_n'] }}</div>-->
+      <!--          <div>тип собственности транпротного средства : {{ b['f_sob'] }}</div>-->
+      <!--          <div>у кого в собственности (физ или юр лицо) : {{ b['o_pf'] }}</div>-->
+      <!--          <strong>ts_uch</strong>-->
+      <!--          <div>-->
+      <!--            <div v-for="c in b['ts_uch']" :key="c" style="margin-left:45px;">-->
+      <!--              <div>тип участника : {{ c['K_UCH'] }}</div>-->
+      <!--              <strong>нарушение ПДД</strong>-->
+      <!--              <div>-->
+      <!--                <div v-for="d in c['NPDD']" :key="d" style="margin-left:60px;">{{ d }}</div>-->
+      <!--              </div>-->
+      <!--              <div>состояние потерпевшего : {{ c['S_T'] }}</div>-->
+      <!--              <div>пол : {{ c['POL'] }}</div>-->
+      <!--              <div>возраст : {{ c['V_ST'] }}</div>-->
+      <!--              <div>наличие алкогольного опьянения : {{ c['ALCO'] }}</div>-->
+      <!--              <strong>Сопротивление полиции</strong>-->
+      <!--              <div>-->
+      <!--                <div v-for="d in c['SOP_NPDD']" :key="d" style="margin-left:60px;">{{ d }}</div>-->
+      <!--              </div>-->
+      <!--              <div>ремень безопасности : {{ c['SAFETY_BELT'] }}</div>-->
+      <!--              <div>скрылся с места происшествия (да\нет) : {{ c['S_SM'] }}</div>-->
+      <!--              <div>порядковый номер участника : {{ c['N_UCH'] }}</div>-->
+      <!--              <div>S_SEAT_GROUP (хз, что это) : {{ c['S_SEAT_GROUP'] }}</div>-->
+      <!--              <div>INJURED_CARD_ID (без понятия): {{ c['INJURED_CARD_ID'] }}</div>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div>населенный пункт : {{ this.dtpData.data['infoDtp']['n_p'] }}</div>-->
+      <!--      <div>улица : {{ this.dtpData.data['infoDtp']['street'] }}</div>-->
+      <!--      <div>дом : {{ this.dtpData.data['infoDtp']['house'] }}</div>-->
+      <!--      <div>подъезд : {{ this.dtpData.data['infoDtp']['dor'] }}</div>-->
+      <!--      <div>километр дороги: {{ this.dtpData.data['infoDtp']['km'] }}</div>-->
+      <!--      <div>метр дороги : {{ this.dtpData.data['infoDtp']['m'] }}</div>-->
+      <!--      <div>тип улицы : {{ this.dtpData.data['infoDtp']['k_ul'] }}</div>-->
+      <!--      <div>dor_k (хз, что это): {{ this.dtpData.data['infoDtp']['dor_k'] }}</div>-->
+      <!--      <div>дорожное значение (например, местного значения) : {{ this.dtpData.data['infoDtp']['dor_z'] }}</div>-->
+      <!--      <strong>factor (?)</strong>-->
+      <!--      <div>-->
+      <!--        <div v-for="b in this.dtpData.data['infoDtp']['factor']" :key="b" style="margin-left:30px;">{{ b }}</div>-->
+      <!--      </div>-->
+      <!--      <strong>состояние погоды</strong>-->
+      <!--      <div>-->
+      <!--        <div v-for="b in this.dtpData.data['infoDtp']['s_pog']" :key="b" style="margin-left:30px;">{{ b }}</div>-->
+      <!--      </div>-->
+      <!--      <div>состояние дорожного покрытия : {{ this.dtpData.data['infoDtp']['s_pch'] }}</div>-->
+      <!--      <div>освещение (время суток\освещение) : {{ this.dtpData.data['infoDtp']['osv'] }}</div>-->
+      <!--      <div>наличие изменений режима движения на данном участке : {{-->
+      <!--          this.dtpData.data['infoDtp']['change_org_motion']-->
+      <!--        }}-->
+      <!--      </div>-->
+      <!--      <div>s_dtp (хз) : {{ this.dtpData.data['infoDtp']['s_dtp'] }}</div>-->
+      <!--      <div>COORD_W : {{ this.dtpData.data['infoDtp']['COORD_W'] }}</div>-->
+      <!--      <div>COORD_L : {{ this.dtpData.data['infoDtp']['COORD_L'] }}</div>-->
+      <!--      <strong>объекты в непоср близости ДТП (остановки\пешеходные переходы и т дё0</strong>-->
+      <!--      <div>-->
+      <!--        <div v-for="b in this.dtpData.data['infoDtp']['OBJ_DTP']" :key="b" style="margin-left:30px;">{{ b }}</div>-->
+      <!--      </div>-->
+      <!--      <strong>uchInfo</strong>-->
+      <!--      <div>-->
+      <!--        <div v-for="b in this.dtpData.data['infoDtp']['uchInfo']" :key="b" style="margin-left:30px;">{{ b }}</div>-->
+      <!--      </div>-->
     </section>
   </div>
 </template>
 
 <script src="https://use.fontawesome.com/ab5204b274.js"></script>
 <script>
+console.log('Не сясь')
+import {loadYmap} from "vue-yandex-maps";
+
+console.log('Сясь')
+
 export default {
   name: "dtpInfo",
   props: ['id'],
@@ -274,6 +282,7 @@ export default {
     return {
       dtpData: {},
       loading: true
+
     }
   },
   async mounted() {
@@ -282,11 +291,51 @@ export default {
     this.dtpData = resp[0]
     this.loading = false
     console.log(this.dtpData)
+    const settings = {
+      apiKey: '8984067c-7841-4a8a-aa3e-8d6920ceea02',
+      lang: 'ru_RU',
+      coordorder: 'latlong',
+      version: '2.1'
+    }
+    await loadYmap(settings)
+    ymaps.ready(() => {
+      // Для начала проверим, поддерживает ли плеер браузер пользователя.
+      if (!ymaps.panorama.isSupported()) {
+        // Если нет, то просто ничего не будем делать.
+        return;
+      }
+
+      // Ищем панораму в переданной точке.
+      ymaps.panorama.locate([this.dtpData.data['infoDtp']['COORD_W'], this.dtpData.data['infoDtp']['COORD_L']]).done(
+          function (panoramas) {
+            // Убеждаемся, что найдена хотя бы одна панорама.
+            if (panoramas.length > 0) {
+              // Создаем плеер с одной из полученных панорам.
+              var player = new ymaps.panorama.Player(
+                  'player1',
+                  // Панорамы в ответе отсортированы по расстоянию
+                  // от переданной в panorama.locate точки. Выбираем первую,
+                  // она будет ближайшей.
+                  panoramas[0],
+                  // Зададим направление взгляда, отличное от значения
+                  // по умолчанию.
+                  {
+                    direction: [256, 16]
+                  }
+              );
+            }
+          },
+          function (error) {
+            // Если что-то пошло не так, сообщим об этом пользователю.
+            alert(error.message);
+          }
+      );
+
+    });
   },
   methods: {}
 }
 </script>
-
 <style scoped>
 
 </style>
