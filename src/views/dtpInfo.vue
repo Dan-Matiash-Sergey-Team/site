@@ -18,9 +18,9 @@
               <h1>{{ this.dtpData.data['DTP_V'] }}</h1>
             </div>
             <p class="subtitle">{{ this.dtpData.data['date'] }} в {{ this.dtpData.data['Time'] }} |
-              {{ this.dtpData.data['District'] }}, {{ this.dtpData.data['infoDtp']['street'] }},
+              Район {{ this.dtpData.data['District'] }}, {{ this.dtpData.data['infoDtp']['street'] }},
               {{ this.dtpData.data['infoDtp']['house'] }}</p>
-            <nav class="level-left">
+            <nav class="level-left" style="margin-bottom: 8px">
               <div class="level-item">
                 <i class="fa fa-car fa-3x"></i>
               </div>
@@ -31,7 +31,7 @@
                 </div>
               </div>
             </nav>
-            <nav class="level-left">
+            <nav class="level-left" style="margin-bottom: 8px">
               <div class="level-item">
                 <i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i>
               </div>
@@ -42,7 +42,7 @@
                 </div>
               </div>
             </nav>
-            <nav class="level-left">
+            <nav class="level-left" style="margin-bottom: 8px">
               <div class="level-item">
                 <i class="fas fa-user-injured fa-3x"></i>
               </div>
@@ -77,7 +77,7 @@
         </div>
         <div class="block">
           <li class="subtitle is-5">Участок дороги: <span v-for="b in this.dtpData.data['infoDtp']['sdor']"
-                                                          :key="b">{{ b }}</span></li>
+                                                          :key="b">{{ b }} </span></li>
         </div>
         <div class="block">
           <li class="subtitle is-5">Дорожное значение: <span>{{ this.dtpData.data['infoDtp']['dor_z'] }}</span></li>
