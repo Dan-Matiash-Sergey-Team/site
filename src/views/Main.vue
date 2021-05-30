@@ -223,7 +223,12 @@
                     }, {
                         iconLayout: 'default#pieChart',
                         // You can also use the "icon" prefix to redefine layout options.
-                        iconPieChartCoreRadius: 15
+                        iconPieChartCoreRadius: 10,
+                        iconContent: nums[d]['count'],
+                        pieChartCaptionMaxWidth: 30,
+                        pieChartRadius: function (sum) {
+                            return 15 + 2 * Math.log(sum)
+                        }
                     });
                     this.pieCharts.push(geoObject)
                     this.map.geoObjects.add(geoObject)
