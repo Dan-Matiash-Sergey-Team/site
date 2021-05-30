@@ -23,61 +23,71 @@
                     >
                     </yandex-map>
 
-                </div>
-                <div class="column has-background-white-ter is-one-fifth">
-                    <div class="container">
-                        <div>
-                            <label class="label" for="type">Тип ДТП</label>
-                            <el-select id="type" v-model="DTP_V" clearable filterable>
-                                <el-option v-for="opt in options['DTP_V']" :key="opt" :label="opt" :value="opt"></el-option>
-                            </el-select>
-                        </div>
-                        <div>
-                            <label class="label" for="crime">Тип нарушения ПДД</label>
-                            <el-select id="crime" multiple filterable v-model="NPDD" :popper-append-to-body="false" collapse-tags>
-                                <el-option v-for="opt in options['NPDD']" :key="opt" :label="opt" :value="opt">
-                                </el-option>
-                            </el-select>
-                        </div>
-                        <div>
-                            <label class="label">Время суток</label>
-                            <el-select id="osv" v-model="osv" clearable>
-                                <el-option v-for="opt in options['osv']" :key="opt" :label="opt" :value="opt"></el-option>
-                            </el-select>
-                        </div>
-                        <div>
-                            <label class="label">Место поблизости</label>
-                            <el-select id="OBJ_DTP" multiple v-model="OBJ_DTP" collapse-tags>
-                                <el-option v-for="opt in options['OBJ_DTP']" :key="opt" :label="opt" :value="opt"></el-option>
-                            </el-select>
-                        </div>
-                        <div class="container">
-                            <label class="label">Улица</label>
-                            <el-select v-model="street" filterable clearable>
-                                <el-option v-for="opt in options['street']" :key="opt" :label="opt" :value="opt"></el-option>
-                            </el-select>
-                        </div>
-                        <div class="container">
-                            <label class="label">Район</label>
-                            <div>
-                                <el-select id="district" v-model="district" clearable filterable>
-                                    <el-option v-for="opt in options['district']" :key="opt" :label="opt" :value="opt">
-                                    </el-option>
-                                </el-select>
-                            </div>
-
-                        </div>
-                        <div class="container">
-                          <label class="label">Дата</label>
-                            <DatePicker v-model="date"
-                            ></DatePicker>
-                        </div>
-                        <!--              <button @click="printd()">print</button>-->
-                    </div>
-                    <button @click="districtMode = !districtMode">а</button>
-                </div>
+        </div>
+        <div class="column has-background-white-ter is-one-fifth">
+          <div class="container">
+            <div>
+              <label class="label" for="type">Тип ДТП</label>
+              <el-select id="type" v-model="DTP_V" clearable filterable>
+                <el-option v-for="opt in options['DTP_V']" :key="opt" :label="opt" :value="opt"></el-option>
+              </el-select>
             </div>
-            <nav class="level-item has-background-danger">
+            <div>
+              <label class="label" for="crime">Тип нарушения ПДД</label>
+              <el-select id="crime" multiple filterable v-model="NPDD" :popper-append-to-body="false" collapse-tags>
+                <el-option v-for="opt in options['NPDD']" :key="opt" :label="opt" :value="opt">
+                </el-option>
+              </el-select>
+            </div>
+            <div>
+              <label class="label">Время суток</label>
+              <el-select id="osv" v-model="osv" clearable>
+                <el-option v-for="opt in options['osv']" :key="opt" :label="opt" :value="opt"></el-option>
+              </el-select>
+            </div>
+            <div>
+              <label class="label">Место поблизости</label>
+              <el-select id="OBJ_DTP" multiple v-model="OBJ_DTP" collapse-tags>
+                <el-option v-for="opt in options['OBJ_DTP']" :key="opt" :label="opt" :value="opt"></el-option>
+              </el-select>
+            </div>
+            <div class="container">
+              <label class="label">Улица</label>
+              <el-select v-model="street" filterable clearable>
+                <el-option v-for="opt in options['street']" :key="opt" :label="opt" :value="opt"></el-option>
+              </el-select>
+            </div>
+            <!----------------------------------------->
+            <div class="container">
+              <label class="label">Район</label>
+              <div>
+                <el-select id="district" v-model="district" clearable filterable>
+                  <el-option v-for="opt in options['district']" :key="opt" :label="opt" :value="opt">
+                  </el-option>
+                </el-select>
+              </div>
+              <div v-if="district != ''">
+                <infgr :showPopup="showPopup" :districtPopup="district" @closePopup="showPopup = false">
+                </infgr>
+              </div>
+              <div>
+                <button @click="showPopup = district != ''">
+                  Jopa
+                </button>
+              </div>
+            </div>
+            <!----------------------------------------->
+            <div class="container">
+              <label class="label">Дата</label>
+              <DatePicker v-model="date"
+              ></DatePicker>
+            </div>
+            <!--              <button @click="printd()">print</button>-->
+          </div>
+          <button @click="districtMode = !districtMode">а</button>
+        </div>
+      </div>
+      <nav class="level-item has-background-danger">
 
             </nav>
         </section>
@@ -94,34 +104,35 @@
     import infgr from "@/views/infgr";
     import App from "@/App";
 
-    export default {
-        name: 'Main',
-        components: {DatePicker},
-        data() {
-            return {
-                showMap: false,
-                dtps: [],
-                map: null,
-                objectManager: null,
-                DTP_V: '', //тип дтп
-                NPDD: [], // нарушение правил пдд
-                osv: '', //время суток
-                OBJ_DTP: [], //место поблизости
-                street: '', //улица,
-                district: '',
-                streetQuery: '',
-                date: [new Date('2021-04-01'), new Date('2021-04-30'),], //дата
-                options: Data,
-                helpvar: false,
-                showingPolygon: null,
-                multiplePolygons: [],
-                pieCharts: [],
-                districtMode: false,
-            }
-        },
-        computed: {
-            vis_dtps: function () {
-                if (this.street == null) this.street = ""
+export default {
+  name: 'Main',
+  components: {DatePicker, infgr},
+  data() {
+    return {
+      showMap: false,
+      dtps: [],
+      map: null,
+      objectManager: null,
+      DTP_V: '', //тип дтп
+      NPDD: [], // нарушение правил пдд
+      osv: '', //время суток
+      OBJ_DTP: [], //место поблизости
+      street: '', //улица,
+      district: '',
+      streetQuery: '',
+      date: [new Date('2021-04-01'), new Date('2021-04-30'),], //дата
+      options: Data,
+      helpvar: false,
+      showingPolygon: null,
+      multiplePolygons: [],
+      pieCharts: [],
+      districtMode: false,
+      showPopup: false
+    }
+  },
+  computed: {
+    vis_dtps: function () {
+      if (this.street == null) this.street = ""
 
                 return this.search(this.fltr)
             },
@@ -223,12 +234,7 @@
                     }, {
                         iconLayout: 'default#pieChart',
                         // You can also use the "icon" prefix to redefine layout options.
-                        iconPieChartCoreRadius: 10,
-                        iconContent: nums[d]['count'],
-                        pieChartCaptionMaxWidth: 30,
-                        pieChartRadius: function (sum) {
-                            return 15 + 2 * Math.log(sum)
-                        }
+                        iconPieChartCoreRadius: 15
                     });
                     this.pieCharts.push(geoObject)
                     this.map.geoObjects.add(geoObject)
