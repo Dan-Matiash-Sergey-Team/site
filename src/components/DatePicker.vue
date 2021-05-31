@@ -2,12 +2,14 @@
     <div class="block">
         <el-date-picker
                 :picker-options="pickerOptions"
-                align="right"
-                end-placeholder="End date"
-                range-separator="To"
-                start-placeholder="Start date"
-                type="datetimerange"
+                align="left"
+                end-placeholder="Конец"
+                range-separator="-"
+                start-placeholder="Начало"
+                type="daterange"
                 v-model="value2"
+                :default-value="default_value"
+                size="small"
                 @input="$emit('input', value2)">
         </el-date-picker>
     </div>
@@ -68,11 +70,20 @@
                             const start = new Date(2015,0,1);
                             picker.$emit('pick', [start, end]);
                         }
+                    },
+                        {
+                        text: 'Все время',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date(2015,0,1);
+                            picker.$emit('pick', [start, end]);
+                        }
                     },]
                 },
-                value2: ''
+                value2: '',
             };
-        }
+        },
+        props: ['default_value']
     }
 </script>
 
