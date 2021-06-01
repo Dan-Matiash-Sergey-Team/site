@@ -8,7 +8,7 @@
           :options="opts"
       />
       <button style="float: right" @click="closePopup">
-        Jopa
+        Закрыть
       </button>
     </div>
   </div>
@@ -65,7 +65,7 @@ export default {
       for (let y = 2015; y < 2022; y++) {
         for (let m = 1; m < 13; m++) {
           if (y == 2021 && m > 4) break
-          resdat.push([y + ":" + m, this.cases[this.district][y - 2015][m - 1]])
+          resdat.push([(m < 10 ? `0${m}` : m) + "." + y, this.cases[this.district][y - 2015][m - 1]])
         }
       }
       return resdat
