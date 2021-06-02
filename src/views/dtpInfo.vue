@@ -93,7 +93,6 @@
           <li class="subtitle is-5">Изменение режима движения: {{ this.dtpData.data['infoDtp']['change_org_motion'] }}
           </li>
         </div>
-        алпо вал ав
       </div>
       <div class="box  is-shadowless">
         <div class="title is-4">Участники ДТП</div>

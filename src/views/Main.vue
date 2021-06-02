@@ -234,7 +234,7 @@
                     this.multiplePolygons.push(myPolygon)
                     this.map.geoObjects.add(myPolygon)
                     let center = [(myPolygon.geometry.getBounds()[0][0] + myPolygon.geometry.getBounds()[1][0]) / 2, (myPolygon.geometry.getBounds()[0][1] + myPolygon.geometry.getBounds()[1][1]) / 2]
-                    var geoObject = new ymaps.Placemark(center, {
+                    var geoObject = new ymaps.Placemark(Data['disctrict_centres'][d], {
                         // Data for generating a diagram.
                         data: [
                             {weight: nums[d]['deaths'], color: '#F50F04'},
