@@ -94,8 +94,8 @@
                                         <DatePicker v-model="date"
                                         ></DatePicker>
                                     </div>
-                                    <button @click="districtMode = !districtMode">Статистика по районам</button>
-                                    <button @click="heatmapMode = !heatmapMode">Jopa</button>
+                                    <button :disabled="heatmapMode" @click="heatmapMode?()=>{}:districtMode = !districtMode">Статистика по районам</button>
+                                    <button :disabled="districtMode" @click="districtMode?()=>{}:heatmapMode = !heatmapMode">Jopa</button>
                                 </div>
                             </div>
                         </transition>
@@ -183,8 +183,6 @@
                         a += 1
                     }
                 }
-                console.log(a)
-                console.log(this.vis_dtps.length)
                 return [dat, this.vis_dtps.length / a]
             },
             showDistrictMode: async function () {
@@ -194,7 +192,6 @@
                     this.map.geoObjects.remove(this.showingPolygon)
                 }
                 let [nums, mean] = this.findInfoDistrict()
-                console.log(mean)
                 this.removeAllPlacemarks()
                 for (let d of this.options['district']) {
                     if (!(d in nums)) {
@@ -203,19 +200,14 @@
                     let a = nums[d]['count']
                     let c = ""
                     if (a < 0.5 * mean) {
-                        console.log(a)
                         c = '#6BDB42'
                     } else if (0.5 * mean < a && a < 0.8 * mean) {
-                        console.log(a)
                         c = "#F5EA1E"
                     } else if (0.8 * mean < a && a < 1.2 * mean) {
-                        console.log(a)
                         c = "#F2C13D"
                     } else if (1.2 * mean < a && a < 1.5 * mean) {
-                        console.log(a)
                         c = "#F5A22B"
                     } else {
-                        console.log(a)
                         c = "#EB5443"
                     }
                     let myPolygon = new ymaps.Polygon(this.options.district_coords[d], {hintContent: `район ${d}: ${nums[d]['count']} дтп, смертей - ${nums[d]['deaths']}`},
@@ -227,7 +219,6 @@
 
                     this.multiplePolygons.push(myPolygon)
                     this.map.geoObjects.add(myPolygon)
-                    let center = [(myPolygon.geometry.getBounds()[0][0] + myPolygon.geometry.getBounds()[1][0]) / 2, (myPolygon.geometry.getBounds()[0][1] + myPolygon.geometry.getBounds()[1][1]) / 2]
                     var geoObject = new ymaps.Placemark(Data['disctrict_centres'][d], {
                         // Data for generating a diagram.
                         data: [
@@ -259,10 +250,6 @@
                 }
                 this.multiplePolygons = []
                 this.pieCharts = []
-            },
-            selectOption: function (val) {
-                this.street = val
-                this.streetQuery = val
             },
             initHandler: async function (map) {
                 this.map = map
@@ -363,8 +350,9 @@
             },
             search: function (fltr) {
                 if (this.helpvar) {
-                    console.log("a")
+                    console.log("")
                 }
+                console.log(this.helpvar)
 
                 function isSubArray(main, sub) {
                     return sub.every((eachEle) => {
@@ -419,7 +407,6 @@
                 }
                 this.hmap.setData(data)
                 this.hmap.setMap(this.map);
-                console.log(this.hmap)
             },
             hideHeatmapMode: async function () {
                 this.hmap.setData([])
@@ -429,14 +416,24 @@
         watch: {
             vis_dtps(val) {
                 if (this.objectManager) {
-                    if (!this.districtMode && !this.heatmapMode) {
-                        this.removeAllPlacemarks()
-                        this.addPlacemarks(val)
-                    } else if (this.heatmapMode) {
-                        console.log("a")
-                        this.showHeatmapmode()
-                    } else {
-                        this.showDistrictMode()
+                    if(this.districtMode && this.heatmapMode){
+                        console.log("Mega error")
+                        this.districtMode = false
+                        this.heatmapMode = false
+                        this.helpvar = !this.helpvar
+                    }
+                    else {
+                        if (this.heatmapMode) {
+                            console.log("aaaaaa")
+                            this.showHeatmapmode()
+                        } else if (this.districtMode) {
+                            console.log("bbbbbb")
+                            this.showDistrictMode()
+                        }
+                        else{
+                            this.removeAllPlacemarks()
+                            this.addPlacemarks(val)
+                        }
                     }
                 }
             },
@@ -451,19 +448,23 @@
                 }
             },
             districtMode(val) {
-                if (val && !this.heatmapMode) {
-                    this.showDistrictMode()
-                } else {
-                    this.hideDistrictMode()
-                    this.helpvar = !this.helpvar
+                if (!this.heatmapMode) {
+                    if (val) {
+                        this.showDistrictMode()
+                    } else {
+                        this.hideDistrictMode()
+                        this.helpvar = !this.helpvar
+                    }
                 }
             },
             heatmapMode(val) {
-                if (val && !this.districtMode) {
-                    this.showHeatmapmode()
-                } else {
-                    this.hideHeatmapMode()
-                    this.helpvar = !this.helpvar
+                if (!this.districtMode) {
+                    if (val) {
+                        this.showHeatmapmode()
+                    } else {
+                        this.hideHeatmapMode()
+                        this.helpvar = !this.helpvar
+                    }
                 }
             },
         }
