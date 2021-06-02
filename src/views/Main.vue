@@ -14,17 +14,17 @@
                     </router-link>
                 </p>
             </nav>
-            <div  style="position: relative">
-                <div  v-if="showMap">
+            <div style="position: relative">
+                <div v-if="showMap">
                     <yandex-map :coords="map ? map.getCenter() : [55.7522, 37.6156]"
-                                @ballonopen="openedBalloon"
                                 @map-was-initialized="initHandler" map-type="map"
                                 style="width: 100%; height: 700px;"
                                 zoom="16"
                     >
                     </yandex-map>
                 </div>
-                <div style="position: absolute; top:0; right:0;margin-top: 15px; margin-right: 10px" class="has-background-white-ter">
+                <div class="has-background-white-ter"
+                     style="position: absolute; top:0; right:0;margin-top: 15px; margin-right: 10px">
                     <div id="curtain">
                         <transition name="curtain">
                             <div v-if="show">
@@ -95,6 +95,7 @@
                                         ></DatePicker>
                                     </div>
                                     <button @click="districtMode = !districtMode">Статистика по районам</button>
+                                    <button @click="heatmapMode = !heatmapMode">Jopa</button>
                                 </div>
                             </div>
                         </transition>
@@ -141,7 +142,9 @@
                 multiplePolygons: [],
                 pieCharts: [],
                 districtMode: false,
-                showPopup: false
+                showPopup: false,
+                heatmapMode: false,
+                hmap: null
             }
         },
         computed: {
@@ -163,17 +166,8 @@
             },
         },
         methods: {
-            openedBalloon: function (event) {
-                console.log("aaaaaaa")
-                console.log(event)
-            },
-            test: function () {
-                console.log(this.OBJ_DTP)
-                for (let a of this.options.district_coords) {
-                    console.log(a)
-                    let myPolygon = new ymaps.Polygon(a)
-                    this.map.geoObjects.add(myPolygon)
-                }
+            test: async function () {
+
             },
             findInfoDistrict: function () {
                 let dat = {}
@@ -404,14 +398,43 @@
             },
             loadingAsync: async function (year, context) {
                 return [await (await fetch(`http://195.133.147.101:3000/get_dtps_year?year=${year}`)).json(), context]
+            },
+            showHeatmapmode: async function () {
+                this.removeAllPlacemarks()
+                let features = []
+                for (let i = 0; i < this.vis_dtps.length; i++) {
+                    features[i] = {
+                        type: 'Feature',
+                        id: i,
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [Number(this.vis_dtps[i].COORD_W), Number(this.vis_dtps[i].COORD_L)]
+                        },
+
+                    }
+                }
+                var data = {
+                    type: 'FeatureCollection',
+                    features: features
+                }
+                this.hmap.setData(data)
+                this.hmap.setMap(this.map);
+                console.log(this.hmap)
+            },
+            hideHeatmapMode: async function () {
+                this.hmap.setData([])
+                this.hmap.setMap(this.map);
             }
         },
         watch: {
             vis_dtps(val) {
                 if (this.objectManager) {
-                    if (!this.districtMode) {
+                    if (!this.districtMode && !this.heatmapMode) {
                         this.removeAllPlacemarks()
                         this.addPlacemarks(val)
+                    } else if (this.heatmapMode) {
+                        console.log("a")
+                        this.showHeatmapmode()
                     } else {
                         this.showDistrictMode()
                     }
@@ -428,13 +451,21 @@
                 }
             },
             districtMode(val) {
-                if (val) {
+                if (val && !this.heatmapMode) {
                     this.showDistrictMode()
                 } else {
                     this.hideDistrictMode()
                     this.helpvar = !this.helpvar
                 }
-            }
+            },
+            heatmapMode(val) {
+                if (val && !this.districtMode) {
+                    this.showHeatmapmode()
+                } else {
+                    this.hideHeatmapMode()
+                    this.helpvar = !this.helpvar
+                }
+            },
         }
         ,
         async mounted() {
@@ -456,6 +487,12 @@
                 version: '2.1'
             }
             await loadYmap(settings)
+            let heatmapScript = document.createElement('script')
+            heatmapScript.setAttribute('src', 'https://yastatic.net/s3/mapsapi-jslibs/heatmap/0.0.1/heatmap.min.js')
+            document.head.appendChild(heatmapScript)
+            ymaps.modules.require(['Heatmap'], (Heatmap) => {
+                this.hmap = new Heatmap([], {dissipating: true});
+            });
         }
     }
 </script>
