@@ -14,8 +14,8 @@
                     </router-link>
                 </p>
             </nav>
-            <div class="columns is-gapless">
-                <div class="column is-four-fifths has-background-white" v-if="showMap">
+            <div  style="position: relative">
+                <div  v-if="showMap">
                     <yandex-map :coords="map ? map.getCenter() : [55.7522, 37.6156]"
                                 @ballonopen="openedBalloon"
                                 @map-was-initialized="initHandler" map-type="map"
@@ -24,7 +24,7 @@
                     >
                     </yandex-map>
                 </div>
-                <div class="column has-background-white-ter is-one-fifth">
+                <div style="position: absolute; top:0; right:0;margin-top: 15px; margin-right: 10px" class="has-background-white-ter">
                     <div id="curtain">
                         <transition name="curtain">
                             <div v-if="show">
@@ -243,7 +243,12 @@
                     }, {
                         iconLayout: 'default#pieChart',
                         // You can also use the "icon" prefix to redefine layout options.
-                        iconPieChartCoreRadius: 15
+                        iconPieChartCoreRadius: 10,
+                        iconContent: nums[d]['count'],
+                        pieChartCaptionMaxWidth: 30,
+                        pieChartRadius: function (sum) {
+                            return 10 + 2 * Math.log(sum)
+                        }
                     });
                     this.pieCharts.push(geoObject)
                     this.map.geoObjects.add(geoObject)
