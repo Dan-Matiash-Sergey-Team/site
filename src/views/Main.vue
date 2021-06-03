@@ -26,97 +26,94 @@
                 <transition name="curtain">
                     <div class="has-background-white-ter"
                          style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px" v-if="show">
-                        <div id="curtain">
-                            <button style="width: 20vh" v-on:click="show=!show">
-                                Свернуть фильтры
-                            </button>
+                        <button style="width: 20vh" v-on:click="show=!show">
+                            Свернуть фильтры
+                        </button>
+                        <div class="container">
                             <div>
-                                <div class="container">
-                                    <div>
-                                        <label class="label" for="type">Тип ДТП</label>
-                                        <el-select clearable filterable id="type" size="small" style="width: 100%"
-                                                   v-model="DTP_V">
-                                            <el-option :key="opt" :label="opt" :value="opt"
-                                                       v-for="opt in options['DTP_V']"></el-option>
-                                        </el-select>
-                                    </div>
-                                    <div>
-                                        <label class="label" for="crime">Тип нарушения ПДД</label>
-                                        <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
-                                                   multiple size="small" style="width: 100%"
-                                                   v-model="NPDD">
-                                            <el-option :key="opt" :label="opt" :value="opt"
-                                                       v-for="opt in options['NPDD']">
-                                            </el-option>
-                                        </el-select>
-                                    </div>
-                                    <div>
-                                        <label class="label">Время суток</label>
-                                        <el-select clearable id="osv" size="small" style="width: 100%" v-model="osv">
-                                            <el-option :key="opt" :label="opt" :value="opt"
-                                                       v-for="opt in options['osv']"></el-option>
-                                        </el-select>
-                                    </div>
-                                    <div>
-                                        <label class="label">Место поблизости</label>
-                                        <el-select collapse-tags id="OBJ_DTP" multiple size="small" style="width: 100%"
-                                                   v-model="OBJ_DTP">
-                                            <el-option :key="opt" :label="opt" :value="opt"
-                                                       v-for="opt in options['OBJ_DTP']"></el-option>
-                                        </el-select>
-                                    </div>
-                                    <div class="container">
-                                        <label class="label">Улица</label>
-                                        <el-select clearable filterable size="small" style="width: 100%"
-                                                   v-model="street">
-                                            <el-option :key="opt" :label="opt" :value="opt"
-                                                       v-for="opt in options['street']"></el-option>
-                                        </el-select>
-                                    </div>
-                                    <div class="container">
-                                        <label class="label">Район</label>
-                                        <div>
-                                            <el-select clearable filterable id="district" size="small"
-                                                       style="width: 80%" v-model="district">
-                                                <el-option :key="opt" :label="opt" :value="opt"
-                                                           v-for="opt in options['district']">
-                                                </el-option>
-                                            </el-select>
-                                            <a @click="showPopup = district != ''" style="margin-left: 10px">
-                                                <i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>
-                                            </a>
-                                        </div>
-                                        <div v-if="district != ''">
-                                            <infgr :districtPopup="district" :showPopup="showPopup"
-                                                   @closePopup="showPopup = false">
-                                            </infgr>
-                                        </div>
-                                    </div>
-                                    <div class="container">
-                                        <label class="label">Дата</label>
-                                        <DatePicker v-model="date"
-                                        ></DatePicker>
-                                    </div>
-                                    <button :disabled="heatmapMode"
-                                            @click="heatmapMode?()=>{}:districtMode = !districtMode"
-                                            style="margin-top: 20px">Статистика по
-                                        районам
-                                    </button>
-                                    <button :disabled="districtMode"
-                                            @click="districtMode?()=>{}:heatmapMode = !heatmapMode"
-                                            style="margin-top: 20px">Тепловая
-                                        карта
-                                    </button>
+                                <label class="label" for="type">Тип ДТП</label>
+                                <el-select clearable filterable id="type" size="small" style="width: 100%"
+                                           v-model="DTP_V">
+                                    <el-option :key="opt" :label="opt" :value="opt"
+                                               v-for="opt in options['DTP_V']"></el-option>
+                                </el-select>
+                            </div>
+                            <div>
+                                <label class="label" for="crime">Тип нарушения ПДД</label>
+                                <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
+                                           multiple size="small" style="width: 100%"
+                                           v-model="NPDD">
+                                    <el-option :key="opt" :label="opt" :value="opt"
+                                               v-for="opt in options['NPDD']">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                            <div>
+                                <label class="label">Время суток</label>
+                                <el-select clearable id="osv" size="small" style="width: 100%" v-model="osv">
+                                    <el-option :key="opt" :label="opt" :value="opt"
+                                               v-for="opt in options['osv']"></el-option>
+                                </el-select>
+                            </div>
+                            <div>
+                                <label class="label">Место поблизости</label>
+                                <el-select collapse-tags id="OBJ_DTP" multiple size="small" style="width: 100%"
+                                           v-model="OBJ_DTP">
+                                    <el-option :key="opt" :label="opt" :value="opt"
+                                               v-for="opt in options['OBJ_DTP']"></el-option>
+                                </el-select>
+                            </div>
+                            <div class="container">
+                                <label class="label">Улица</label>
+                                <el-select clearable filterable size="small" style="width: 100%"
+                                           v-model="street">
+                                    <el-option :key="opt" :label="opt" :value="opt"
+                                               v-for="opt in options['street']"></el-option>
+                                </el-select>
+                            </div>
+                            <div class="container">
+                                <label class="label">Район</label>
+                                <div>
+                                    <el-select clearable filterable id="district" size="small"
+                                               style="width: 80%" v-model="district">
+                                        <el-option :key="opt" :label="opt" :value="opt"
+                                                   v-for="opt in options['district']">
+                                        </el-option>
+                                    </el-select>
+                                    <a @click="showPopup = district != ''" style="margin-left: 10px">
+                                        <i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>
+                                    </a>
+                                </div>
+                                <div v-if="district != ''">
+                                    <infgr :districtPopup="district" :showPopup="showPopup"
+                                           @closePopup="showPopup = false">
+                                    </infgr>
                                 </div>
                             </div>
+                            <div class="container">
+                                <label class="label">Дата</label>
+                                <DatePicker v-model="date"
+                                ></DatePicker>
+                            </div>
+                            <button :disabled="heatmapMode"
+                                    @click="heatmapMode?()=>{}:districtMode = !districtMode"
+                                    style="margin-top: 20px">Статистика по
+                                районам
+                            </button>
+                            <button :disabled="districtMode"
+                                    @click="districtMode?()=>{}:heatmapMode = !heatmapMode"
+                                    style="margin-top: 20px">Тепловая
+                                карта
+                            </button>
                         </div>
                     </div>
-                    <div style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px" v-else>
-                        <button style="width: 20vh" v-on:click="show=!show">
-                            Развернуть фильтры
-                        </button>
-                    </div>
                 </transition>
+                <div style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px;" v-if="!show">
+                    <button style="width: 20vh" v-on:click="show=!show">
+                        Развернуть фильтры
+                    </button>
+                </div>
+
             </div>
         </section>
     </div>
@@ -510,16 +507,14 @@
 </script>
 <style>
     .curtain-enter-active {
-        transition: all .1s ease;
+        transition:  .3s cubic-bezier(1.0, 0.5, 0.8, 1.0) all;
     }
-
-
     .curtain-leave-active {
-        transition: all .1s ease;
+        transition:  .3s cubic-bezier(1.0, 0.5, 0.8, 1.0) all;
     }
-
-    .curtain-enter, .curtain-leave-to {
-        transform: translateX(30vh);
+    .curtain-enter, .curtain-leave-to
+        /* .curtain-leave-active для <2.1.8 */ {
+        transform: translateX(10px);
         opacity: 0;
     }
 </style>
