@@ -24,16 +24,13 @@
           </yandex-map>
         </div>
         <div class="has-background-white-ter"
-             style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px">
+             style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px" v-if="show">
           <div id="curtain">
             <button style="width: 20vh" v-on:click="show=!show" v-if="show">
               Свернуть фильтры
             </button>
-            <button style="width: 20vh" v-on:click="show=!show" v-if="!show">
-              Развернуть фильтры
-            </button>
             <transition name="curtain">
-              <div v-if="show">
+              <div>
                 <div class="container">
                   <div>
                     <label class="label" for="type">Тип ДТП</label>
@@ -110,6 +107,11 @@
               </div>
             </transition>
           </div>
+        </div>
+        <div v-else  style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px">
+          <button style="width: 20vh" v-on:click="show=!show" v-if="!show">
+            Развернуть фильтры
+          </button>
         </div>
       </div>
     </section>
