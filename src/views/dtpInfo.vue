@@ -110,11 +110,13 @@
                                     <div class="box has-text-left">
                                         <div class="level-left">
                                             <div class="level-item is-one-fifth">
-                                                <i class="fa fa-car fa-2x"></i>
+                                                <i class="fa fa-car fa-2x" v-if="b['t_ts'] != 'Велосипеды'"></i>
+                                                <i class="fa fa-car fa-2x" v-else>Серега сюда впихни пикчу</i>
                                             </div>
                                             <div class="level-item">
                                                 <div class="title is-5">
-                                                    <span>{{ b['marka_ts'] }} {{ b['m_ts'] }}, {{ b['g_v'] }}, {{ b['color'] }}</span>
+                                                    <span v-if="b['t_ts'] != 'Велосипеды'">{{ b['marka_ts'] }} {{ b['m_ts'] }}, {{ b['g_v'] }}, {{ b['color'] }}</span>
+                                                    <span v-else>Велосипед</span>
                                                 </div>
                                             </div>
                                         </div>
