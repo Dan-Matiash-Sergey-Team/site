@@ -105,7 +105,28 @@
                                     style="margin-top: 20px">Тепловая
                                 карта
                             </button>
+                            <div class="container">
+                                <img src="../assets/images/placemark_regular.png" style="max-height: 30px">
+                                - ДТП
+                            </div>
+                            <div class="container">
+                                <img src="../assets/images/placemark_orange.png" style="max-height: 30px">
+                                - ДТП около образовательных учереждений
+                            </div>
+                            <div class="container">
+                                <img src="../assets/images/placemark_red.png" style="max-height: 30px">
+                                 - смертельные ДТП
+                            </div>
+                            <div class="container">
+                                <img src="../assets/images/cluster_green.png" style="max-height: 30px">
+                                - небольшое кол-во ДТП,
+                            </div>
+                            <div class="container">
+                                <img src="../assets/images/cluster_orange.png" style="max-height: 30px">
+                                 -среднее кол-во ДТП
+                            </div>
                         </div>
+
                     </div>
                 </transition>
                 <div style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px;" v-if="!show">
@@ -113,7 +134,6 @@
                         Развернуть фильтры
                     </button>
                 </div>
-
             </div>
         </section>
     </div>
@@ -500,7 +520,7 @@
             heatmapScript.setAttribute('src', 'https://yastatic.net/s3/mapsapi-jslibs/heatmap/0.0.1/heatmap.min.js')
             document.head.appendChild(heatmapScript)
             ymaps.modules.require(['Heatmap'], (Heatmap) => {
-                this.hmap = new Heatmap([], {dissipating: true});
+                this.hmap = new Heatmap([], {dissipating: true, intensityOfMidpoint: 0.2, });
             });
         }
     }
