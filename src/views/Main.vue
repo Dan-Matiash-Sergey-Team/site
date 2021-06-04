@@ -105,26 +105,6 @@
                                     style="margin-top: 20px">Тепловая
                                 карта
                             </button>
-                            <div class="container">
-                                <img src="../assets/images/placemark_regular.png" style="max-height: 30px">
-                                - ДТП
-                            </div>
-                            <div class="container">
-                                <img src="../assets/images/placemark_orange.png" style="max-height: 30px">
-                                - ДТП около образовательных учереждений
-                            </div>
-                            <div class="container">
-                                <img src="../assets/images/placemark_red.png" style="max-height: 30px">
-                                 - смертельные ДТП
-                            </div>
-                            <div class="container">
-                                <img src="../assets/images/cluster_green.png" style="max-height: 30px">
-                                - небольшое кол-во ДТП,
-                            </div>
-                            <div class="container">
-                                <img src="../assets/images/cluster_orange.png" style="max-height: 30px">
-                                 -среднее кол-во ДТП
-                            </div>
                         </div>
 
                     </div>
@@ -135,6 +115,20 @@
                     </button>
                 </div>
             </div>
+            <footer class="footer" style="margin-top: -40px">
+                <div class="has-text-centered">
+                    <img src="../assets/images/placemark_regular.png" style="max-height: 30px">
+                    - ДТП
+                    <img src="../assets/images/placemark_orange.png" style="max-height: 30px">
+                    - ДТП около образовательных учереждений
+                    <img src="../assets/images/placemark_red.png" style="max-height: 30px">
+                    - смертельные ДТП
+                    <img src="../assets/images/cluster_green.png" style="max-height: 30px">
+                    - небольшое кол-во ДТП,
+                    <img src="../assets/images/cluster_orange.png" style="max-height: 30px">
+                    -среднее кол-во ДТП
+                </div>
+            </footer>
         </section>
     </div>
 </template>
@@ -520,20 +514,23 @@
             heatmapScript.setAttribute('src', 'https://yastatic.net/s3/mapsapi-jslibs/heatmap/0.0.1/heatmap.min.js')
             document.head.appendChild(heatmapScript)
             ymaps.modules.require(['Heatmap'], (Heatmap) => {
-                this.hmap = new Heatmap([], {dissipating: true, intensityOfMidpoint: 0.2, });
+                this.hmap = new Heatmap([], {dissipating: true, intensityOfMidpoint: 0.2,});
             });
         }
     }
 </script>
 <style>
     .curtain-enter-active {
-        transition:  .3s cubic-bezier(1.0, 0.5, 0.8, 1.0) all;
+        transition: .3s cubic-bezier(1.0, 0.5, 0.8, 1.0) all;
     }
+
     .curtain-leave-active {
-        transition:  .3s cubic-bezier(1.0, 0.5, 0.8, 1.0) all;
+        transition: .3s cubic-bezier(1.0, 0.5, 0.8, 1.0) all;
     }
+
     .curtain-enter, .curtain-leave-to
-        /* .curtain-leave-active для <2.1.8 */ {
+        /* .curtain-leave-active для <2.1.8 */
+    {
         transform: translateX(10px);
         opacity: 0;
     }
