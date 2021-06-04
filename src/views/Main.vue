@@ -95,16 +95,18 @@
                                 <DatePicker v-model="date"
                                 ></DatePicker>
                             </div>
-                            <button :disabled="heatmapMode"
-                                    @click="heatmapMode?()=>{}:districtMode = !districtMode"
-                                    style="margin-top: 20px">Статистика по
-                                районам
-                            </button>
-                            <button :disabled="districtMode"
-                                    @click="districtMode?()=>{}:heatmapMode = !heatmapMode"
-                                    style="margin-top: 20px">Тепловая
-                                карта
-                            </button>
+                            <div class="buttons">
+                                <button :disabled="heatmapMode" class="button"
+                                        @click="heatmapMode?()=>{}:districtMode = !districtMode"
+                                        style="margin-top: 20px">Статистика по
+                                    районам
+                                </button>
+                                <button :disabled="districtMode" class="button"
+                                        @click="districtMode?()=>{}:heatmapMode = !heatmapMode"
+                                        style="margin-top: 20px">Тепловая
+                                    карта
+                                </button>
+                            </div>
                         </div>
 
                     </div>
@@ -117,16 +119,16 @@
             </div>
             <footer class="footer" style="margin-top: -40px">
                 <div class="has-text-centered">
-                    <img src="../assets/images/placemark_regular.png" style="max-height: 30px">
+                    <img src="../assets/images/placemark_regular.png" style="max-height: 40px">
                     - ДТП
-                    <img src="../assets/images/placemark_orange.png" style="max-height: 30px">
+                    <img src="../assets/images/placemark_orange.png" style="max-height: 40px">
                     - ДТП около образовательных учереждений
-                    <img src="../assets/images/placemark_red.png" style="max-height: 30px">
+                    <img src="../assets/images/placemark_red.png" style="max-height: 40px">
                     - смертельные ДТП
-                    <img src="../assets/images/cluster_green.png" style="max-height: 30px">
+                    <img src="../assets/images/cluster_green.png" style="max-height: 40px">
                     - небольшое кол-во ДТП,
-                    <img src="../assets/images/cluster_orange.png" style="max-height: 30px">
-                    -среднее кол-во ДТП
+                    <img src="../assets/images/cluster_red.png" style="max-height: 40px">
+                    -большое кол-во ДТП
                 </div>
             </footer>
         </section>
