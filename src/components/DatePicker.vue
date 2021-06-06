@@ -8,7 +8,6 @@
                 start-placeholder="Начало"
                 type="daterange"
                 v-model="value2"
-                :default-value="default_value"
                 size="small"
                 @input="$emit('input', value2)">
         </el-date-picker>
@@ -80,10 +79,9 @@
                         }
                     },]
                 },
-                value2: '',
+                value2: [new Date('2021-04-01'), new Date('2021-04-30'),],
             };
         },
-        props: ['default_value']
     }
 </script>
 

@@ -26,7 +26,8 @@
                 <transition name="curtain">
                     <div class="has-background-white-ter"
                          style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px" v-if="show">
-                        <button style="width: 20vh" v-on:click="show=!show">
+                        <i class="fas fa-arrow-alt-circle-left fa-3x"></i>
+                        <button style="width: 20vh" v-on:click="show=!show" class="button">
                             Свернуть фильтры
                         </button>
                         <div class="container">
@@ -96,13 +97,13 @@
                                 ></DatePicker>
                             </div>
                             <div class="buttons">
-                                <button :disabled="heatmapMode" class="button"
-                                        @click="heatmapMode?()=>{}:districtMode = !districtMode"
+                                <button :disabled="heatmapMode" @click="heatmapMode?()=>{}:districtMode = !districtMode"
+                                        class="button"
                                         style="margin-top: 20px">Статистика по
                                     районам
                                 </button>
-                                <button :disabled="districtMode" class="button"
-                                        @click="districtMode?()=>{}:heatmapMode = !heatmapMode"
+                                <button :disabled="districtMode" @click="districtMode?()=>{}:heatmapMode = !heatmapMode"
+                                        class="button"
                                         style="margin-top: 20px">Тепловая
                                     карта
                                 </button>
@@ -112,7 +113,7 @@
                     </div>
                 </transition>
                 <div style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px;" v-if="!show">
-                    <button style="width: 20vh" v-on:click="show=!show">
+                    <button style="width: 20vh" v-on:click="show=!show" class="button">
                         Развернуть фильтры
                     </button>
                 </div>
@@ -126,7 +127,7 @@
                     <img src="../assets/images/placemark_red.png" style="max-height: 40px">
                     - смертельные ДТП
                     <img src="../assets/images/cluster_green.png" style="max-height: 40px">
-                    - небольшое кол-во ДТП,
+                    - небольшое кол-во ДТП
                     <img src="../assets/images/cluster_red.png" style="max-height: 40px">
                     -большое кол-во ДТП
                 </div>
@@ -337,7 +338,7 @@
 
             },
             removeAllPlacemarks: async function () {
-                await this.objectManager.removeAll()
+                this.objectManager.removeAll()
             },
             addPlacemarks: async function (points) {
 
@@ -367,7 +368,7 @@
                             clusterCaption: "ДТП №" + points[i].id,
                             balloonContent: `<h3>${points[i].DTP_V}</h3>` +
                                 `<p>Дата: ${points[i].date}</p>  <p>Адрес: ${points[i].address}</p> <p>Основная причина: ${points[i].NPDD[0]}</p><p>Освещение: ${points[i].osv}</p>` +
-                                `<button ><a href="#/dtp_info/${points[i].id}" class target="_blank">Подробнее</a></button>`
+                                `<button class="button"><a href="#/dtp_info/${points[i].id}" class target="_blank">Подробнее</a></button>`
                         }
 
                     }
