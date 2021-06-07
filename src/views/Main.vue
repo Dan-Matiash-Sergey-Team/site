@@ -3,22 +3,22 @@
   <div>
     <section class="hero is-white">
       <nav class="level has-background-white mb-0" style="height: 50px">
-        <p class="level-item has-icons-left">
-          <i aria-hidden="true" class="link is-info fa fa-home fa-lg"></i>
-        </p>
+<!--        <p class="level-item has-icons-left">-->
+<!--          <i aria-hidden="true" class="link is-info fa fa-home fa-lg"></i>-->
+<!--        </p>-->
         <p class="level-item">
           <strong style="color:black">Карта ДТП по Москве</strong>
         </p>
-        <p class="level-item has-icons-right">
-          <router-link to="/infgr"><i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>
-          </router-link>
-        </p>
+<!--        <p class="level-item has-icons-right">-->
+<!--          <router-link to="/infgr"><i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>-->
+<!--          </router-link>-->
+<!--        </p>-->
       </nav>
       <div style="position: relative">
         <div v-if="showMap">
           <yandex-map :coords="map ? map.getCenter() : [55.7522, 37.6156]"
                       @map-was-initialized="initHandler" map-type="map"
-                      style="width: 100%; height: 700px;"
+                      style="width: 100%; height: 85vh;"
                       zoom="16"
           >
           </yandex-map>
