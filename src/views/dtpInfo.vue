@@ -18,11 +18,13 @@
             <div class="title is-4">
               <h1>{{ this.dtpData.data['DTP_V'] }}</h1>
             </div>
-              <p v-if="this.dtpData.data['infoDtp']['street'] != '' & this.dtpData.data['infoDtp']['house'] != ''" class="subtitle">{{ this.dtpData.data['date'] }} в {{ this.dtpData.data['Time'] }} |
-                Район {{ this.dtpData.data['District'] }}, {{ this.dtpData.data['infoDtp']['street'] }},
-                {{ this.dtpData.data['infoDtp']['house'] }}</p>
-              <p v-else-if="this.dtpData.data['infoDtp']['street'] === '' || this.dtpData.data['infoDtp']['house'] === ''" class="subtitle">{{ this.dtpData.data['date'] }} в {{ this.dtpData.data['Time'] }} |
-                Район {{ this.dtpData.data['District'] }}, Точный адрес не указан</p>
+            <p v-if="this.dtpData.data['infoDtp']['street'] != '' & this.dtpData.data['infoDtp']['house'] != ''"
+               class="subtitle">{{ this.dtpData.data['date'] }} в {{ this.dtpData.data['Time'] }} |
+              Район {{ this.dtpData.data['District'] }}, {{ this.dtpData.data['infoDtp']['street'] }},
+              {{ this.dtpData.data['infoDtp']['house'] }}</p>
+            <p v-else-if="this.dtpData.data['infoDtp']['street'] === '' || this.dtpData.data['infoDtp']['house'] === ''"
+               class="subtitle">{{ this.dtpData.data['date'] }} в {{ this.dtpData.data['Time'] }} |
+              Район {{ this.dtpData.data['District'] }}, Точный адрес не указан</p>
             <nav class="level-left" style="margin-bottom: 8px">
               <div class="level-item">
                 <i class="fa fa-car fa-3x"></i>
@@ -75,15 +77,15 @@
           Подробности ДТП
         </div>
         <div class="block">
-          <li class="subtitle is-5">Причины ДТП: <span :key="b"
-                                                       v-for="b in this.dtpData.data['infoDtp']['ndu']">{{ b }}</span>
-          </li>
+          <div :key="b" v-for="b in this.dtpData.data['infoDtp']['ts_info']">
+            <div :key="c" v-for="c in b['ts_uch']">
+              <div :key="d" v-for="d in c['NPDD']"><li class="subtitle is-5" v-if="d != 'Нет нарушений'">Причины ДТП: {{d}}</li></div>
+            </div>
+          </div>
         </div>
         <div class="block">
           <li class="subtitle is-5">Участок дороги: <span :key="b"
-                                                          v-for="b in this.dtpData.data['infoDtp']['sdor']">{{
-              b
-            }} </span>
+                                                          v-for="b in this.dtpData.data['infoDtp']['sdor']">{{ b }} </span>
           </li>
         </div>
         <div class="block">
@@ -121,7 +123,9 @@
                         </div>
                         <div class="level-item">
                           <div class="title is-5">
-                            <span v-if="b['t_ts'] != 'Велосипеды'">{{ b['marka_ts'] }} {{ b['m_ts'] }}, {{ b['g_v'] }}, {{ b['color'] }}</span>
+                            <span v-if="b['t_ts'] != 'Велосипеды'">{{ b['marka_ts'] }} {{ b['m_ts'] }}, {{ b['g_v'] }}, {{
+                                b['color']
+                              }}</span>
                             <span v-else>Велосипед</span>
                           </div>
                         </div>
@@ -133,7 +137,7 @@
                         <div class="box is-shadowless">
                           <div class="level">
                             <div class="title is-5">
-                              <span>{{ c['K_UCH'] }}, {{ c['POL'] }}</span>
+                              <span>{{ c['K_UCH'] }}, пол {{ c['POL'] }}</span>
                             </div>
                           </div>
                           <div class="level-left">
@@ -170,7 +174,7 @@
                       </div>
                       <div class="level-item">
                         <div class="title is-5">
-                          <span>{{ d['K_UCH'] }}, {{ d['POL'] }}</span>
+                          <span>{{ d['K_UCH'] }}, пол {{ d['POL'] }}</span>
                         </div>
                       </div>
                     </div>

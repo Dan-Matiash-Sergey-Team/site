@@ -152,7 +152,7 @@ export default {
   components: {DatePicker, infgr},
   data() {
     return {
-      show: true,
+      show: false,
       showMap: false,
       dtps: [],
       map: null,
