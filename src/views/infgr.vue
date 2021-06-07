@@ -51,6 +51,9 @@
                     hAxis: {
                         textPosition: 'none',
                     },
+                    vAxis:{
+                       format: "0"
+                    },
                     chartArea: {
                         left: 20,
                         top: 20,
