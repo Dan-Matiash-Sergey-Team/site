@@ -1,8 +1,8 @@
 <template>
     <div class="block">
         <el-date-picker
-                :picker-options="pickerOptions"
                 :clearable="false"
+                :picker-options="pickerOptions"
                 @input="$emit('input', value2)"
                 align="left"
                 end-placeholder="Конец"
@@ -83,8 +83,7 @@
                 value2: [new Date('2021-04-01'), new Date('2021-04-30'),],
             };
         },
-        methods: {
-        }
+        methods: {}
     }
 </script>
 

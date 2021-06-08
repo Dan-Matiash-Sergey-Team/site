@@ -266,7 +266,16 @@
                             hasBalloon: true,
                             hasHint: true,
                         })
-
+                    myPolygon.events.add("mouseenter", function (e) {
+                            myPolygon.options.set({fillColor: "#000000",
+                                hasBalloon: true,
+                                hasHint: true,})
+                    })
+                    myPolygon.events.add("mouseleave", function (e) {
+                            myPolygon.options.set({fillColor: c,
+                                hasBalloon: true,
+                                hasHint: true,})
+                    })
                     this.multiplePolygons.push(myPolygon)
                     this.map.geoObjects.add(myPolygon)
                     var geoObject = new ymaps.Placemark(Data['disctrict_centres'][d], {
@@ -568,9 +577,7 @@
             let heatmapScript = document.createElement('script')
             heatmapScript.setAttribute('src', 'https://yastatic.net/s3/mapsapi-jslibs/heatmap/0.0.1/heatmap.min.js')
             document.head.appendChild(heatmapScript)
-            console.log("start")
             setTimeout(()=>{ymaps.modules.require(['Heatmap']).spread( (Heatmap) => {
-                console.log("end")
                 this.hmap = new Heatmap([], {dissipating: true, intensityOfMidpoint: 0.2,});
             }, function (error) {
                 console.log(error)

@@ -26,7 +26,6 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
@@ -42,11 +41,8 @@
     "env": {
       "node": true
     },
-    "extends": [
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
+    "extends": [],
+    "parserOptions": {},
     "rules": {}
   },
   "browserslist": [
