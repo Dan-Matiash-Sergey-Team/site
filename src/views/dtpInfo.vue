@@ -231,7 +231,7 @@ export default {
     this.loading = false
     console.log(this.dtpData)
     const settings = {
-      apiKey: '8984067c-7841-4a8a-aa3e-8d6920ceea02',
+      apiKey: '4877efab-fec0-4e66-956d-33db0d22ab10',
       lang: 'ru_RU',
       coordorder: 'latlong',
       version: '2.1'
