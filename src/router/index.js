@@ -19,6 +19,14 @@ const routes = [
         props: true
     },
     {
+        path: '/delete/:id',
+        name: 'delete',
+        beforeEnter(to, from, next) {
+            fetch(`http://195.133.147.101:3000/remove?id=${to.params.id}`);window.close('','_parent','')
+        },
+        props: true
+    },
+    {
         path: '/infgr',
         name: 'infgr',
         component: infgr

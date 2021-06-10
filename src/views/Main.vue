@@ -71,6 +71,7 @@
                                                v-for="opt in options['street']"></el-option>
                                 </el-select>
                             </div>
+                            <button @click="test">След</button>
                             <div class="container">
                                 <label class="label">Район</label>
                                 <div>
@@ -186,7 +187,7 @@
                 heatmapMode: false,
                 hmap: null,
                 heatmapType: 0,
-                allowHmap: false
+                allowHmap: false,
             }
         },
         computed: {
@@ -209,7 +210,7 @@
         },
         methods: {
             test: async function () {
-
+                this.street = this.options['street'][this.options['street'].indexOf(this.street)+1]
             },
             turnHmapOn: function () {
                 if (this.heatmapMode) {
@@ -461,7 +462,8 @@
                             clusterCaption: "ДТП №" + points[i].id,
                             balloonContent: `<h3>${points[i].DTP_V}</h3>` +
                                 `<p>Дата: ${points[i].date}</p>  <p>Адрес: ${points[i].address}</p> <p>Основная причина: ${points[i].NPDD[0]}</p><p>Освещение: ${points[i].osv}</p>` +
-                                `<button class="button is-small"><a href="#/dtp_info/${points[i].id}" class target="_blank">Подробнее</a></button>`
+                                `<button class="button is-small"><a href="#/dtp_info/${points[i].id}" class target="_blank">Подробнее</a></button>` +
+                                `<button class="button is-small"><a href="#/delete/${points[i].id}" class target="_blank">Удалить</a></button>`
                         }
 
                     }
