@@ -108,7 +108,7 @@
                                     карта
                                 </button>
                             </div>
-                            <div  v-if="districtMode">
+                            <div v-if="districtMode">
                                 <label class="checkbox">
                                     <input type="checkbox" v-model="showPieCharts">
                                     Показать круговые диаграммы
@@ -577,8 +577,7 @@
                     for (let p of this.pieCharts) {
                         this.map.geoObjects.add(p)
                     }
-                }
-                else{
+                } else {
                     for (let p of this.pieCharts) {
                         this.map.geoObjects.remove(p)
                     }
