@@ -8,20 +8,20 @@
             <div class="columns">
                 <div class="column is-one-quarter">
                     <div class="container" style="width: 266px">
-                            <yandex-map
-                                    :behaviors="[]"
-                                    :controls="[]"
+                        <yandex-map
+                                :behaviors="[]"
+                                :controls="[]"
+                                :coords="[dtpData.data['infoDtp']['COORD_W'], dtpData.data['infoDtp']['COORD_L']]"
+                                :scroll-zoom="false"
+                                map-type="map"
+                                style="width: 300px; height: 300px"
+                                zoom="16"
+                        >
+                            <ymap-marker
                                     :coords="[dtpData.data['infoDtp']['COORD_W'], dtpData.data['infoDtp']['COORD_L']]"
-                                    :scroll-zoom="false"
-                                    map-type="map"
-                                    style="width: 300px; height: 300px"
-                                    zoom="16"
-                            >
-                                <ymap-marker
-                                        :coords="[dtpData.data['infoDtp']['COORD_W'], dtpData.data['infoDtp']['COORD_L']]"
-                                        marker-id="123"
-                                />
-                            </yandex-map>
+                                    marker-id="123"
+                            />
+                        </yandex-map>
                     </div>
                 </div>
                 <div class="column">
@@ -44,8 +44,7 @@
                             </div>
                             <div class="level-item">
                                 <div>
-                                    <p class="heading">Транспорт</p>
-                                    <p class="title">{{ this.dtpData.data['K_TS'] }}</p>
+                                    <p class="subtitle">Транспорт: {{ this.dtpData.data['K_TS'] }}</p>
                                 </div>
                             </div>
                         </nav>
@@ -55,8 +54,7 @@
                             </div>
                             <div class="level-item">
                                 <div>
-                                    <p class="heading">Участники</p>
-                                    <p class="title">{{ this.dtpData.data['K_UCH'] }}</p>
+                                    <p class="subtitle">Участники: {{ this.dtpData.data['K_UCH'] }}</p>
                                 </div>
                             </div>
                         </nav>
@@ -66,8 +64,7 @@
                             </div>
                             <div class="level-item">
                                 <div>
-                                    <p class="heading">Пострадавшие</p>
-                                    <p class="title">{{ this.dtpData.data['RAN'] }}</p>
+                                    <p class="subtitle">Пострадавшие: {{ this.dtpData.data['RAN'] }}</p>
                                 </div>
                             </div>
                         </nav>
@@ -77,8 +74,7 @@
                             </div>
                             <div class="level-item">
                                 <div>
-                                    <p class="heading">Погибшие</p>
-                                    <p class="title">{{ this.dtpData.data['POG'] }}</p>
+                                    <p class="subtitle">Погибшие: {{ this.dtpData.data['POG'] }}</p>
                                 </div>
                             </div>
                         </nav>
