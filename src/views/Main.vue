@@ -31,7 +31,9 @@
             <div v-if="showFilters" style="display: flex;">
 
               <div>
-                <a class="button" v-on:click="showFilters=!showFilters">
+                <a class="button" style="border-width: 0px; border-bottom-right-radius: 0;
+                border-top-right-radius: 0; height: 30px; background-color: whitesmoke"
+                   v-on:click="showFilters=!showFilters">
                   <i class="fas fa-chevron-right"></i>
                 </a>
               </div>
@@ -139,7 +141,9 @@
             </div>
 
             <div v-else>
-              <a class="button" v-on:click="showFilters=!showFilters">
+              <a class="button" style="border-bottom-right-radius: 0;
+                border-top-right-radius: 0; height: 30px; background-color: whitesmoke"
+                 v-on:click="showFilters=!showFilters">
                 <i class="fas fa-chevron-left"></i>
               </a>
             </div>
