@@ -1,6 +1,5 @@
 <!--eslint-disable -->
 <template>
-  <<<<<<< HEAD
   <div>
     <section class="hero is-white">
       <nav class="level has-background-white mb-0" style="height: 50px">
@@ -92,193 +91,60 @@
                       <a @click="showPopup = district != ''" style="margin-left: 10px">
                         <i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>
                       </a>
-                      =======
-                      <div>
-                        <section class="hero is-white">
-                          <nav class="level has-background-white mb-0" style="height: 50px">
-                            <!--        <p class="level-item has-icons-left">-->
-                            <!--          <i aria-hidden="true" class="link is-info fa fa-home fa-lg"></i>-->
-                            <!--        </p>-->
-                            <p class="level-item">
-                              <strong style="color:black">Карта ДТП по Москве</strong>
-                            </p>
-                            <!--        <p class="level-item has-icons-right">-->
-                            <!--          <router-link to="/infgr"><i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>-->
-                            <!--          </router-link>-->
-                            <!--        </p>-->
-                          </nav>
-                          <div style="position: relative">
-                            <div v-if="showMap">
-                              <yandex-map :coords="map ? map.getCenter() : [55.7522, 37.6156]"
-                                          @map-was-initialized="initHandler" map-type="map"
-                                          style="width: 100%; height: 85vh;"
-                                          zoom="16"
-                              >
-                              </yandex-map>
-                            </div>
-                            <transition name="curtain">
-                              <div class="has-background-white-ter"
-                                   style="position: absolute; top:0; right:0;margin-top: 45px; margin-right: 0px"
-                                   v-if="show">
-                                <button class="button" style="width: 20vh" v-on:click="show=!show">
-                                  Свернуть фильтры
-                                </button>
-                                <div class="container">
-                                  <div>
-                                    <label class="label" for="type">Тип ДТП</label>
-                                    <el-select clearable filterable id="type" size="small" style="width: 100%"
-                                               v-model="DTP_V">
-                                      <el-option :key="opt" :label="opt" :value="opt"
-                                                 v-for="opt in options['DTP_V']"></el-option>
-                                    </el-select>
-                                  </div>
-                                  <div>
-                                    <label class="label">Тип нарушения ПДД</label>
-                                    <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
-                                               multiple size="small" style="width: 100%"
-                                               v-model="NPDD">
-                                      <el-option :key="opt" :label="opt" :value="opt"
-                                                 v-for="opt in options['NPDD']">
-                                      </el-option>
-                                    </el-select>
-                                  </div>
-                                  <div>
-                                    <label class="label">Время суток</label>
-                                    <el-select clearable id="osv" size="small" style="width: 100%" v-model="osv">
-                                      <el-option :key="opt" :label="opt" :value="opt"
-                                                 v-for="opt in options['osv']"></el-option>
-                                    </el-select>
-                                  </div>
-                                  <div>
-                                    <label class="label">Место поблизости</label>
-                                    <el-select collapse-tags id="OBJ_DTP" multiple size="small" style="width: 100%"
-                                               v-model="OBJ_DTP">
-                                      <el-option :key="opt" :label="opt" :value="opt"
-                                                 v-for="opt in options['OBJ_DTP']"></el-option>
-                                    </el-select>
-                                  </div>
-                                  <div class="container">
-                                    <label class="label">Улица</label>
-                                    <el-select clearable filterable size="small" style="width: 100%"
-                                               v-model="street">
-                                      <el-option :key="opt" :label="opt" :value="opt"
-                                                 v-for="opt in options['street']"></el-option>
-                                    </el-select>
-                                  </div>
-                                  <!--                            <button @click="test">След</button>-->
-                                  <div class="container">
-                                    <label class="label">Район</label>
-                                    <div>
-                                      <el-select clearable filterable id="district" size="small"
-                                                 style="width: 80%" v-model="district">
-                                        <el-option :key="opt" :label="opt" :value="opt"
-                                                   v-for="opt in options['district']">
-                                        </el-option>
-                                      </el-select>
-                                      <a @click="showPopup = district != ''" style="margin-left: 10px">
-                                        <i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>
-                                      </a>
-                                    </div>
-                                    <div v-if="district != ''">
-                                      <infgr :districtPopup="district" :showPopup="showPopup"
-                                             @closePopup="showPopup = false">
-                                      </infgr>
-                                    </div>
-                                  </div>
-                                  <div class="container">
-                                    <label class="label">Дата</label>
-                                    <DatePicker v-model="date"
-                                    ></DatePicker>
-                                  </div>
-                                  <div class="buttons">
-                                    <button :disabled="heatmapMode"
-                                            @click="heatmapMode?()=>{}:districtMode = !districtMode"
-                                            class="button"
-                                            style="margin-top: 20px">Статистика по
-                                      районам
-                                    </button>
-                                    <button :disabled="districtMode || hmap==null"
-                                            @click="districtMode?()=>{}:turnHmapOn()"
-                                            class="button"
-                                            style="margin-top: 20px">Тепловая
-                                      карта
-                                    </button>
-                                  </div>
-                                  <div v-if="districtMode">
-                                    <label class="checkbox">
-                                      <input type="checkbox" v-model="showPieCharts">
-                                      Показать круговые диаграммы
-                                    </label>
-                                    <br>
-                                  </div>
-                                  <div class="buttons" style="text-align: right" v-if="heatmapMode">
-                                    <button :class="{'button': true, 'is-active': heatmapType==1}"
-                                            @click="heatmapType=1">Школы
-                                    </button>
-                                    <button :class="{'button': true, 'is-active': heatmapType==2}"
-                                            @click="heatmapType=2">Смерти
-                                    </button>
-                                    <button :class="{'button': true, 'is-active': heatmapType==3}"
-                                            @click="heatmapType=3">Все
-                                    </button>
-                                  </div>
-                                </div>
-
-                                >>>>>>> 6f6e15a44cb7056fb208d9e70ae805f548c5ec26
-                              </div>
-                              <div v-if="district != ''">
-                                <infgr :districtPopup="district" :showPopup="showPopup"
-                                       @closePopup="showPopup = false">
-                                </infgr>
-                              </div>
-                          </div>
-                          <div class="container">
-                            <label class="label">Дата</label>
-                            <DatePicker v-model="date"
-                            ></DatePicker>
-                          </div>
-                          <div class="buttons">
-                            <button :disabled="heatmapMode" @click="heatmapMode?()=>{}:districtMode = !districtMode"
-                                    class="button"
-                                    style="margin-top: 20px">Статистика по
-                              районам
-                            </button>
-                            <button :disabled="districtMode || hmap==null" @click="districtMode?()=>{}:turnHmapOn()"
-                                    class="button"
-                                    style="margin-top: 20px">Тепловая
-                              карта
-                            </button>
-                          </div>
-                          <div v-if="districtMode">
-                            <label class="checkbox">
-                              <input type="checkbox" v-model="showPieCharts">
-                              Показать круговые диаграммы
-                            </label>
-                            <br>
-                          </div>
-                          <div class="buttons" style="text-align: right" v-if="heatmapMode">
-                            <button :class="{'button': true, 'is-active': heatmapType==1}"
-                                    @click="heatmapType=1">Школы
-                            </button>
-                            <button :class="{'button': true, 'is-active': heatmapType==2}"
-                                    @click="heatmapType=2">Смерти
-                            </button>
-                            <button :class="{'button': true, 'is-active': heatmapType==3}"
-                                    @click="heatmapType=3">Все
-                            </button>
-                          </div>
-                      </div>
                     </div>
-
+                    <div v-if="district != ''">
+                      <infgr :districtPopup="district" :showPopup="showPopup"
+                             @closePopup="showPopup = false">
+                      </infgr>
+                    </div>
                   </div>
-
-                  <div v-else>
-                    <a class="button" v-on:click="showFilters=!showFilters">
-                      <i class="fas fa-chevron-left"></i>
-                    </a>
+                  <div class="container">
+                    <label class="label">Дата</label>
+                    <DatePicker v-model="date"
+                    ></DatePicker>
                   </div>
-
+                  <div class="buttons">
+                    <button :disabled="heatmapMode" @click="heatmapMode?()=>{}:districtMode = !districtMode"
+                            class="button"
+                            style="margin-top: 20px">Статистика по
+                      районам
+                    </button>
+                    <button :disabled="districtMode || hmap==null" @click="districtMode?()=>{}:turnHmapOn()"
+                            class="button"
+                            style="margin-top: 20px">Тепловая
+                      карта
+                    </button>
+                  </div>
+                  <div v-if="districtMode">
+                    <label class="checkbox">
+                      <input type="checkbox" v-model="showPieCharts">
+                      Показать круговые диаграммы
+                    </label>
+                    <br>
+                  </div>
+                  <div class="buttons" style="text-align: right" v-if="heatmapMode">
+                    <button :class="{'button': true, 'is-active': heatmapType==1}"
+                            @click="heatmapType=1">Школы
+                    </button>
+                    <button :class="{'button': true, 'is-active': heatmapType==2}"
+                            @click="heatmapType=2">Смерти
+                    </button>
+                    <button :class="{'button': true, 'is-active': heatmapType==3}"
+                            @click="heatmapType=3">Все
+                    </button>
+                  </div>
                 </div>
+              </div>
+
+            </div>
+
+            <div v-else>
+              <a class="button" v-on:click="showFilters=!showFilters">
+                <i class="fas fa-chevron-left"></i>
+              </a>
+            </div>
+
+          </div>
         </transition>
 
       </div>
@@ -659,7 +525,7 @@ export default {
     loadingAsync: async function (year, context) {
       return [await (await fetch(`http://195.133.147.101:3000/get_dtps_year?year=${year}`)).json(), context]
     },
-    showHeatmapmode: async function() {
+    showHeatmapmode: async function () {
       this.removeAllPlacemarks()
       let features = []
       for (let i = 0; i < this.vis_dtps.length; i++) {
@@ -669,245 +535,150 @@ export default {
             if (this.vis_dtps[i].OBJ_DTP.includes(a)) {
               flag = true
             }
-            <
-            <
-            <
-            <
-            <
-            << HEAD
           }
           if (flag) {
+            features.push({
+              type: 'Feature',
+              id: i,
+              geometry: {
+                type: 'Point',
+                coordinates: [Number(this.vis_dtps[i].COORD_W), Number(this.vis_dtps[i].COORD_L)]
+              },
+            })
+          }
+        } else if (this.heatmapType == 2) {
+          if (this.vis_dtps[i].death > 0) {
+            features.push({
+              type: 'Feature',
+              id: i,
+              geometry: {
+                type: 'Point',
+                coordinates: [Number(this.vis_dtps[i].COORD_W), Number(this.vis_dtps[i].COORD_L)]
+              },
+            })
+          }
+        } else {
           features.push({
-          type: 'Feature',
-          id: i,
-          geometry:
-            {
+            type: 'Feature',
+            id: i,
+            geometry: {
               type: 'Point',
-                  coordinates
-            :
-              [Number(this.vis_dtps[i].COORD_W), Number(this.vis_dtps[i].COORD_L)]
+              coordinates: [Number(this.vis_dtps[i].COORD_W), Number(this.vis_dtps[i].COORD_L)]
             },
           })
-          }
-          } else if (this.heatmapType == 2) {
-          if (this.vis_dtps[i].death > 0)
-            {
-              features.push({
-                type: 'Feature',
-                id: i,
-                geometry: {
-                  type: 'Point',
-                  coordinates: [Number(this.vis_dtps[i].COORD_W), Number(this.vis_dtps[i].COORD_L)]
-                },
-              })
-            }
-          } else
-            {
-              features.push({
-                type: 'Feature',
-                id: i,
-                geometry: {
-                  type: 'Point',
-                  coordinates: [Number(this.vis_dtps[i].COORD_W), Number(this.vis_dtps[i].COORD_L)]
-                  === === =
-                },
-                watch: {
-                  showPieCharts(val) {
-                    if (val) {
-                      for (let p of this.pieCharts) {
-                        this.map.geoObjects.add(p)
-                      }
-                    } else {
-                      for (let p of this.pieCharts) {
-                        this.map.geoObjects.remove(p)
-                      }
-                    }
-                  },
-                  vis_dtps(val) {
-                    if (this.objectManager) {
-                      if (this.districtMode && this.heatmapMode) {
-                        console.log("Mega error")
-                        this.districtMode = false
-                        this.heatmapMode = false
-                        this.helpvar = !this.helpvar
-                      } else {
-                        if (this.heatmapMode) {
-                          console.log("aaaaaa")
-                          this.showHeatmapmode()
-                        } else if (this.districtMode) {
-                          console.log("bbbbbb")
-                          this.showDistrictMode()
-                        } else {
-                          this.removeAllPlacemarks()
-                          this.addPlacemarks(val)
-                        }
-                      }
-                    }
-                  },
-                  district(val) {
-                    if (!this.districtMode) {
-                      let myPolygon = new ymaps.Polygon(this.options.district_coords[val])
-                      if (this.showingPolygon) {
-                        this.map.geoObjects.remove(this.showingPolygon)
-                      }
-                      this.showingPolygon = myPolygon
-                      this.map.geoObjects.add(myPolygon)
-                    }
-                  },
-                  districtMode(val) {
-                    if (!this.heatmapMode) {
-                      if (val) {
-                        this.showPieCharts = true
-                        this.showDistrictMode()
-                      } else {
-                        this.hideDistrictMode()
-                        this.helpvar = !this.helpvar
-                      }
-                    }
-                  },
-                  heatmapType(val) {
-                    if (!this.districtMode) {
-                      if (val > 0) {
-                        this.showHeatmapmode()
-                      } else {
-                        this.hideHeatmapMode()
-                        this.helpvar = !this.helpvar
-                      }
-                    }
-                  >>>>>>>
-                    6
-                    f6e15a44cb7056fb208d9e70ae805f548c5ec26
-                  },
-                })
-            }
-          }
-        var data =
-          {
-            type: 'FeatureCollection',
-                features
-          :
-            features
-          }
-        this.hmap.setData(data)
-        this.hmap.setMap(this.map);
-        },
-        hideHeatmapMode: async function ()
-          {
-            this.hmap.setData([])
-            this.hmap.setMap(this.map);
-          }
-        },
-        watch:
-          {
-            showPieCharts(val)
-            {
-              if (val) {
-                for (let p of this.pieCharts) {
-                  this.map.geoObjects.add(p)
-                }
-              } else {
-                for (let p of this.pieCharts) {
-                  this.map.geoObjects.remove(p)
-                }
-              }
-            }
-          ,
-            vis_dtps(val)
-            {
-              if (this.objectManager) {
-                if (this.districtMode && this.heatmapMode) {
-                  console.log("Mega error")
-                  this.districtMode = false
-                  this.heatmapMode = false
-                  this.helpvar = !this.helpvar
-                } else {
-                  if (this.heatmapMode) {
-                    console.log("aaaaaa")
-                    this.showHeatmapmode()
-                  } else if (this.districtMode) {
-                    console.log("bbbbbb")
-                    this.showDistrictMode()
-                  } else {
-                    this.removeAllPlacemarks()
-                    this.addPlacemarks(val)
-                  }
-                }
-              }
-            }
-          ,
-            district(val)
-            {
-              if (!this.districtMode) {
-                let myPolygon = new ymaps.Polygon(this.options.district_coords[val])
-                if (this.showingPolygon) {
-                  this.map.geoObjects.remove(this.showingPolygon)
-                }
-                this.showingPolygon = myPolygon
-                this.map.geoObjects.add(myPolygon)
-              }
-            }
-          ,
-            districtMode(val)
-            {
-              if (!this.heatmapMode) {
-                if (val) {
-                  this.showPieCharts = true
-                  this.showDistrictMode()
-                } else {
-                  this.hideDistrictMode()
-                  this.helpvar = !this.helpvar
-                }
-              }
-            }
-          ,
-            heatmapType(val)
-            {
-              if (!this.districtMode) {
-                if (val > 0) {
-                  this.showHeatmapmode()
-                } else {
-                  this.hideHeatmapMode()
-                  this.helpvar = !this.helpvar
-                }
-              }
-            }
-          ,
-          }
-        ,
-        async mounted()
-          {
-            if (localStorage.dtps) {
-              this.dtps = localStorage.dtps
-            } else {
-              this.dtps = this.$store.getters.dtps
-            }
-            // if (this.dtps.length === 0) {
-            //     await this.$router.push('/')
-            // }
-            console.log(this.dtps[0])
-            this.showMap = true
-
-            const settings = {
-              apiKey: '4877efab-fec0-4e66-956d-33db0d22ab10',
-              lang: 'ru_RU',
-              coordorder: 'latlong',
-              version: '2.1'
-            }
-            await loadYmap(settings)
-            let heatmapScript = document.createElement('script')
-            heatmapScript.setAttribute('src', 'https://yastatic.net/s3/mapsapi-jslibs/heatmap/0.0.1/heatmap.min.js')
-            document.head.appendChild(heatmapScript)
-            console.log("start")
-            setTimeout(() => {
-              ymaps.modules.require(['Heatmap']).spread((Heatmap) => {
-                console.log("end")
-                this.hmap = new Heatmap([], {dissipating: true, intensityOfMidpoint: 0.2,});
-              }, function (error) {
-                console.log(error)
-              });
-            }, 700)
+        }
+      }
+      var data = {
+        type: 'FeatureCollection',
+        features: features
+      }
+      this.hmap.setData(data)
+      this.hmap.setMap(this.map);
+    },
+    hideHeatmapMode: async function () {
+      this.hmap.setData([])
+      this.hmap.setMap(this.map);
+    }
+  },
+  watch: {
+    showPieCharts(val) {
+      if (val) {
+        for (let p of this.pieCharts) {
+          this.map.geoObjects.add(p)
+        }
+      } else {
+        for (let p of this.pieCharts) {
+          this.map.geoObjects.remove(p)
+        }
+      }
+    },
+    vis_dtps(val) {
+      if (this.objectManager) {
+        if (this.districtMode && this.heatmapMode) {
+          console.log("Mega error")
+          this.districtMode = false
+          this.heatmapMode = false
+          this.helpvar = !this.helpvar
+        } else {
+          if (this.heatmapMode) {
+            console.log("aaaaaa")
+            this.showHeatmapmode()
+          } else if (this.districtMode) {
+            console.log("bbbbbb")
+            this.showDistrictMode()
+          } else {
+            this.removeAllPlacemarks()
+            this.addPlacemarks(val)
           }
         }
+      }
+    },
+    district(val) {
+      if (!this.districtMode) {
+        let myPolygon = new ymaps.Polygon(this.options.district_coords[val])
+        if (this.showingPolygon) {
+          this.map.geoObjects.remove(this.showingPolygon)
+        }
+        this.showingPolygon = myPolygon
+        this.map.geoObjects.add(myPolygon)
+      }
+    },
+    districtMode(val) {
+      if (!this.heatmapMode) {
+        if (val) {
+          this.showPieCharts = true
+          this.showDistrictMode()
+        } else {
+          this.hideDistrictMode()
+          this.helpvar = !this.helpvar
+        }
+      }
+    },
+    heatmapType(val) {
+      if (!this.districtMode) {
+        if (val > 0) {
+          this.showHeatmapmode()
+        } else {
+          this.hideHeatmapMode()
+          this.helpvar = !this.helpvar
+        }
+      }
+    },
+  }
+  ,
+  async mounted() {
+    if (localStorage.dtps) {
+      this.dtps = localStorage.dtps
+    } else {
+      this.dtps = this.$store.getters.dtps
+    }
+    // if (this.dtps.length === 0) {
+    //     await this.$router.push('/')
+    // }
+    console.log(this.dtps[0])
+    this.showMap = true
+
+    const settings = {
+      apiKey: '4877efab-fec0-4e66-956d-33db0d22ab10',
+      lang: 'ru_RU',
+      coordorder: 'latlong',
+      version: '2.1'
+    }
+    await loadYmap(settings)
+    let heatmapScript = document.createElement('script')
+    heatmapScript.setAttribute('src', 'https://yastatic.net/s3/mapsapi-jslibs/heatmap/0.0.1/heatmap.min.js')
+    document.head.appendChild(heatmapScript)
+    console.log("start")
+    setTimeout(() => {
+      ymaps.modules.require(['Heatmap']).spread((Heatmap) => {
+        console.log("end")
+        this.hmap = new Heatmap([], {dissipating: true, intensityOfMidpoint: 0.2,});
+      }, function (error) {
+        console.log(error)
+      });
+    }, 700)
+  }
+}
 </script>
 <style>
 .curtain-enter-active {
