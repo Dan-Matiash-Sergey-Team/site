@@ -71,7 +71,7 @@
                                                v-for="opt in options['street']"></el-option>
                                 </el-select>
                             </div>
-<!--                            <button @click="test">След</button>-->
+                            <!--                            <button @click="test">След</button>-->
                             <div class="container">
                                 <label class="label">Район</label>
                                 <div>
@@ -107,6 +107,13 @@
                                         style="margin-top: 20px">Тепловая
                                     карта
                                 </button>
+                            </div>
+                            <div  v-if="districtMode">
+                                <label class="checkbox">
+                                    <input type="checkbox" v-model="showPieCharts">
+                                    Показать круговые диаграммы
+                                </label>
+                                <br>
                             </div>
                             <div class="buttons" style="text-align: right" v-if="heatmapMode">
                                 <button :class="{'button': true, 'is-active': heatmapType==1}"
@@ -188,6 +195,7 @@
                 hmap: null,
                 heatmapType: 0,
                 allowHmap: false,
+                showPieCharts: true,
             }
         },
         computed: {
@@ -210,7 +218,7 @@
         },
         methods: {
             test: async function () {
-                this.street = this.options['street'][this.options['street'].indexOf(this.street)+1]
+                this.street = this.options['street'][this.options['street'].indexOf(this.street) + 1]
             },
             turnHmapOn: function () {
                 if (this.heatmapMode) {
@@ -295,9 +303,9 @@
                         // You can also use the "icon" prefix to redefine layout options.
                         iconPieChartCoreRadius: 10,
                         iconContent: nums[d]['count'],
-                        pieChartCaptionMaxWidth: 30,
+                        pieChartCaptionMaxWidth: 5,
                         pieChartRadius: function (sum) {
-                            return 10 + 2 * Math.log(sum)
+                            return 5 + Math.log(sum)
                         }
                     });
                     this.pieCharts.push(geoObject)
@@ -372,7 +380,6 @@
                 this.objectManager = objectManager
                 this.map.geoObjects.add(objectManager);
                 this.helpvar = true
-
 
             },
             removeAllPlacemarks: async function () {
@@ -460,10 +467,10 @@
                         },
                         properties: {
                             clusterCaption: "ДТП №" + points[i].id,
-                            balloonContent: `<h3>${points[i].DTP_V}</h3>` +
-                                `<p>Дата: ${points[i].date}</p>  <p>Адрес: ${points[i].address}</p> <p>Основная причина: ${points[i].NPDD[0]}</p><p>Освещение: ${points[i].osv}</p>` +
-                                `<button class="button is-small"><a href="#/dtp_info/${points[i].id}" class target="_blank">Подробнее</a></button>`
-                                // `<button class="button is-small"><a href="#/delete/${points[i].id}" class target="_blank">Удалить</a></button>`
+                            balloonContent: `<h1 style="color: #4F51E1"><strong>${points[i].DTP_V}</strong></h1>` +
+                                `<p><strong>Дата:</strong> ${points[i].date}</p>  <p><strong>Адрес:</strong> ${points[i].address}</p> <p><strong>Основная причина:</strong> ${points[i].NPDD[0]}</p><p><strong>Освещение:</strong> ${points[i].osv}</p>` +
+                                `<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Подробнее</a></button>`
+                            // `<button class="button is-small"><a href="#/delete/${points[i].id}" class target="_blank">Удалить</a></button>`
                         }
 
                     }
@@ -565,6 +572,18 @@
             }
         },
         watch: {
+            showPieCharts(val) {
+                if (val) {
+                    for (let p of this.pieCharts) {
+                        this.map.geoObjects.add(p)
+                    }
+                }
+                else{
+                    for (let p of this.pieCharts) {
+                        this.map.geoObjects.remove(p)
+                    }
+                }
+            },
             vis_dtps(val) {
                 if (this.objectManager) {
                     if (this.districtMode && this.heatmapMode) {
@@ -599,6 +618,7 @@
             districtMode(val) {
                 if (!this.heatmapMode) {
                     if (val) {
+                        this.showPieCharts = true
                         this.showDistrictMode()
                     } else {
                         this.hideDistrictMode()
