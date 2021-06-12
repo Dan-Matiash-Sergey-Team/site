@@ -7,14 +7,14 @@
         <section class="container is-fluid" style="margin-top: 32px">
             <div class="columns">
                 <div class="column is-one-quarter">
-                    <div class="container" style="width: 266px">
+                    <div class="container" style="position: relative;text-align: center;width: 20vw;height: 20vw;">
                         <yandex-map
                                 :behaviors="[]"
                                 :controls="[]"
                                 :coords="[dtpData.data['infoDtp']['COORD_W'], dtpData.data['infoDtp']['COORD_L']]"
                                 :scroll-zoom="false"
                                 map-type="map"
-                                style="width: 300px; height: 300px"
+                                style="position: relative;text-align: center;width: 20vw;height: 20vw; margin-left: 5%"
                                 zoom="16"
                         >
                             <ymap-marker
