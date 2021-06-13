@@ -24,22 +24,22 @@
           </yandex-map>
         </div>
 
+        <div style="position: absolute; top: 45px; right:0; margin-right: 0px">
 
-        <transition name="curtain">
-          <div style="position: absolute; top: 45px; right:0; margin-right: 0px">
 
-            <div v-if="showFilters" style="display: flex;">
+            <transition v-if="showFilters" name="curtain-hide">
 
-              <div>
-                <a class="button" style="border-width: 0px; border-bottom-right-radius: 0;
-                border-top-right-radius: 0; height: 30px; background-color: whitesmoke"
-                   v-on:click="showFilters=!showFilters">
-                  <i class="fas fa-chevron-right"></i>
-                </a>
-              </div>
+              <div style="display: flex;">
 
-              <div>
-                <div class="has-background-white-ter">
+                <div>
+                  <a class="button has-background-white-bis" style="border-width: 0px; border-bottom-right-radius: 0px;
+                border-top-right-radius: 0; height: 30px;"
+                     v-on:click="showFilters=!showFilters">
+                    <i class="fas fa-chevron-right"></i>
+                  </a>
+                </div>
+
+                <div class="has-background-white-bis">
                   <div>
                     <label class="label" for="type">Тип ДТП</label>
                     <el-select clearable filterable id="type" size="small" style="width: 100%"
@@ -136,20 +136,20 @@
                     </button>
                   </div>
                 </div>
+
               </div>
 
-            </div>
+            </transition>
 
-            <div v-else>
-              <a class="button" style="border-bottom-right-radius: 0;
-                border-top-right-radius: 0; height: 30px; background-color: whitesmoke"
+            <transition v-else name="curtain-open">
+              <a class="button has-background-white-bis" style="border-bottom-right-radius: 0; border-right-width: 0px;
+                border-top-right-radius: 0; height: 30px;"
                  v-on:click="showFilters=!showFilters">
                 <i class="fas fa-chevron-left"></i>
               </a>
-            </div>
+            </transition>
 
-          </div>
-        </transition>
+        </div>
 
       </div>
       <footer class="footer" style="margin-top: -40px">
@@ -685,18 +685,32 @@ export default {
 }
 </script>
 <style>
-.curtain-enter-active {
-  transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition-property: width;
+.curtain-hide-enter-active { /* shtorka open */
+  transition: transform .5s ease-out;
 }
 
-.curtain-leave-active {
-  transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.curtain-hide-leave-active { /* button hide */
+
+}
+.curtain-hide-enter { /* shtorka-start */
+  transform: translateX(89.5%);
+}
+.curtain-hide-leave-to { /* button-end */
+
+}
+.curtain-open-enter-active { /* button open */
+
 }
 
-.curtain-enter, .curtain-leave-to {
-  transform: translateX(10px);
-  opacity: 0;
+.curtain-open-leave-active { /* sthorka hide */
+  transition: transform .5s ease-in;
+}
+
+.curtain-open-leave-to { /* shtorka-end */
+  transform: translateX(89.5%);
+}
+.curtain-open-enter { /* button-start */
+
 }
 </style>
 <style scoped>
