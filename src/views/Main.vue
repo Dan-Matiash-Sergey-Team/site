@@ -174,9 +174,9 @@
           -большое кол-во ДТП
         </div>
       </div>
-<!--      <footer class="footer" style="margin-top: 0px">-->
+      <!--      <footer class="footer" style="margin-top: 0px">-->
 
-<!--      </footer>-->
+      <!--      </footer>-->
     </section>
   </div>
 </template>
@@ -189,6 +189,7 @@ import "vue-select/dist/vue-select.css";
 import Data from "../assets/ahegao"
 import DatePicker from "../components/DatePicker";
 import infgr from "@/views/infgr";
+
 export default {
   name: 'Main',
   components: {DatePicker, infgr},
@@ -420,6 +421,7 @@ export default {
         self.objectManager = objectManager
         self.map.geoObjects.add(self.objectManager)
       }
+
       this.map.geoObjects.remove(this.objectManager)
       refreshObjectManager(this)
     },
@@ -462,11 +464,13 @@ export default {
         console.log("")
       }
       console.log(this.helpvar)
+
       function isSubArray(main, sub) {
         return sub.every((eachEle) => {
           return main.includes(eachEle);
         });
       }
+
       if (Object.keys(fltr).length == 0) return this.dtps;
       return this.dtps.filter((el) => {
         let npdd = false
@@ -651,22 +655,33 @@ export default {
 .curtain-hide-enter-active { /* shtorka open */
   transition: transform .5s ease-out;
 }
+
 .curtain-hide-leave-active { /* button hide */
+  transition: opacity 0s;
 }
+
 .curtain-hide-enter { /* shtorka-start */
   transform: translateX(89.5%);
 }
+
 .curtain-hide-leave-to { /* button-end */
+  opacity: 0;
 }
+
 .curtain-open-enter-active { /* button open */
+  transition: opacity .5s cubic-bezier(1, -1, 1, -1);
 }
+
 .curtain-open-leave-active { /* sthorka hide */
   transition: transform .5s ease-in;
 }
+
 .curtain-open-leave-to { /* shtorka-end */
   transform: translateX(89.5%);
 }
+
 .curtain-open-enter { /* button-start */
+  opacity: 0;
 }
 </style>
 <style scoped>
