@@ -18,7 +18,7 @@
         <div v-if="showMap">
           <yandex-map :coords="map ? map.getCenter() : [55.7522, 37.6156]"
                       @map-was-initialized="initHandler" map-type="map"
-                      style="width: 100%; height: 90vh;"
+                      style="width: 100%; height: 87vh;"
                       zoom="16"
           >
           </yandex-map>
@@ -152,7 +152,7 @@
         </div>
 
       </div>
-      <div class="level" style="height: 5vh">
+      <div class="level" style="height: 8vh">
         <div class="level-item">
           <img src="../assets/images/placemark_regular.png" style="max-height: 40px">
           - ДТП
