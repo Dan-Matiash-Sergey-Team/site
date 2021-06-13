@@ -2,13 +2,13 @@
 <template>
   <div>
     <section class="hero is-white">
-      <nav class="level has-background-white mb-0" style="height: 50px">
+      <nav class="level has-background-white mb-0" style="height: 5vh">
         <!--        <p class="level-item has-icons-left">-->
         <!--          <i aria-hidden="true" class="link is-info fa fa-home fa-lg"></i>-->
         <!--        </p>-->
-        <p class="level-item">
+        <div class="level-item">
           <strong style="color:black">Карта ДТП по Москве</strong>
-        </p>
+        </div>
         <!--        <p class="level-item has-icons-right">-->
         <!--          <router-link to="/infgr"><i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>-->
         <!--          </router-link>-->
@@ -18,7 +18,7 @@
         <div v-if="showMap">
           <yandex-map :coords="map ? map.getCenter() : [55.7522, 37.6156]"
                       @map-was-initialized="initHandler" map-type="map"
-                      style="width: 100%; height: 85vh;"
+                      style="width: 100%; height: 90vh;"
                       zoom="16"
           >
           </yandex-map>
@@ -27,145 +27,156 @@
         <div style="position: absolute; top: 45px; right:0; margin-right: 0px">
 
 
-            <transition v-if="showFilters" name="curtain-hide">
+          <transition v-if="showFilters" name="curtain-hide">
 
-              <div style="display: flex;">
+            <div style="display: flex;">
 
-                <div>
-                  <a class="button has-background-white-bis" style="border-width: 0px; border-bottom-right-radius: 0px;
+              <div>
+                <a class="button has-background-white-bis" style="border-width: 0px; border-bottom-right-radius: 0px;
                 border-top-right-radius: 0; height: 30px;"
-                     v-on:click="showFilters=!showFilters">
-                    <i class="fas fa-chevron-right"></i>
-                  </a>
-                </div>
-
-                <div class="has-background-white-bis">
-                  <div>
-                    <label class="label" for="type">Тип ДТП</label>
-                    <el-select clearable filterable id="type" size="small" style="width: 100%"
-                               v-model="DTP_V">
-                      <el-option :key="opt" :label="opt" :value="opt"
-                                 v-for="opt in options['DTP_V']"></el-option>
-                    </el-select>
-                  </div>
-                  <div>
-                    <label class="label">Тип нарушения ПДД</label>
-                    <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
-                               multiple size="small" style="width: 100%"
-                               v-model="NPDD">
-                      <el-option :key="opt" :label="opt" :value="opt"
-                                 v-for="opt in options['NPDD']">
-                      </el-option>
-                    </el-select>
-                  </div>
-                  <div>
-                    <label class="label">Время суток</label>
-                    <el-select clearable id="osv" size="small" style="width: 100%" v-model="osv">
-                      <el-option :key="opt" :label="opt" :value="opt"
-                                 v-for="opt in options['osv']"></el-option>
-                    </el-select>
-                  </div>
-                  <div>
-                    <label class="label">Место поблизости</label>
-                    <el-select collapse-tags id="OBJ_DTP" multiple size="small" style="width: 100%"
-                               v-model="OBJ_DTP">
-                      <el-option :key="opt" :label="opt" :value="opt"
-                                 v-for="opt in options['OBJ_DTP']"></el-option>
-                    </el-select>
-                  </div>
-                  <div class="container">
-                    <label class="label">Улица</label>
-                    <el-select clearable filterable size="small" style="width: 100%"
-                               v-model="street">
-                      <el-option :key="opt" :label="opt" :value="opt"
-                                 v-for="opt in options['street']"></el-option>
-                    </el-select>
-                  </div>
-                  <div class="container">
-                    <label class="label">Район</label>
-                    <div>
-                      <el-select clearable filterable id="district" size="small"
-                                 style="width: 80%" v-model="district">
-                        <el-option :key="opt" :label="opt" :value="opt"
-                                   v-for="opt in options['district']">
-                        </el-option>
-                      </el-select>
-                      <a @click="showPopup = district != ''" style="margin-left: 10px">
-                        <i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>
-                      </a>
-                    </div>
-                    <div v-if="district != ''">
-                      <infgr :districtPopup="district" :showPopup="showPopup"
-                             @closePopup="showPopup = false">
-                      </infgr>
-                    </div>
-                  </div>
-                  <div class="container">
-                    <label class="label">Дата</label>
-                    <DatePicker v-model="date"
-                    ></DatePicker>
-                  </div>
-                  <div class="buttons">
-                    <button :disabled="heatmapMode" @click="heatmapMode?()=>{}:districtMode = !districtMode"
-                            class="button"
-                            style="margin-top: 20px">Статистика по
-                      районам
-                    </button>
-                    <button :disabled="districtMode || hmap==null" @click="districtMode?()=>{}:turnHmapOn()"
-                            class="button"
-                            style="margin-top: 20px">Тепловая
-                      карта
-                    </button>
-                  </div>
-                  <div v-if="districtMode">
-                    <label class="checkbox">
-                      <input type="checkbox" v-model="showPieCharts">
-                      Показать круговые диаграммы
-                    </label>
-                    <br>
-                  </div>
-                  <div class="buttons" style="text-align: right" v-if="heatmapMode">
-                    <button :class="{'button': true, 'is-active': heatmapType==1}"
-                            @click="heatmapType=1">Школы
-                    </button>
-                    <button :class="{'button': true, 'is-active': heatmapType==2}"
-                            @click="heatmapType=2">Смерти
-                    </button>
-                    <button :class="{'button': true, 'is-active': heatmapType==3}"
-                            @click="heatmapType=3">Все
-                    </button>
-                  </div>
-                </div>
-
+                   v-on:click="showFilters=!showFilters">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
               </div>
 
-            </transition>
+              <div class="has-background-white-bis">
+                <div>
+                  <label class="label" for="type">Тип ДТП</label>
+                  <el-select clearable filterable id="type" size="small" style="width: 100%"
+                             v-model="DTP_V">
+                    <el-option :key="opt" :label="opt" :value="opt"
+                               v-for="opt in options['DTP_V']"></el-option>
+                  </el-select>
+                </div>
+                <div>
+                  <label class="label">Тип нарушения ПДД</label>
+                  <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
+                             multiple size="small" style="width: 100%"
+                             v-model="NPDD">
+                    <el-option :key="opt" :label="opt" :value="opt"
+                               v-for="opt in options['NPDD']">
+                    </el-option>
+                  </el-select>
+                </div>
+                <div>
+                  <label class="label">Время суток</label>
+                  <el-select clearable id="osv" size="small" style="width: 100%" v-model="osv">
+                    <el-option :key="opt" :label="opt" :value="opt"
+                               v-for="opt in options['osv']"></el-option>
+                  </el-select>
+                </div>
+                <div>
+                  <label class="label">Место поблизости</label>
+                  <el-select collapse-tags id="OBJ_DTP" multiple size="small" style="width: 100%"
+                             v-model="OBJ_DTP">
+                    <el-option :key="opt" :label="opt" :value="opt"
+                               v-for="opt in options['OBJ_DTP']"></el-option>
+                  </el-select>
+                </div>
+                <div class="container">
+                  <label class="label">Улица</label>
+                  <el-select clearable filterable size="small" style="width: 100%"
+                             v-model="street">
+                    <el-option :key="opt" :label="opt" :value="opt"
+                               v-for="opt in options['street']"></el-option>
+                  </el-select>
+                </div>
+                <div class="container">
+                  <label class="label">Район</label>
+                  <div>
+                    <el-select clearable filterable id="district" size="small"
+                               style="width: 80%" v-model="district">
+                      <el-option :key="opt" :label="opt" :value="opt"
+                                 v-for="opt in options['district']">
+                      </el-option>
+                    </el-select>
+                    <a @click="showPopup = district != ''" style="margin-left: 10px">
+                      <i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>
+                    </a>
+                  </div>
+                  <div v-if="district != ''">
+                    <infgr :districtPopup="district" :showPopup="showPopup"
+                           @closePopup="showPopup = false">
+                    </infgr>
+                  </div>
+                </div>
+                <div class="container">
+                  <label class="label">Дата</label>
+                  <DatePicker v-model="date"
+                  ></DatePicker>
+                </div>
+                <div class="buttons">
+                  <button :disabled="heatmapMode" @click="heatmapMode?()=>{}:districtMode = !districtMode"
+                          class="button"
+                          style="margin-top: 20px">Статистика по
+                    районам
+                  </button>
+                  <button :disabled="districtMode || hmap==null" @click="districtMode?()=>{}:turnHmapOn()"
+                          class="button"
+                          style="margin-top: 20px">Тепловая
+                    карта
+                  </button>
+                </div>
+                <div v-if="districtMode">
+                  <label class="checkbox">
+                    <input type="checkbox" v-model="showPieCharts">
+                    Показать круговые диаграммы
+                  </label>
+                  <br>
+                </div>
+                <div class="buttons" style="text-align: right" v-if="heatmapMode">
+                  <button :class="{'button': true, 'is-active': heatmapType==1}"
+                          @click="heatmapType=1">Школы
+                  </button>
+                  <button :class="{'button': true, 'is-active': heatmapType==2}"
+                          @click="heatmapType=2">Смерти
+                  </button>
+                  <button :class="{'button': true, 'is-active': heatmapType==3}"
+                          @click="heatmapType=3">Все
+                  </button>
+                </div>
+              </div>
 
-            <transition v-else name="curtain-open">
-              <a class="button has-background-white-bis" style="border-bottom-right-radius: 0; border-right-width: 0px;
+            </div>
+
+          </transition>
+
+          <transition v-else name="curtain-open">
+            <a class="button has-background-white-bis" style="border-bottom-right-radius: 0; border-right-width: 0px;
                 border-top-right-radius: 0; height: 30px;"
-                 v-on:click="showFilters=!showFilters">
-                <i class="fas fa-chevron-left"></i>
-              </a>
-            </transition>
+               v-on:click="showFilters=!showFilters">
+              <i class="fas fa-chevron-left"></i>
+            </a>
+          </transition>
 
         </div>
 
       </div>
-      <footer class="footer" style="margin-top: -40px">
-        <div class="has-text-centered">
+      <div class="level" style="height: 5vh">
+        <div class="level-item">
           <img src="../assets/images/placemark_regular.png" style="max-height: 40px">
           - ДТП
+        </div>
+        <div class="level-item">
           <img src="../assets/images/placemark_orange.png" style="max-height: 40px">
           - ДТП около образовательных учереждений
+        </div>
+        <div class="level-item">
           <img src="../assets/images/placemark_red.png" style="max-height: 40px">
           - смертельные ДТП
+        </div>
+        <div class="level-item">
           <img src="../assets/images/cluster_green.png" style="max-height: 40px">
           - небольшое кол-во ДТП
+        </div>
+        <div class="level-item">
           <img src="../assets/images/cluster_red.png" style="max-height: 40px">
           -большое кол-во ДТП
         </div>
-      </footer>
+      </div>
+<!--      <footer class="footer" style="margin-top: 0px">-->
+
+<!--      </footer>-->
     </section>
   </div>
 </template>
@@ -178,7 +189,6 @@ import "vue-select/dist/vue-select.css";
 import Data from "../assets/ahegao"
 import DatePicker from "../components/DatePicker";
 import infgr from "@/views/infgr";
-
 export default {
   name: 'Main',
   components: {DatePicker, infgr},
@@ -214,7 +224,6 @@ export default {
   computed: {
     vis_dtps: function () {
       if (this.street == null) this.street = ""
-
       return this.search(this.fltr)
     },
     fltr: function () {
@@ -288,7 +297,6 @@ export default {
               hasBalloon: true,
               hasHint: true,
             })
-
         myPolygon.events.add("mouseenter", function (e) {
           myPolygon.options.set({
             fillColor: "#000000",
@@ -323,9 +331,7 @@ export default {
         });
         this.pieCharts.push(geoObject)
         this.map.geoObjects.add(geoObject)
-
       }
-
     },
     hideDistrictMode: function () {
       for (let p of this.multiplePolygons) {
@@ -350,50 +356,31 @@ export default {
         placemarksDisableClickZoom: true,
         geoObjectOpenBalloonOnClick: true,
         placemarkOpenBalloonOnClick: true
-
       });
       objectManager.clusters.events.add('add', function (e) {
-
         var cluster = objectManager.clusters.getById(e.get('objectId')),
-
             objects = cluster.properties.geoObjects;
-
         if (objects.length < 5) {
-
           objectManager.clusters.setClusterOptions(cluster.id, {
-
             preset: 'islands#darkGreenClusterIcons'
-
           });
-
         } else if (objects.length < 10) {
-
           objectManager.clusters.setClusterOptions(cluster.id, {
-
             preset: 'islands#yellowClusterIcons'
-
           });
-
         } else if (objects.length < 25) {
-
           objectManager.clusters.setClusterOptions(cluster.id, {
-
             preset: 'islands#orangeClusterIcons'
-
           });
         } else {
-
           objectManager.clusters.setClusterOptions(cluster.id, {
-
             preset: 'islands#redClusterIcons'
-
           });
         }
       });
       this.objectManager = objectManager
       this.map.geoObjects.add(objectManager);
       this.helpvar = true
-
     },
     removeAllPlacemarks: async function () {
       async function refreshObjectManager(self) {
@@ -408,50 +395,31 @@ export default {
           placemarksDisableClickZoom: true,
           geoObjectOpenBalloonOnClick: true,
           placemarkOpenBalloonOnClick: true
-
         });
         objectManager.clusters.events.add('add', function (e) {
-
           var cluster = objectManager.clusters.getById(e.get('objectId')),
-
               objects = cluster.properties.geoObjects;
-
           if (objects.length < 5) {
-
             objectManager.clusters.setClusterOptions(cluster.id, {
-
               preset: 'islands#darkGreenClusterIcons'
-
             });
-
           } else if (objects.length < 10) {
-
             objectManager.clusters.setClusterOptions(cluster.id, {
-
               preset: 'islands#yellowClusterIcons'
-
             });
-
           } else if (objects.length < 25) {
-
             objectManager.clusters.setClusterOptions(cluster.id, {
-
               preset: 'islands#orangeClusterIcons'
-
             });
           } else {
-
             objectManager.clusters.setClusterOptions(cluster.id, {
-
               preset: 'islands#redClusterIcons'
-
             });
           }
         });
         self.objectManager = objectManager
         self.map.geoObjects.add(self.objectManager)
       }
-
       this.map.geoObjects.remove(this.objectManager)
       refreshObjectManager(this)
     },
@@ -485,7 +453,6 @@ export default {
                 `<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Подробнее</a></button>`
             // `<button class="button is-small"><a href="#/delete/${points[i].id}" class target="_blank">Удалить</a></button>`
           }
-
         }
       }
       this.objectManager.add(features)
@@ -495,13 +462,11 @@ export default {
         console.log("")
       }
       console.log(this.helpvar)
-
       function isSubArray(main, sub) {
         return sub.every((eachEle) => {
           return main.includes(eachEle);
         });
       }
-
       if (Object.keys(fltr).length == 0) return this.dtps;
       return this.dtps.filter((el) => {
         let npdd = false
@@ -516,7 +481,6 @@ export default {
         } else {
           obj = isSubArray(el['OBJ_DTP'], fltr['OBJ_DTP'])
         }
-
         return new Date(fltr['date'][0]) <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) && (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) <= new Date(fltr['date'][1]) &&
             (fltr['DTP_V'] ? el.DTP_V === fltr['DTP_V'] : true) &&
             (fltr['osv'] ? el.osv === fltr['osv'] : true) &&
@@ -661,7 +625,6 @@ export default {
     // }
     console.log(this.dtps[0])
     this.showMap = true
-
     const settings = {
       apiKey: '4877efab-fec0-4e66-956d-33db0d22ab10',
       lang: 'ru_RU',
@@ -688,29 +651,22 @@ export default {
 .curtain-hide-enter-active { /* shtorka open */
   transition: transform .5s ease-out;
 }
-
 .curtain-hide-leave-active { /* button hide */
-
 }
 .curtain-hide-enter { /* shtorka-start */
   transform: translateX(89.5%);
 }
 .curtain-hide-leave-to { /* button-end */
-
 }
 .curtain-open-enter-active { /* button open */
-
 }
-
 .curtain-open-leave-active { /* sthorka hide */
   transition: transform .5s ease-in;
 }
-
 .curtain-open-leave-to { /* shtorka-end */
   transform: translateX(89.5%);
 }
 .curtain-open-enter { /* button-start */
-
 }
 </style>
 <style scoped>
@@ -725,7 +681,7 @@ export default {
 }
 </style>
 <style>
-.sus {
-  transform: rotate(-90deg)
+body {
+  overflow-y: hidden;
 }
 </style>
