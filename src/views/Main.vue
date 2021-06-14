@@ -39,7 +39,7 @@
                 </a>
               </div>
 
-              <div class="has-background-white-bis box" style="border-top-left-radius: 0">
+              <div class="has-background-white-bis box" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0">
                 <div>
                   <label class="label" for="type">Тип ДТП</label>
                   <el-select clearable filterable id="type" size="small" style="width: 100%"
