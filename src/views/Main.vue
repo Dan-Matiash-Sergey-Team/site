@@ -32,14 +32,14 @@
             <div style="display: flex;">
 
               <div>
-                <a class="button has-background-white-bis" style="border-width: 0px; border-bottom-right-radius: 0px;
-                border-top-right-radius: 0; height: 3vh;"
+                <a class="button has-background-white-bis has-shadow" style="border-width: 0px; border-bottom-right-radius: 0px;
+                border-top-right-radius: 0; height: 4vh;"
                    v-on:click="showFilters=!showFilters">
                   <i class="fas fa-chevron-right"></i>
                 </a>
               </div>
 
-              <div class="has-background-white-bis">
+              <div class="has-background-white-bis box" style="border-top-left-radius: 0">
                 <div>
                   <label class="label" for="type">Тип ДТП</label>
                   <el-select clearable filterable id="type" size="small" style="width: 100%"
@@ -142,8 +142,8 @@
           </transition>
 
           <transition v-else name="curtain-open">
-            <a class="button has-background-white-bis" style="border-bottom-right-radius: 0; border-right-width: 0px;
-                border-top-right-radius: 0; height: 3vh;"
+            <a class="button has-background-white-bis" style="border-width: 0px; border-bottom-right-radius: 0; border-right-width: 0px;
+                border-top-right-radius: 0; height: 4vh;"
                v-on:click="showFilters=!showFilters">
               <i class="fas fa-chevron-left"></i>
             </a>
