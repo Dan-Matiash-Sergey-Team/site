@@ -1,7 +1,10 @@
 <template>
     <!--eslint-disable -->
     <div v-if="loading">
-        <img src="../../src/assets/gifs/loading.gif"/>
+      <div style="position: absolute; width: 100%; top: 40%; text-align: center;
+    font-size: 500%; font-weight: 700">
+        Карта ДТП по Москве
+      </div>
     </div>
     <div v-else>
         <section class="container is-fluid" style="margin-top: 3vh">
