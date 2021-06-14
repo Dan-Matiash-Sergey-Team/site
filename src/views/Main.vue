@@ -31,15 +31,15 @@
 
             <div style="display: flex;">
 
-              <div>
-                <a class="button has-background-white-bis has-shadow" style="border-width: 0px; border-bottom-right-radius: 0px;
-                border-top-right-radius: 0; height: 4vh;"
+              <div class="box" style="padding: 0px; height: 4vh;">
+                <a class="button has-background-white-bis" style="border-bottom-right-radius: 0px;
+                border-top-right-radius: 0; height: 100%; border-width: 0px"
                    v-on:click="showFilters=!showFilters">
                   <i class="fas fa-chevron-right"></i>
                 </a>
               </div>
 
-              <div class="has-background-white-bis box" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0">
+              <div class="has-background-white-bis box" style="border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; padding: 1vh">
                 <div>
                   <label class="label" for="type">Тип ДТП</label>
                   <el-select clearable filterable id="type" size="small" style="width: 100%"
@@ -142,7 +142,7 @@
           </transition>
 
           <transition v-else name="curtain-open">
-            <a class="button has-background-white-bis" style="border-width: 0px; border-bottom-right-radius: 0; border-right-width: 0px;
+            <a class="button has-background-white-bis" style="border-bottom-right-radius: 0; border-right-width: 0px;
                 border-top-right-radius: 0; height: 4vh;"
                v-on:click="showFilters=!showFilters">
               <i class="fas fa-chevron-left"></i>
