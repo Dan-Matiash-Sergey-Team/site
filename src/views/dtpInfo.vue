@@ -4,7 +4,7 @@
         <img src="../../src/assets/gifs/loading.gif"/>
     </div>
     <div v-else>
-        <section class="container is-fluid" style="margin-top: 32px">
+        <section class="container is-fluid" style="margin-top: 3vh">
             <div class="columns">
                 <div class="column is-one-quarter">
                     <div class="box" style="position: relative;text-align: center;width: 23vw;height: 23vw;">

@@ -33,7 +33,7 @@
 
               <div>
                 <a class="button has-background-white-bis" style="border-width: 0px; border-bottom-right-radius: 0px;
-                border-top-right-radius: 0; height: 30px;"
+                border-top-right-radius: 0; height: 3vh;"
                    v-on:click="showFilters=!showFilters">
                   <i class="fas fa-chevron-right"></i>
                 </a>
@@ -143,7 +143,7 @@
 
           <transition v-else name="curtain-open">
             <a class="button has-background-white-bis" style="border-bottom-right-radius: 0; border-right-width: 0px;
-                border-top-right-radius: 0; height: 30px;"
+                border-top-right-radius: 0; height: 3vh;"
                v-on:click="showFilters=!showFilters">
               <i class="fas fa-chevron-left"></i>
             </a>
@@ -174,9 +174,6 @@
           -большое кол-во ДТП
         </div>
       </div>
-      <!--      <footer class="footer" style="margin-top: 0px">-->
-
-      <!--      </footer>-->
     </section>
   </div>
 </template>
