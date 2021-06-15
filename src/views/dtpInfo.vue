@@ -133,7 +133,7 @@
                       <i class="fa fa-car fa-2x" v-if="b['t_ts'] != 'Велосипеды'"></i>
                       <i class="fas fa-bicycle fa-2x" v-else></i>
                     </div>
-                    <div class="level-item">
+                    <div>
                       <div class="title is-5">
                             <span v-if="b['t_ts'] != 'Велосипеды'">{{ b['marka_ts'] }} {{ b['m_ts'] }}, {{ b['g_v'] }}, {{
                                 b['color']
@@ -177,7 +177,7 @@
                     <div class="level-item is-one-fifth">
                       <i class="fas fa-walking fa-2x"></i>
                     </div>
-                    <div class="level-item">
+                    <div>
                       <div class="title is-5">
                         <span>{{ d['K_UCH'] }}, пол {{ d['POL'] }}</span>
                       </div>
