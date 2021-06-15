@@ -1,13 +1,16 @@
 <template>
   <!--eslint-disable -->
   <div v-if="loading">
-    <img src="../../src/assets/gifs/loading.gif"/>
+    <div style="position: absolute; width: 100%; top: 40%; text-align: center;
+    font-size: 500%; font-weight: 700">
+      Карта ДТП по Москве
+    </div>
   </div>
   <div v-else>
     <section class="container is-fluid" style="margin-top: 3vh">
       <div class="columns">
         <div class="column is-one-quarter">
-          <div class="box" style="position: relative;text-align: center;width: 23vw;height: 23vw;">
+          <div class="box" style="position: relative;text-align: center;width: 23vw;height: 23vw; padding: 1vw">
             <yandex-map
                 :behaviors="[]"
                 :controls="[]"
@@ -130,14 +133,16 @@
                 <div class="box has-text-left">
                   <div class="level-left">
                     <div class="level-item is-one-fifth">
-                      <i class="fa fa-car fa-2x" v-if="b['t_ts'] != 'Велосипеды'"></i>
+                      <i class="fa fa-bicycle fa-2x" v-if="b['t_ts'] == 'Персональное электрическое средство передвижения малой мощности'"></i>
+                      <i class="fa fa-car fa-2x" v-else-if="b['t_ts'] != 'Велосипеды'"></i>
                       <i class="fas fa-bicycle fa-2x" v-else></i>
                     </div>
                     <div>
                       <div class="title is-5">
-                            <span v-if="b['t_ts'] != 'Велосипеды'">{{ b['marka_ts'] }} {{ b['m_ts'] }}, {{ b['g_v'] }}, {{
-                                b['color']
-                              }}</span>
+                        <span v-if="b['t_ts'] == 'Персональное электрическое средство передвижения малой мощности'">Персональное электрическое средство передвижения малой мощности</span>
+                        <span v-else-if="b['t_ts'] != 'Велосипеды'">{{ b['marka_ts'] }} {{ b['m_ts'] }}, {{ b['g_v'] }}, {{
+                            b['color']
+                          }}</span>
                         <span v-else>Велосипед</span>
                       </div>
                     </div>
