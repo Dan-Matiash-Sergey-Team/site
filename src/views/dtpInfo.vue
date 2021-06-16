@@ -32,15 +32,9 @@
             <div class="title is-4">
               <h1>{{ this.dtpData.data['DTP_V'] }}</h1>
             </div>
-            <p class="subtitle"
-               v-if="this.dtpData.data['infoDtp']['street'] != '' & this.dtpData.data['infoDtp']['house'] != ''">
+            <p class="subtitle">
               {{ this.dtpData.data['date'] }} в {{ this.dtpData.data['Time'] }} |
-              Район {{ this.dtpData.data['District'] }}, {{ this.dtpData.data['infoDtp']['street'] }},
-              {{ this.dtpData.data['infoDtp']['house'] }}</p>
-            <p class="subtitle"
-               v-else-if="this.dtpData.data['infoDtp']['street'] === '' || this.dtpData.data['infoDtp']['house'] === ''">
-              {{ this.dtpData.data['date'] }} в {{ this.dtpData.data['Time'] }} |
-              Район {{ this.dtpData.data['District'] }}, Точный адрес не указан</p>
+              {{ this.dtpData.data['infoDtp']['address'] }}</p>
             <nav class="level-left" style="margin-bottom: 8px">
               <div class="level-item">
                 <i class="fa fa-car fa-3x"></i>
@@ -133,16 +127,22 @@
                 <div class="box has-text-left">
                   <div class="level-left">
                     <div class="level-item is-one-fifth">
-                      <i class="fa fa-bicycle fa-2x" v-if="b['t_ts'] == 'Персональное электрическое средство передвижения малой мощности'"></i>
+                      <i class="fa fa-bicycle fa-2x"
+                         v-if="b['t_ts'] == 'Персональное электрическое средство передвижения малой мощности'"></i>
                       <i class="fa fa-car fa-2x" v-else-if="b['t_ts'] != 'Велосипеды'"></i>
                       <i class="fas fa-bicycle fa-2x" v-else></i>
                     </div>
                     <div>
                       <div class="title is-5">
                         <span v-if="b['t_ts'] == 'Персональное электрическое средство передвижения малой мощности'">Персональное электрическое средство передвижения малой мощности</span>
-                        <span v-else-if="b['t_ts'] != 'Велосипеды'">{{ b['marka_ts'] }} {{ b['m_ts'] }}, {{ b['g_v'] }}, {{
-                            b['color']
-                          }}</span>
+                        <span
+                            v-else-if="b['t_ts'] != 'Велосипеды'">{{
+                            b['marka_ts'] != '' ? b['marka_ts'] : 'Автомобиль'
+                          }},
+                          {{
+                            b['m_ts'] != '' ? b['m_ts'] : 'модель не указана'
+                          }}, {{ b['g_v'] != '' ? b['g_v'] : 'год выпуска не указан' }},
+                          {{ b['color'] != '' ? b['color'] : 'цвет не указан' }}</span>
                         <span v-else>Велосипед</span>
                       </div>
                     </div>
