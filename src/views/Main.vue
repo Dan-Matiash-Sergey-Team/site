@@ -161,7 +161,7 @@
                 </div>
                 <div class="level-item">
                     <img src="../assets/images/placemark_orange.png" style="max-height: 40px">
-                    - ДТП около образовательных учереждений
+                    - ДТП около образовательных учреждений
                 </div>
                 <div class="level-item">
                     <img src="../assets/images/placemark_red.png" style="max-height: 40px">
