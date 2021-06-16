@@ -330,7 +330,9 @@
                         }
                     });
                     this.pieCharts.push(geoObject)
-                    this.map.geoObjects.add(geoObject)
+                    if (this.showPieCharts) {
+                        this.map.geoObjects.add(geoObject)
+                    }
                 }
             },
             hideDistrictMode: function () {
@@ -563,6 +565,13 @@
                     }
                 }
             },
+            pieCharts(val) {
+                if (this.showPieCharts) {
+                    for (let p of val) {
+                        this.map.geoObjects.add(p)
+                    }
+                }
+            },
             vis_dtps(val) {
                 if (this.objectManager) {
                     if (this.districtMode && this.heatmapMode) {
@@ -597,7 +606,6 @@
             districtMode(val) {
                 if (!this.heatmapMode) {
                     if (val) {
-                        this.showPieCharts = true
                         this.showDistrictMode()
                     } else {
                         this.hideDistrictMode()
