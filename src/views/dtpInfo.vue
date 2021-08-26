@@ -229,7 +229,7 @@ export default {
     }
   },
   async mounted() {
-    const resp = await (await fetch(`http://195.133.147.101:3000/get_dtp?id=${this.id}`)).json()
+    const resp = await (await fetch(`http://194.87.99.72:3000/get_dtp?id=${this.id}`)).json()
     console.log(resp)
     this.dtpData = resp[0]
     this.loading = false

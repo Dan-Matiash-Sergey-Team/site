@@ -496,7 +496,7 @@
                 })
             },
             loadingAsync: async function (year, context) {
-                return [await (await fetch(`http://195.133.147.101:3000/get_dtps_year?year=${year}`)).json(), context]
+                return [await (await fetch(`http://194.87.99.72:3000/get_dtps_year?year=${year}`)).json(), context]
             },
             showHeatmapmode: async function () {
                 this.removeAllPlacemarks()

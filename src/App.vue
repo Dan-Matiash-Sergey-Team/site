@@ -34,25 +34,25 @@
                 if (this.dtp.length === 0) {
                     this.loading = true
                     // for (let i = 1; i < 12; i++) {
-                    //     const resp = await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2019&month=${i}`)
+                    //     const resp = await fetch(`http://194.87.99.72:3000/get_dtps_month?year=2019&month=${i}`)
                     //     this.dtp = await resp.json()
                     //
                     //     this.$store.commit('concatDtps', this.dtp)
                     // }
                     // for (let i = 1; i < 12; i++) {
-                    //     const resp = await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2018&month=${i}`)
+                    //     const resp = await fetch(`http://194.87.99.72:3000/get_dtps_month?year=2018&month=${i}`)
                     //     this.dtp = await resp.json()
                     //
                     //     this.$store.commit('concatDtps', this.dtp)
                     // }
-                    const resp = await fetch("http://195.133.147.101:3000/get_dtps_year?year=2021&month=04")
+                    const resp = await fetch("http://194.87.99.72:3000/get_dtps_year?year=2021&month=04")
                     this.dtp = await resp.json()
                     this.$store.commit("setDtp", this.dtp)
                     const loadingYearAsync = async function (year, context) {
-                        return [await (await fetch(`http://195.133.147.101:3000/get_dtps_year?year=${year}`)).json(), context]
+                        return [await (await fetch(`http://194.87.99.72:3000/get_dtps_year?year=${year}`)).json(), context]
                     }
                     const loadingMonthAsync = async function (month, context) {
-                        return [await (await fetch(`http://195.133.147.101:3000/get_dtps_month?year=2021&month=${month}`)).json(), context]
+                        return [await (await fetch(`http://194.87.99.72:3000/get_dtps_month?year=2021&month=${month}`)).json(), context]
                     }
                     for (let i = 2015; i < 2021; i++) {
                         loadingYearAsync(i, this).then(function (res) {
