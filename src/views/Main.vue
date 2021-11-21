@@ -57,6 +57,17 @@
                                     </el-select>
                                 </div>
                                 <div>
+                                    <label class="label">Погода</label>
+                                    <el-select collapse-tags id="weather" multiple size="small" style="width: 100%"
+                                               v-model="weather">
+                                        <el-option :key="opt" :label="opt" :value="opt"
+                                                   v-for="opt in options['weather']"></el-option>
+                                    </el-select>
+                                </div>
+                                <div>
+                                    <input type="checkbox" v-model="alcohol"/><label>Алкоголь</label>
+                                </div>
+                                <div>
                                     <label class="label">Тип нарушения ПДД</label>
                                     <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
                                                multiple size="small" style="width: 100%"
@@ -204,6 +215,8 @@
                 osv: '', //время суток
                 OBJ_DTP: [], //место поблизости
                 street: '', //улица,
+                alcohol: '',
+                weather: [],
                 district: '',
                 streetQuery: '',
                 date: [new Date('2021-04-01'), new Date('2021-04-30'),], //дата
@@ -234,6 +247,8 @@
                 if (this.OBJ_DTP != '' && this.OBJ_DTP != 'Все') res['OBJ_DTP'] = this.OBJ_DTP;
                 if (this.street != '' && this.street != 'Все') res['street'] = this.street;
                 if (this.district != '' && this.district != 'Все') res['district'] = this.district;
+                if (this.weather != '' && this.weather != 'Все') res['weather'] = this.weather;
+                if (this.alcohol != '') res['alcohol'] = this.alcohol;
                 if (this.date != null) res['date'] = this.date;
                 return res;
             },
@@ -241,6 +256,16 @@
         methods: {
             test: async function () {
                 this.street = this.options['street'][this.options['street'].indexOf(this.street) + 1]
+            },
+            calc: function(){
+                let poss = []
+                for(let dtp of this.dtps){
+                    for (let w of dtp.weather)
+                    if (!poss.includes(w)){
+                        poss.push(w)
+                    }
+                }
+                console.log(poss)
             },
             turnHmapOn: function () {
                 if (this.heatmapMode) {
@@ -476,22 +501,31 @@
                 return this.dtps.filter((el) => {
                     let npdd = false
                     let obj = false
+                    let weath = false
                     if (!fltr['NPDD']) {
                         npdd = true
                     } else {
                         npdd = isSubArray(el['NPDD'], fltr['NPDD'])
+                    }
+                    if (!fltr['weather']) {
+                        weath = true
+                    } else {
+                        weath = isSubArray(el['weather'], fltr['weather'])
                     }
                     if (!fltr['OBJ_DTP']) {
                         obj = true
                     } else {
                         obj = isSubArray(el['OBJ_DTP'], fltr['OBJ_DTP'])
                     }
+
                     return new Date(fltr['date'][0]) <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) && (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) <= new Date(fltr['date'][1]) &&
                         (fltr['DTP_V'] ? el.DTP_V === fltr['DTP_V'] : true) &&
                         (fltr['osv'] ? el.osv === fltr['osv'] : true) &&
+                        (fltr['alcohol']? el.alcohol === fltr['alcohol']: true) &&
                         (fltr['street'] ? el.street.toLowerCase().includes(fltr['street']?.toLowerCase()) : true) &&
                         (fltr['district'] ? el.district.toLowerCase().includes(fltr['district']?.toLowerCase()) : true) &&
                         obj &&
+                        weath &&
                         npdd
                 })
             },
