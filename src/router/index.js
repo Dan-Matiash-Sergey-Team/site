@@ -22,7 +22,7 @@ const routes = [
         path: '/delete/:id',
         name: 'delete',
         beforeEnter(to, from, next) {
-            fetch(`http://195.133.147.101:3000/remove?id=${to.params.id}`);
+            fetch(`http://194.87.99.72:3000/remove?id=${to.params.id}`);
         },
         props: true
     },
