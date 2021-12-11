@@ -6,8 +6,16 @@
                 <!--        <p class="level-item has-icons-left">-->
                 <!--          <i aria-hidden="true" class="link is-info fa fa-home fa-lg"></i>-->
                 <!--        </p>-->
+                <div class="level-left">
+                    <div class="level-item">
+                        <select v-model="lang">
+                            <option value="en">English</option>
+                            <option value="ru">Русский</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="level-item">
-                    <strong style="color:black">Карта ДТП по Москве</strong>
+                    <strong style="color:black">{{lang==="ru"?"Карта ДТП по Москве":"Map of car accidents in Moscow"}}</strong>
                 </div>
                 <!--        <p class="level-item has-icons-right">-->
                 <!--          <router-link to="/infgr"><i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>-->
@@ -41,64 +49,64 @@
 
                             <div class="has-background-white-bis box" style="border-top-left-radius: 0; padding: 1vh">
                                 <div>
-                                    <label class="label" for="type">Тип ДТП</label>
+                                    <label class="label" for="type">{{lang==="ru"?"Тип ДТП":"Accident type"}}</label>
                                     <el-select clearable filterable id="type" size="small" style="width: 100%"
                                                v-model="DTP_V">
-                                        <el-option :key="opt" :label="opt" :value="opt"
-                                                   v-for="opt in options['DTP_V']"></el-option>
+                                        <el-option :key="opt" :label="opt" :value="lang==='ru'?opt:translations[opt]"
+                                                   v-for="opt in options['DTP_V'][lang]"></el-option>
                                     </el-select>
                                 </div>
                                 <div>
-                                    <label class="label">Место поблизости</label>
+                                    <label class="label">{{lang==="ru"?"Место поблизости":"Place nearby"}}</label>
                                     <el-select collapse-tags id="OBJ_DTP" multiple size="small" style="width: 100%"
                                                v-model="OBJ_DTP">
-                                        <el-option :key="opt" :label="opt" :value="opt"
-                                                   v-for="opt in options['OBJ_DTP']"></el-option>
+                                        <el-option :key="opt" :label="opt" :value="lang==='ru'?opt:translations[opt]"
+                                                   v-for="opt in options['OBJ_DTP'][lang]"></el-option>
                                     </el-select>
                                 </div>
                                 <div>
-                                    <label class="label">Погода</label>
+                                    <label class="label">{{lang==="ru"?"Погода":"Weather"}}</label>
                                     <el-select collapse-tags id="weather" multiple size="small" style="width: 100%"
                                                v-model="weather">
-                                        <el-option :key="opt" :label="opt" :value="opt"
-                                                   v-for="opt in options['weather']"></el-option>
+                                        <el-option :key="opt" :label="opt" :value="lang==='ru'?opt:translations[opt]"
+                                                   v-for="opt in options['weather'][lang]"></el-option>
                                     </el-select>
                                 </div>
                                 <div>
-                                    <input type="checkbox" v-model="alcohol"/><label>Алкоголь</label>
+                                    <input type="checkbox" v-model="alcohol" id="alco"><label for="alco">{{lang==="ru"?"Алкоголь":"Alcohol"}}</label>
                                 </div>
                                 <div>
-                                    <label class="label">Тип нарушения ПДД</label>
+                                    <label class="label">{{lang==="ru"?"Тип нарушения ПДД":"Type of traffic violation"}}</label>
                                     <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
                                                multiple size="small" style="width: 100%"
                                                v-model="NPDD">
-                                        <el-option :key="opt" :label="opt" :value="opt"
-                                                   v-for="opt in options['NPDD']">
+                                        <el-option :key="opt" :label="opt" :value="lang==='ru'?opt:translations[opt]"
+                                                   v-for="opt in options['NPDD'][lang]">
                                         </el-option>
                                     </el-select>
                                 </div>
                                 <div>
-                                    <label class="label">Время суток</label>
+                                    <label class="label">{{lang==="ru"?"Время суток":"Time of day"}}</label>
                                     <el-select clearable id="osv" size="small" style="width: 100%" v-model="osv">
-                                        <el-option :key="opt" :label="opt" :value="opt"
-                                                   v-for="opt in options['osv']"></el-option>
+                                        <el-option :key="opt" :label="opt" :value="lang==='ru'?opt:translations[opt]"
+                                                   v-for="opt in options['osv'][lang]"></el-option>
                                     </el-select>
                                 </div>
                                 <div class="container">
-                                    <label class="label">Улица</label>
+                                    <label class="label">{{lang==="ru"?"Улица":"Street"}}</label>
                                     <el-select clearable filterable size="small" style="width: 100%"
                                                v-model="street">
-                                        <el-option :key="opt" :label="opt" :value="opt"
-                                                   v-for="opt in options['street']"></el-option>
+                                        <el-option :key="opt" :label="opt" :value="lang==='ru'?opt:translations[opt]"
+                                                   v-for="opt in options['street'][lang]"></el-option>
                                     </el-select>
                                 </div>
                                 <div class="container">
-                                    <label class="label">Район</label>
+                                    <label class="label">{{lang==="ru"?"Район":"District"}}</label>
                                     <div>
                                         <el-select clearable filterable id="district" size="small"
                                                    style="width: 80%" v-model="district">
-                                            <el-option :key="opt" :label="opt" :value="opt"
-                                                       v-for="opt in options['district']">
+                                            <el-option :key="opt" :label="opt" :value="lang==='ru'?opt:translations[opt]"
+                                                       v-for="opt in options['district'][lang]">
                                             </el-option>
                                         </el-select>
                                         <a @click="showPopup = district != ''" style="margin-left: 10px">
@@ -112,7 +120,7 @@
                                     </div>
                                 </div>
                                 <div class="container">
-                                    <label class="label">Дата</label>
+                                    <label class="label">{{lang==="ru"?"Дата":"Date"}}</label>
                                     <DatePicker v-model="date"
                                     ></DatePicker>
                                 </div>
@@ -120,32 +128,30 @@
                                     <button :disabled="heatmapMode"
                                             @click="heatmapMode?()=>{}:districtMode = !districtMode"
                                             class="button"
-                                            style="margin-top: 20px">Статистика по
-                                        районам
+                                            style="margin-top: 20px">{{lang==="ru"?"Статистика по районам":"District mode"}}
                                     </button>
                                     <button :disabled="districtMode || hmap==null"
                                             @click="districtMode?()=>{}:turnHmapOn()"
                                             class="button"
-                                            style="margin-top: 20px">Тепловая
-                                        карта
+                                            style="margin-top: 20px">{{lang==="ru"?"Тепловая карта":"Heatmap"}}
                                     </button>
                                 </div>
                                 <div v-if="districtMode">
                                     <label class="checkbox">
                                         <input type="checkbox" v-model="showPieCharts">
-                                        Показать круговые диаграммы
+                                        {{lang==="ru"?"Показать круговые диаграммы":"Show piecharts"}}
                                     </label>
                                     <br>
                                 </div>
                                 <div class="buttons" style="text-align: right" v-if="heatmapMode">
                                     <button :class="{'button': true, 'is-active': heatmapType==1}"
-                                            @click="heatmapType=1">Школы
+                                            @click="heatmapType=1">{{lang==="ru"?"Школы":"Schools"}}
                                     </button>
                                     <button :class="{'button': true, 'is-active': heatmapType==2}"
-                                            @click="heatmapType=2">Смерти
+                                            @click="heatmapType=2">{{lang==="ru"?"Смерти":"Lethal"}}
                                     </button>
                                     <button :class="{'button': true, 'is-active': heatmapType==3}"
-                                            @click="heatmapType=3">Все
+                                            @click="heatmapType=3">{{lang==="ru"?"Все":"All"}}
                                     </button>
                                 </div>
                             </div>
@@ -168,27 +174,28 @@
             <div class="level" style="height: 8vh">
                 <div class="level-item">
                     <img src="../assets/images/placemark_regular.png" style="max-height: 40px">
-                    - ДТП
+                    - {{lang==="ru"?"ДТП":"Car accident"}}
                 </div>
                 <div class="level-item">
                     <img src="../assets/images/placemark_orange.png" style="max-height: 40px">
-                    - ДТП около образовательных учреждений
+                    - {{lang==="ru"?"ДТП около образовательных учреждений":"Car accident near an educating facility"}}
                 </div>
                 <div class="level-item">
                     <img src="../assets/images/placemark_red.png" style="max-height: 40px">
-                    - смертельные ДТП
+                    - {{lang==="ru"?"смертельные ДТП":"Lethal car accident"}}
                 </div>
                 <div class="level-item">
                     <img src="../assets/images/cluster_green.png" style="max-height: 40px">
-                    - небольшое кол-во ДТП
+                     - {{lang==="ru"?"небольшое кол-во ДТП":"Small number of accidents"}}
                 </div>
                 <div class="level-item">
                     <img src="../assets/images/cluster_red.png" style="max-height: 40px">
-                    -большое кол-во ДТП
+                     - {{lang==="ru"?"большое кол-во ДТП":"Big number of accidents"}}
                 </div>
             </div>
         </section>
     </div>
+
 </template>
 
 <script>
@@ -197,6 +204,8 @@
     import {loadYmap} from 'vue-yandex-maps';
     import "vue-select/dist/vue-select.css";
     import Data from "../assets/ahegao"
+    import districtCoords from "../assets/districtCoords"
+    import translations from "../assets/translations"
     import DatePicker from "../components/DatePicker";
     import infgr from "@/views/infgr";
 
@@ -232,11 +241,23 @@
                 heatmapType: 0,
                 allowHmap: false,
                 showPieCharts: true,
+                translations: translations,
             }
         },
         computed: {
+            lang: {
+                get() {
+                    return this.$store.getters.getLocale;
+                },
+                set(newValue) {
+                    console.log(newValue)
+                    this.$store.commit("updateLocale", newValue);
+                }
+            },
             vis_dtps: function () {
+                let l
                 if (this.street == null) this.street = ""
+                if (this.lang ==="ru") l = "ru"
                 return this.search(this.fltr)
             },
             fltr: function () {
@@ -257,13 +278,23 @@
             test: async function () {
                 this.street = this.options['street'][this.options['street'].indexOf(this.street) + 1]
             },
-            calc: function(){
+            translate: async function(word){
+                if(word in translations){
+                    return translations[word]
+                }
+                else {
+                    let trans = await (await fetch(`http://194.87.99.72:3000/translate?word=${word}`)).json()
+                    translations[word] = trans['translation']
+                    return trans['translation']
+                }
+            },
+            calc: function () {
                 let poss = []
-                for(let dtp of this.dtps){
+                for (let dtp of this.dtps) {
                     for (let w of dtp.weather)
-                    if (!poss.includes(w)){
-                        poss.push(w)
-                    }
+                        if (!poss.includes(w)) {
+                            poss.push(w)
+                        }
                 }
                 console.log(poss)
             },
@@ -316,7 +347,7 @@
                     } else {
                         c = "#EB5443"
                     }
-                    let myPolygon = new ymaps.Polygon(this.options.district_coords[d], {hintContent: `район ${d}: ${nums[d]['count']} дтп, смертей - ${nums[d]['deaths']}`},
+                    let myPolygon = new ymaps.Polygon(districtCoords.district_coords[d], {hintContent: `район ${d}: ${nums[d]['count']} дтп, смертей - ${nums[d]['deaths']}`},
                         {
                             fillColor: c,
                             hasBalloon: true,
@@ -476,9 +507,9 @@
                         },
                         properties: {
                             clusterCaption: "ДТП №" + points[i].id,
-                            balloonContent: `<h1 style="color: #4F51E1"><strong>${points[i].DTP_V}</strong></h1>` +
-                                `<p><strong>Дата:</strong> ${points[i].date}</p>  <p><strong>Адрес:</strong> ${points[i].address}</p> <p><strong>Основная причина:</strong> ${points[i].NPDD[0]}</p><p><strong>Освещение:</strong> ${points[i].osv}</p>` +
-                                `<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Подробнее</a></button>`
+                            balloonContent: `<h1 style="color: #4F51E1"><strong>${this.lang==="ru"?points[i].DTP_V:translations[points[i].DTP_V]}</strong></h1>` +
+                                (this.lang==="ru"?`<p><strong>Дата:</strong> ${points[i].date}</p>  <p><strong>Адрес:</strong> ${points[i].address}</p> <p><strong>Основная причина:</strong> ${points[i].NPDD[0]}</p><p><strong>Освещение:</strong> ${points[i].osv}</p>`:`<p><strong>Date:</strong> ${points[i].date}</p>  <p><strong>Address:</strong> ${await this.translate(points[i].address)}</p> <p><strong>Main reason:</strong> ${translations[points[i].NPDD[0]]}</p><p><strong>Time of day:</strong> ${translations[points[i].osv]}</p>`) +
+                                (this.lang==="ru"?`<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Подробнее</a></button>`:`<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Details</a></button>`)
                             // `<button class="button is-small"><a href="#/delete/${points[i].id}" class target="_blank">Удалить</a></button>`
                         }
                     }
@@ -496,8 +527,29 @@
                         return main.includes(eachEle);
                     });
                 }
-
                 if (Object.keys(fltr).length == 0) return this.dtps;
+                // if(this.lang === "en"){
+                //     if(fltr['NPDD']) {
+                //         for (let i=0;i< fltr['NPDD'].length;i++)
+                //             fltr['NPDD'][i] = this.translations[fltr['NPDD'][i]]
+                //     }
+                //     if(fltr['weather']) {
+                //         for (let i=0;i< fltr['weather'].length;i++) {
+                //             fltr['weather'][i] = this.translations[fltr['weather'][i]]
+                //         }
+                //     }
+                //     if(fltr['OBJ_DTP']){
+                //         for (let i=0;i< fltr['OBJ_DTP'].length;i++)
+                //             fltr['OBJ_DTP'][i] = this.translations[fltr['OBJ_DTP'][i]]
+                //     }
+                //     if(fltr['osv']){
+                //             fltr['osv'] = this.translations[fltr['osv']]
+                //     }
+                //     if(fltr['district']) {
+                //         fltr['district'] = this.translations[fltr['district']]
+                //     }
+                // }
+                console.log(fltr)
                 return this.dtps.filter((el) => {
                     let npdd = false
                     let obj = false
@@ -521,7 +573,7 @@
                     return new Date(fltr['date'][0]) <= (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) && (new Date(el.date.split('.')[2] + '-' + el.date.split('.')[1] + '-' + el.date.split('.')[0])) <= new Date(fltr['date'][1]) &&
                         (fltr['DTP_V'] ? el.DTP_V === fltr['DTP_V'] : true) &&
                         (fltr['osv'] ? el.osv === fltr['osv'] : true) &&
-                        (fltr['alcohol']? el.alcohol === fltr['alcohol']: true) &&
+                        (fltr['alcohol'] ? el.alcohol === fltr['alcohol'] : true) &&
                         (fltr['street'] ? el.street.toLowerCase().includes(fltr['street']?.toLowerCase()) : true) &&
                         (fltr['district'] ? el.district.toLowerCase().includes(fltr['district']?.toLowerCase()) : true) &&
                         obj &&
@@ -629,7 +681,7 @@
             },
             district(val) {
                 if (!this.districtMode) {
-                    let myPolygon = new ymaps.Polygon(this.options.district_coords[val])
+                    let myPolygon = new ymaps.Polygon(districtCoords.district_coords[val])
                     if (this.showingPolygon) {
                         this.map.geoObjects.remove(this.showingPolygon)
                     }
@@ -681,6 +733,7 @@
             heatmapScript.setAttribute('src', 'https://yastatic.net/s3/mapsapi-jslibs/heatmap/0.0.1/heatmap.min.js')
             document.head.appendChild(heatmapScript)
             console.log("start")
+            this.options.street.en = [...new Set(this.options['street']['en'])]
             setTimeout(() => {
                 ymaps.modules.require(['Heatmap']).spread((Heatmap) => {
                     console.log("end")
@@ -735,9 +788,12 @@
         padding-top: 10;
         padding-bottom: 10;
     }
+
+
 </style>
 <style>
     body {
         overflow-y: hidden;
     }
+
 </style>

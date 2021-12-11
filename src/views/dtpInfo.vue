@@ -34,7 +34,7 @@
                             <h1>{{ this.dtpData.data['DTP_V'] }}</h1>
                         </div>
                         <p class="subtitle">
-                            {{ this.dtpData.data['date'] }} в {{ this.dtpData.data['Time'] }} |
+                            {{ this.dtpData.data['date'] }} {{lang==="ru"?"в":"at"}} {{ this.dtpData.data['Time'] }} |
                             {{ this.dtpData.data['infoDtp']['address'] }}</p>
                         <nav class="level-left" style="margin-bottom: 8px">
                             <div class="level-item">
@@ -42,7 +42,8 @@
                             </div>
                             <div class="level-item">
                                 <div>
-                                    <p class="subtitle">Транспорт: {{ this.dtpData.data['K_TS'] }}</p>
+                                    <p class="subtitle">{{lang==="ru"?"Транспорт":"Vehicle"}}: {{
+                                        this.dtpData.data['K_TS'] }}</p>
                                 </div>
                             </div>
                         </nav>
@@ -52,7 +53,8 @@
                             </div>
                             <div class="level-item">
                                 <div>
-                                    <p class="subtitle">Участники: {{ this.dtpData.data['K_UCH'] }}</p>
+                                    <p class="subtitle">{{lang==="ru"?"Участники":"Participants"}}: {{
+                                        this.dtpData.data['K_UCH'] }}</p>
                                 </div>
                             </div>
                         </nav>
@@ -62,7 +64,8 @@
                             </div>
                             <div class="level-item">
                                 <div>
-                                    <p class="subtitle">Пострадавшие: {{ this.dtpData.data['RAN'] }}</p>
+                                    <p class="subtitle">{{lang==="ru"?"Пострадавшие":"Wounded"}}: {{
+                                        this.dtpData.data['RAN'] }}</p>
                                 </div>
                             </div>
                         </nav>
@@ -72,7 +75,8 @@
                             </div>
                             <div class="level-item">
                                 <div>
-                                    <p class="subtitle">Погибшие: {{ this.dtpData.data['POG'] }}</p>
+                                    <p class="subtitle">{{lang==="ru"?"Погибшие":"Casualties"}}: {{
+                                        this.dtpData.data['POG'] }}</p>
                                 </div>
                             </div>
                         </nav>
@@ -81,45 +85,48 @@
             </div>
             <div class="box has-text-left">
                 <div class="title is-4">
-                    Подробности ДТП
+                    {{lang==="ru"?"Подробности ДТП":"Detailed information about the accident"}}
                 </div>
                 <div class="block">
                     <div :key="b" v-for="b in this.dtpData.data['infoDtp']['ts_info']">
                         <div :key="c" v-for="c in b['ts_uch']">
                             <div :key="d" v-for="d in c['NPDD']">
-                                <li class="subtitle is-5" v-if="d != 'Нет нарушений'">Причины ДТП: {{ d }}</li>
+                                <li class="subtitle is-5" v-if="d != 'Нет нарушений' && d !='No violations'">
+                                    {{lang==="ru"?"ПричиныДТП":"Accident reasons"}}: {{ d }}
+                                </li>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="block">
-                    <li class="subtitle is-5">Участок дороги: <span :key="b"
-                                                                    v-for="b in this.dtpData.data['infoDtp']['sdor']">{{
-              b
-            }} </span>
+                    <li class="subtitle is-5">{{lang==="ru"?"Участок дороги":"Road section"}}: <span :key="b"
+                                                                                                     v-for="b in this.dtpData.data['infoDtp']['sdor']">{{b}} </span>
                     </li>
                 </div>
                 <div class="block">
-                    <li class="subtitle is-5">Дорожное значение:
+                    <li class="subtitle is-5">{{lang==="ru"?"Дорожное значение":"Effect on the traffic"}}:
                         <span>{{ this.dtpData.data['infoDtp']['dor_z'] }}</span></li>
                 </div>
                 <div class="block">
-                    <li class="subtitle is-5">Погода: <span :key="b"
-                                                            v-for="b in this.dtpData.data['infoDtp']['s_pog']">{{ b }}</span>
+                    <li class="subtitle is-5">{{lang==="ru"?"Погода":"Weather"}}: <span :key="b"
+                                                                                        v-for="b in this.dtpData.data['infoDtp']['s_pog']">{{ b }}</span>
                     </li>
                 </div>
                 <div class="block">
-                    <li class="subtitle is-5">Дорожное покрытие: {{ this.dtpData.data['infoDtp']['s_pch'] }}</li>
+                    <li class="subtitle is-5">{{lang==="ru"?"Дорожное покрытие":"Road surface"}}:
+                        {{this.dtpData.data['infoDtp']['s_pch'] }}
+                    </li>
                 </div>
                 <div class="block">
-                    <li class="subtitle is-5">Изменение режима движения: {{
+                    <li class="subtitle is-5">{{lang==="ru"?"Изменение режима движения":"Change in the traffic
+                        situation"}}: {{
                         this.dtpData.data['infoDtp']['change_org_motion']
                         }}
                     </li>
                 </div>
             </div>
             <div class="box  is-shadowless">
-                <div class="title is-4">Участники ДТП</div>
+                <div class="title is-4">{{lang==="ru"?"Участники ДТП":"Accident participants"}}</div>
                 <div class="tile is-ancestor">
                     <div class="tile is-vertical">
 
@@ -144,7 +151,8 @@
                             b['m_ts'] != '' ? b['m_ts'] : 'модель не указана'
                           }}, {{ b['g_v'] != '' ? b['g_v'] : 'год выпуска не указан' }},
                           {{ b['color'] != '' ? b['color'] : 'цвет не указан' }}</span>
-                                                <span v-else>Велосипед</span>
+                                                <span v-else>{{lang==="ru"?"Велосипед":"Bicycle"}}</span>
+
                                             </div>
                                         </div>
                                     </div>
@@ -156,7 +164,7 @@
                                             <div class="box is-shadowless">
                                                 <div class="level">
                                                     <div class="title is-5">
-                                                        <span>{{ c['K_UCH'] }}, пол {{ c['POL'] }}</span>
+                                                        <span>{{ c['K_UCH'] }}, {{lang==="ru"?"пол":"sex"}} {{ c['POL'] }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="level-left">
@@ -187,7 +195,7 @@
                                         </div>
                                         <div>
                                             <div class="title is-5">
-                                                <span>{{ d['K_UCH'] }}, пол {{ d['POL'] }}</span>
+                                                <span>{{ d['K_UCH'] }}, {{lang==="ru"?"пол":"sex"}} {{d['POL'] }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -195,7 +203,7 @@
                                         <div class="level-left">
                                             <div class="is-one-fifth">
                                                 <div :key="b" v-for="b in d['NPDD']"><i class="fa fa-exclamation"></i>
-                                                    {{ b }}
+                                                    {{b}}
                                                 </div>
                                             </div>
                                         </div>
@@ -212,7 +220,7 @@
 
                     </div>
                 </div>
-                <div class="title is-4">Панорама с места ДТП</div>
+                <div class="title is-4">{{lang==="ru"?"Панорама с места ДТП":"Panoramic view of the scene"}}</div>
                 <div class="player" id="player1" style="height: 70vh"></div>
             </div>
 
@@ -220,9 +228,9 @@
     </div>
 </template>
 
-<script src="https://use.fontawesome.com/ab5204b274.js"></script>
 <script>
     import {loadYmap} from "vue-yandex-maps";
+    import translations from "../assets/translations"
 
     export default {
         name: "dtpInfo",
@@ -234,12 +242,38 @@
 
             }
         },
+        computed: {
+            lang: {
+                get() {
+                    return this.$store.getters.getLocale;
+                },
+                set(newValue) {
+                    console.log(newValue)
+                    this.$store.commit("updateLocale", newValue);
+                }
+            },
+
+        },
+        methods: {
+            translate: async function (word) {
+                const pat = /^[\u0400-\u04FF]/iu
+                if (pat.test(word)) {
+                    if (word in translations) {
+                        return translations[word]
+                    } else {
+                        let trans = await (await fetch(`http://194.87.99.72:3000/translate?word=${word}`)).json()
+                        translations[word] = trans['translation']
+                        return trans['translation']
+                    }
+                }
+                return word
+            }
+        },
         async mounted() {
             const resp = await (await fetch(`http://194.87.99.72:3000/get_dtp?id=${this.id}`)).json()
-            console.log(resp)
             this.dtpData = resp[0]
             this.loading = false
-            console.log(this.dtpData)
+
             const settings = {
                 apiKey: '4877efab-fec0-4e66-956d-33db0d22ab10',
                 lang: 'ru_RU',
@@ -281,10 +315,29 @@
                 );
 
             });
+            const translate = this.translate
+            if (this.lang === "en") {
+
+                await getFiniteValue(this.dtpData.data);
+
+                async function getFiniteValue(obj) {
+                    await getProp(obj);
+
+                    async function getProp(o) {
+                        for (var prop in o) {
+                            if (typeof (o[prop]) === 'object') {
+                                getProp(o[prop]);
+                            } else if(typeof(o[prop]) === "string"){
+                                o[prop] = await translate(o[prop])
+                            }
+                        }
+                    }
+                }
+            }
         },
-        methods: {}
     }
 </script>
+
 <style scoped>
 
 </style>
