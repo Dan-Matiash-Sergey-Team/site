@@ -15,7 +15,8 @@
                     </div>
                 </div>
                 <div class="level-item">
-                    <strong style="color:black">{{lang==="ru"?"Карта ДТП по Москве":"Map of car accidents in Moscow"}}</strong>
+                    <strong style="color:black">{{lang==="ru"?"Карта ДТП по Москве":"Map of car accidents in
+                        Moscow"}}</strong>
                 </div>
                 <!--        <p class="level-item has-icons-right">-->
                 <!--          <router-link to="/infgr"><i aria-hidden="true" class="link is-info fa fa-bar-chart fa-lg"></i>-->
@@ -73,10 +74,11 @@
                                     </el-select>
                                 </div>
                                 <div>
-                                    <input type="checkbox" v-model="alcohol" id="alco"><label for="alco">{{lang==="ru"?"Алкоголь":"Alcohol"}}</label>
+                                    <input id="alco" type="checkbox" v-model="alcohol"><label for="alco">{{lang==="ru"?"Алкоголь":"Alcohol"}}</label>
                                 </div>
                                 <div>
-                                    <label class="label">{{lang==="ru"?"Тип нарушения ПДД":"Type of traffic violation"}}</label>
+                                    <label class="label">{{lang==="ru"?"Тип нарушения ПДД":"Type of traffic
+                                        violation"}}</label>
                                     <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
                                                multiple size="small" style="width: 100%"
                                                v-model="NPDD">
@@ -105,7 +107,8 @@
                                     <div>
                                         <el-select clearable filterable id="district" size="small"
                                                    style="width: 80%" v-model="district">
-                                            <el-option :key="opt" :label="opt" :value="lang==='ru'?opt:translations[opt]"
+                                            <el-option :key="opt" :label="opt"
+                                                       :value="lang==='ru'?opt:translations[opt]"
                                                        v-for="opt in options['district'][lang]">
                                             </el-option>
                                         </el-select>
@@ -125,17 +128,32 @@
                                     ></DatePicker>
                                 </div>
                                 <div class="buttons">
-                                    <button :disabled="heatmapMode"
+                                    <button :disabled="heatmapMode || clusterMode"
                                             @click="heatmapMode?()=>{}:districtMode = !districtMode"
                                             class="button"
                                             style="margin-top: 20px">{{lang==="ru"?"Статистика по районам":"District mode"}}
                                     </button>
-                                    <button :disabled="districtMode || hmap==null"
+                                    <button :disabled="districtMode || hmap==null || clusterMode"
                                             @click="districtMode?()=>{}:turnHmapOn()"
                                             class="button"
                                             style="margin-top: 20px">{{lang==="ru"?"Тепловая карта":"Heatmap"}}
                                     </button>
+
                                 </div>
+                                <div class="buttons">
+                                    <button :disabled="heatmapMode || districtMode"
+                                            @click="clusterMode?()=>{}:clusterMode = !clusterMode"
+                                            class="button"
+                                            style="margin-top: 20px">{{lang==="ru"?"Карта кластеризации":"Clusterization mode"}}
+                                    </button>
+                                    <div v-if="clusterMode">
+                                        <el-select v-model="currentCluster" clearable filterable size="small" style="width: 80%" id="cluster">
+                                            <el-option :value="k" v-for="k in Object.keys(clusters)" :label="k" :key="k"></el-option>
+                                        </el-select>
+                                        <br>
+                                    </div>
+                                </div>
+
                                 <div v-if="districtMode">
                                     <label class="checkbox">
                                         <input type="checkbox" v-model="showPieCharts">
@@ -186,11 +204,11 @@
                 </div>
                 <div class="level-item">
                     <img src="../assets/images/cluster_green.png" style="max-height: 40px">
-                     - {{lang==="ru"?"небольшое кол-во ДТП":"Small number of accidents"}}
+                    - {{lang==="ru"?"небольшое кол-во ДТП":"Small number of accidents"}}
                 </div>
                 <div class="level-item">
                     <img src="../assets/images/cluster_red.png" style="max-height: 40px">
-                     - {{lang==="ru"?"большое кол-во ДТП":"Big number of accidents"}}
+                    - {{lang==="ru"?"большое кол-во ДТП":"Big number of accidents"}}
                 </div>
             </div>
         </section>
@@ -208,6 +226,7 @@
     import translations from "../assets/translations"
     import DatePicker from "../components/DatePicker";
     import infgr from "@/views/infgr";
+    import clusters from "../assets/clusters"
 
     export default {
         name: 'Main',
@@ -227,6 +246,8 @@
                 alcohol: '',
                 weather: [],
                 district: '',
+                clusters: clusters,
+                currentCluster: 0,
                 streetQuery: '',
                 date: [new Date('2021-04-01'), new Date('2021-04-30'),], //дата
                 options: Data,
@@ -237,6 +258,7 @@
                 districtMode: false,
                 showPopup: false,
                 heatmapMode: false,
+                clusterMode: false,
                 hmap: null,
                 heatmapType: 0,
                 allowHmap: false,
@@ -257,7 +279,7 @@
             vis_dtps: function () {
                 let l
                 if (this.street == null) this.street = ""
-                if (this.lang ==="ru") l = "ru"
+                if (this.lang === "ru") l = "ru"
                 return this.search(this.fltr)
             },
             fltr: function () {
@@ -278,11 +300,10 @@
             test: async function () {
                 this.street = this.options['street'][this.options['street'].indexOf(this.street) + 1]
             },
-            translate: async function(word){
-                if(word in translations){
+            translate: async function (word) {
+                if (word in translations) {
                     return translations[word]
-                }
-                else {
+                } else {
                     let trans = await (await fetch(`http://194.87.99.72:3000/translate?word=${word}`)).json()
                     translations[word] = trans['translation']
                     return trans['translation']
@@ -305,6 +326,37 @@
                     this.heatmapType = 3
                 }
                 this.heatmapMode = !this.heatmapMode
+            },
+            showClusterMode: async function () {
+                await this.removeAllPlacemarks()
+
+                function getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    var color = '#';
+                    for (var i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+                console.log(Object.keys(clusters))
+                let features = []
+                let color = getRandomColor()
+                for (let i = 0; i < clusters[this.currentCluster].length; i++) {
+                    console.log(clusters[this.currentCluster])
+                    features[i] = {
+                        type: 'Feature',
+                        id: i,
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [Number(this.dtps[clusters[this.currentCluster][i]].COORD_W), Number(this.dtps[clusters[this.currentCluster][i]].COORD_L)]
+                        },
+                        options: {
+                            iconColor: color
+                        },
+                        properties: {}
+                    }
+                }
+                this.objectManager.add(features)
             },
             findInfoDistrict: function () {
                 let dat = {}
@@ -507,9 +559,9 @@
                         },
                         properties: {
                             clusterCaption: "ДТП №" + points[i].id,
-                            balloonContent: `<h1 style="color: #4F51E1"><strong>${this.lang==="ru"?points[i].DTP_V:translations[points[i].DTP_V]}</strong></h1>` +
-                                (this.lang==="ru"?`<p><strong>Дата:</strong> ${points[i].date}</p>  <p><strong>Адрес:</strong> ${points[i].address}</p> <p><strong>Основная причина:</strong> ${points[i].NPDD[0]}</p><p><strong>Освещение:</strong> ${points[i].osv}</p>`:`<p><strong>Date:</strong> ${points[i].date}</p>  <p><strong>Address:</strong> ${await this.translate(points[i].address)}</p> <p><strong>Main reason:</strong> ${translations[points[i].NPDD[0]]}</p><p><strong>Time of day:</strong> ${translations[points[i].osv]}</p>`) +
-                                (this.lang==="ru"?`<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Подробнее</a></button>`:`<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Details</a></button>`)
+                            balloonContent: `<h1 style="color: #4F51E1"><strong>${this.lang === "ru" ? points[i].DTP_V : translations[points[i].DTP_V]}</strong></h1>` +
+                                (this.lang === "ru" ? `<p><strong>Дата:</strong> ${points[i].date}</p>  <p><strong>Адрес:</strong> ${points[i].address}</p> <p><strong>Основная причина:</strong> ${points[i].NPDD[0]}</p><p><strong>Освещение:</strong> ${points[i].osv}</p>` : `<p><strong>Date:</strong> ${points[i].date}</p>  <p><strong>Address:</strong> ${await this.translate(points[i].address)}</p> <p><strong>Main reason:</strong> ${translations[points[i].NPDD[0]]}</p><p><strong>Time of day:</strong> ${translations[points[i].osv]}</p>`) +
+                                (this.lang === "ru" ? `<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Подробнее</a></button>` : `<button class="button is-small"><a href="#/dtp_info/${points[i].id}" target="_blank">Details</a></button>`)
                             // `<button class="button is-small"><a href="#/delete/${points[i].id}" class target="_blank">Удалить</a></button>`
                         }
                     }
@@ -527,6 +579,7 @@
                         return main.includes(eachEle);
                     });
                 }
+
                 if (Object.keys(fltr).length == 0) return this.dtps;
                 // if(this.lang === "en"){
                 //     if(fltr['NPDD']) {
@@ -672,13 +725,16 @@
                         } else if (this.districtMode) {
                             console.log("bbbbbb")
                             this.showDistrictMode()
+                        } else if (this.clusterMode) {
+                            this.showClusterMode()
                         } else {
                             this.removeAllPlacemarks()
                             this.addPlacemarks(val)
                         }
                     }
                 }
-            },
+            }
+            ,
             district(val) {
                 if (!this.districtMode) {
                     let myPolygon = new ymaps.Polygon(districtCoords.district_coords[val])
@@ -688,9 +744,10 @@
                     this.showingPolygon = myPolygon
                     this.map.geoObjects.add(myPolygon)
                 }
-            },
+            }
+            ,
             districtMode(val) {
-                if (!this.heatmapMode) {
+                if (!this.heatmapMode && !this.clusterMode) {
                     if (val) {
                         this.showDistrictMode()
                     } else {
@@ -698,9 +755,21 @@
                         this.helpvar = !this.helpvar
                     }
                 }
-            },
+            }
+            ,
+            clusterMode(val) {
+                if (!this.heatmapMode && !this.districtMode) {
+                    if (val) {
+                        this.showClusterMode()
+                    } else {
+                        this.hideClusterMode()
+                        this.helpvar = !this.helpvar
+                    }
+                }
+            }
+            ,
             heatmapType(val) {
-                if (!this.districtMode) {
+                if (!this.districtMode && !this.clusterMode) {
                     if (val > 0) {
                         this.showHeatmapmode()
                     } else {
@@ -709,6 +778,17 @@
                     }
                 }
             },
+            currentCluster(val) {
+                if (!this.districtMode && !this.heatmapMode) {
+                    if (val > -1) {
+                        this.showClusterMode()
+                    } else {
+                        this.hideClusterMode()
+                        this.helpvar = !this.helpvar
+                    }
+                }
+            }
+            ,
         }
         ,
         async mounted() {
