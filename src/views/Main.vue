@@ -74,11 +74,13 @@
                                     </el-select>
                                 </div>
                                 <div>
-                                    <input id="alco" type="checkbox" v-model="alcohol"><label for="alco">{{lang==="ru"?"Алкоголь":"Alcohol"}}</label>
+                                    <label class="checkbox">
+                                        <input id="alco" type="checkbox" v-model="alcohol">
+                                        {{lang==="ru"?" Алкоголь":"Alcohol"}}
+                                    </label>
                                 </div>
                                 <div>
-                                    <label class="label">{{lang==="ru"?"Тип нарушения ПДД":"Type of traffic
-                                        violation"}}</label>
+                                    <label class="label">{{lang==="ru"?"Тип нарушения ПДД":"Type of traffic violation"}}</label>
                                     <el-select :popper-append-to-body="false" collapse-tags filterable id="crime"
                                                multiple size="small" style="width: 100%"
                                                v-model="NPDD">
@@ -131,7 +133,8 @@
                                     <button :disabled="heatmapMode || clusterMode"
                                             @click="heatmapMode?()=>{}:districtMode = !districtMode"
                                             class="button"
-                                            style="margin-top: 20px">{{lang==="ru"?"Статистика по районам":"District mode"}}
+                                            style="margin-top: 20px">{{lang==="ru"?"Статистика по районам":"District
+                                        mode"}}
                                     </button>
                                     <button :disabled="districtMode || hmap==null || clusterMode"
                                             @click="districtMode?()=>{}:turnHmapOn()"
@@ -140,19 +143,22 @@
                                     </button>
 
                                 </div>
-                                <div class="buttons">
-                                    <button :disabled="heatmapMode || districtMode"
-                                            @click="clusterMode?()=>{}:clusterMode = !clusterMode"
-                                            class="button"
-                                            style="margin-top: 20px">{{lang==="ru"?"Карта кластеризации":"Clusterization mode"}}
-                                    </button>
-                                    <div v-if="clusterMode">
-                                        <el-select v-model="currentCluster" clearable filterable size="small" style="width: 80%" id="cluster">
-                                            <el-option :value="k" v-for="k in Object.keys(clusters)" :label="k" :key="k"></el-option>
-                                        </el-select>
-                                        <br>
-                                    </div>
-                                </div>
+<!--                                <div class="buttons">-->
+<!--                                    <button :disabled="heatmapMode || districtMode"-->
+<!--                                            @click="clusterMode?()=>{}:clusterMode = !clusterMode"-->
+<!--                                            class="button"-->
+<!--                                            style="margin-top: 20px">{{lang==="ru"?"Карта кластеризации":"Clusterization-->
+<!--                                        mode"}}-->
+<!--                                    </button>-->
+<!--                                    <div v-if="clusterMode">-->
+<!--                                        <el-select clearable filterable id="cluster" size="small"-->
+<!--                                                   style="width: 80%" v-model="currentCluster">-->
+<!--                                            <el-option :key="k" :label="k" :value="k"-->
+<!--                                                       v-for="k in Object.keys(clusters)"></el-option>-->
+<!--                                        </el-select>-->
+<!--                                        <br>-->
+<!--                                    </div>-->
+<!--                                </div>-->
 
                                 <div v-if="districtMode">
                                     <label class="checkbox">
@@ -338,6 +344,7 @@
                     }
                     return color;
                 }
+
                 console.log(Object.keys(clusters))
                 let features = []
                 let color = getRandomColor()
@@ -684,6 +691,7 @@
                     type: 'FeatureCollection',
                     features: features
                 }
+                console.log(features.length)
                 this.hmap.setData(data)
                 this.hmap.setMap(this.map);
             },
