@@ -812,7 +812,7 @@
             this.showMap = true
             const settings = {
                 apiKey: '4877efab-fec0-4e66-956d-33db0d22ab10',
-                lang: 'ru_RU',
+                lang: 'en_RU',
                 coordorder: 'latlong',
                 version: '2.1'
             }
