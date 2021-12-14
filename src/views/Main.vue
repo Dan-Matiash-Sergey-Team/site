@@ -389,7 +389,7 @@
                 }
                 let [nums, mean] = this.findInfoDistrict()
                 this.removeAllPlacemarks()
-                for (let d of this.options['district']) {
+                for (let d of this.options['district']['ru']) {
                     if (!(d in nums)) {
                         continue
                     }
